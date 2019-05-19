@@ -26,8 +26,8 @@ For building and running the application you need:
 
 In order to run the application you must need to define the following environment variables:
 
- **YUMMIGR_DB_POSTGRESQL**        ***localhost***      Defines the IP or hostname of PostgreSQL instance to be connected with.                                                                                                            
- **YUMMIGR_DB_PORT**         ***5432***           Defines the port of the PostgreSQL instance to be connected with.                                                                                                                  
- **YUMMIGR_DB_DATABASE**     ***yuumigrdb***      Defines the database/schema on which tables and data will be stored.                                                                                                         
- **YUMMIGR_DB_USERNAME**    ***postgres***         Defines the database username.                                                                                                                                                
- **YUMMIGR_DB_PASSWORD**   ***admin***         Defines the database password.                                                                                                                                              
+ **YUMMIGR_DB_POSTGRESQL**         --***localhost***--      Defines the IP or hostname of PostgreSQL instance to be connected with.                                                                                                            
+ **YUMMIGR_DB_PORT**          --***5432***--          Defines the port of the PostgreSQL instance to be connected with.                                                                                                                  
+ **YUMMIGR_DB_DATABASE**      --***yuumigrdb***--      Defines the database/schema on which tables and data will be stored.                                                                                                         
+ **YUMMIGR_DB_USERNAME**     --***postgres***--         Defines the database username.                                                                                                                                                
+ **YUMMIGR_DB_PASSWORD**   --***admin***--         Defines the database password.                                                                                                                                              
