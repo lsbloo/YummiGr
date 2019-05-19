@@ -32,4 +32,46 @@ In order to run the application you must need to define the following environmen
  **YUMMIGR_DB_PORT**          --***5432***--          Defines the port of the PostgreSQL instance to be connected with.                                                                                                                  
  **YUMMIGR_DB_DATABASE**      --***yuumigrdb***--      Defines the database/schema on which tables and data will be stored.                                                                                                         
  **YUMMIGR_DB_USERNAME**     --***postgres***--         Defines the database username.                                                                                                                                                
- **YUMMIGR_DB_PASSWORD**   --***admin***--         Defines the database password.                                                                                                                                              
+ **YUMMIGR_DB_PASSWORD**   --***admin***--         Defines the database password.   
+ 
+ ### How To Build
+
+From your command line:
+
+bash
+# Clone this repository
+$ https://github.com/lsbloo/YummiGr.git
+
+# Go into the repository root
+$ cd YummiGR
+
+# Install dependencies and build the project
+$ ./mvnw clean package
+
+
+These commands will generate the following file: **YummiGr/YummiGR/target/yummigr.jar**.
+
+### How To Run
+
+#### Manually using java environment variables
+Note: This example assumes that you have a mysql instance running on localhost.
+
+bash
+# Go into the repository root
+$ cd YummiGR
+
+# Clean and Build the project using maven
+$ ./mvnw clean package
+
+# Execute the jar with the environment variables set as shown in the example below.
+$ java \
+-YUMMIGR_DB_POSTGRESQL=localhost \
+-YUMMIGR_DB_PORT=5432 \
+-YUMMIGR_DB_DATABASE=tracytd \
+-YUMMIGR_DB_USERNAME=postgresql \
+-YUMMIGR_DB_PASSWORD=admin \
+-jar YummiGr/YummiGR/target/yummigr.jar
+
+ 
+ 
+ 
