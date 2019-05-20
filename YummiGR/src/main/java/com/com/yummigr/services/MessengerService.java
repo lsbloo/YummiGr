@@ -11,13 +11,13 @@ import com.com.yummigr.repositories.MessengerRepository;
 public class MessengerService {
 
 	
-	private MessengerRepository messengerRepository;
+	private final MessengerRepository messengerRepository;
 	
 	
 	@Autowired
 	private MessengerService( MessengerRepository menssengerRepository) {
 		
-		this.messengerRepository=messengerRepository;
+		this.messengerRepository= menssengerRepository;
 	}
 	
 	
@@ -26,4 +26,10 @@ public class MessengerService {
 	}
 	
 	
+	
+	public boolean createConnectorMessenger(String identifieruser, String account_sid , String auth_token) {
+		
+		return false;
+		
+	}
 }
