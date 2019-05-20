@@ -23,6 +23,11 @@ public interface RoleRepository extends CrudRepository<Role, Integer>{
 	void insertRole(@Param("id") Integer id , @Param("name") String name);
 	
 	
+	@Query(value= "select role_id from usuarios_role where usuarios_id=:user_id",nativeQuery=true)
+	Integer getIdRoleAssociateUser(@Param("user_id") Long user_id);
 	
+	
+	@Query(value = "select name from role where id=:id",nativeQuery=true)
+	String getRoleById(@Param("id") Integer id);
 
 }

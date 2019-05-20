@@ -56,12 +56,9 @@ public class UsersEndPoint {
 		boolean result = this.userService.createUser(first_name,last_name,email,username,password,actived,identifier);
 		 URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("").buildAndExpand().toUri();
 		response.setHeader("Location", uri.toASCIIString());
-		
 		if(!result) {
-			
 			return ResponseEntity
 					.status(HttpServletResponse.SC_FORBIDDEN).body(msgf);
-			
 		}else {
 			FailureCreateUser msg_accept = new FailureCreateUser("User created successfully");
 			return ResponseEntity

@@ -21,6 +21,7 @@ public class Privilege {
 	@Column(name="id")
 	private long id;
 
+	public Privilege() {}
 	/**
 	 * Default Constructor;
 	 * @param param

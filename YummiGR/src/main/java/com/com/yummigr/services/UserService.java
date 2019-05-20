@@ -1,5 +1,7 @@
 package com.com.yummigr.services;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import com.com.yummigr.repositories.RoleRepository;
 @Service
 public class UserService {
 	
+	protected static final String USER="ROLE_USER";
 	
 	
 	private final UserRepository userRepository;
@@ -67,6 +70,7 @@ public class UserService {
 				.validate(u);
 		//System.err.println(result.getErrors());
 		if(result.ok()) {
+			u.setRoles(Arrays.asList(this.roleRepository.findRoleByNameParam(USER)));
 			this.userRepository.save(u);
 		}else {
 			return false;
@@ -125,5 +129,13 @@ public class UserService {
 	 */
 	public void insertRoleEntity(Role role) {
 		this.roleRepository.save(role);
+	}
+	
+	public int getRoleIdByUserId(Long user_id) {
+		return this.roleRepository.getIdRoleAssociateUser(user_id);
+	}
+	
+	public String getRoleById(Integer role_id) {
+		return this.roleRepository.getRoleById(role_id);
 	}
 }

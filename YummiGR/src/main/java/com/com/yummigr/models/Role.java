@@ -26,9 +26,6 @@ public class Role implements GrantedAuthority{
 	@Column(name="id")
 	private long id;
 	
-	@ManyToMany
-	private Collection<User> users;
-	
 	/**
 	 * Default COnstructor;
 	 * @param param
@@ -44,23 +41,17 @@ public class Role implements GrantedAuthority{
 	private Collection<Privilege> privileges;
 	
 
+	
 	@Override
 	public String getAuthority() {
 		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
-
-	public Collection<User> getUsers() {
-		return users;
-	}
-
-
-	public void setUsers(Collection<User> users) {
-		this.users = users;
-	}
-
-
+	/**
+	 * Default Constructor Entity
+	 */
+	public Role() {}
 	public Collection<Privilege> getPrivileges() {
 		return privileges;
 	}

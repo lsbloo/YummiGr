@@ -26,11 +26,16 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 	 * default service for manager users;
 	 */
 	private final UserService userService;
-
+	/**
+	 * Default Constructor;
+	 * @param userService
+	 */
 	@Autowired
 	public DataLoader(UserService userService) {
 		this.userService=userService;
 	}
+	
+	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		// TODO Auto-generated method stub
@@ -42,12 +47,21 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 		Privilege privilege_write = createPrivilegeIfNotFound("WRITE_PRIVILEGE");
 		
 		Collection<Privilege> adminPrivileges = Arrays.asList(privilege,privilege_write);
-		createRoleIfNotFound("ADMIN" , adminPrivileges);
-		createRoleIfNotFound("USER" , Arrays.asList(privilege));
+		createRoleIfNotFound("ROLE_ADMIN" , adminPrivileges);
+		createRoleIfNotFound("ROLE_USER" , Arrays.asList(privilege));
 		
+		Role r = this.userService.getRoleByName("ROLE_ADMIN");
 		s = true;
 	}
 	
+	
+	/**
+	 * creates the roles of users for administrator and normal user being 
+	 * the administrator access permission with read and write powers and the normal user only reading
+	 * @param param_role
+	 * @param collection
+	 * @return
+	 */
 	@Transactional
 	private Role createRoleIfNotFound(String param_role , Collection<Privilege> collection) {
 		Role rol = this.userService.getRoleByName(param_role);
