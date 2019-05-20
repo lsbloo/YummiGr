@@ -27,6 +27,7 @@ For building and running the application you need:
 
 - [Java JDK 10](http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html)
 - [PostgreSQL 9.6](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
+- [SpringBoot](https://spring.io/)
 
 #### Environment Variables
 
