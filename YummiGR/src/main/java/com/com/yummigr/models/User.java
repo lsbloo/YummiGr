@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name="yummi_user")
 @JsonAutoDetect
-public class User implements Serializable{
+public class User implements UserDetails,Serializable{
 	
 	
 	
@@ -142,6 +142,36 @@ public class User implements Serializable{
 	public User(String username , String password) {
 		setUsername(username);
 		setPassword(password);
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	

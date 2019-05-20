@@ -21,7 +21,7 @@ public class MessengerEndPoint {
 	private MessengerService messengerService;
 	
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(value = "/ga/" , consumes = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/ga/" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Messenger> getAllMessenger(){
 		return this.messengerService.getAllMessengers();
 	}
