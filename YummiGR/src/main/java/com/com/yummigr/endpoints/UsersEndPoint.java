@@ -1,19 +1,24 @@
 package com.com.yummigr.endpoints;
 
+import java.net.URI;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.com.yummigr.services.UserService;
+import com.com.yummigr.dtos.FailureCreateUser;
 import com.com.yummigr.models.User;
 
 /**
@@ -38,7 +43,7 @@ public class UsersEndPoint {
 	
 	
 	@PostMapping(value="/c/" , consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void createUser(
+	public ResponseEntity<FailureCreateUser> createUser(
 			@RequestParam String first_name,
 			@RequestParam String last_name,
 			@RequestParam String username,
@@ -47,13 +52,20 @@ public class UsersEndPoint {
 			@RequestParam boolean actived,
 			@RequestParam String identifier
 			, HttpServletResponse response , HttpServletRequest request) {
-		
+		FailureCreateUser msgf = new FailureCreateUser("There is already a user with this username.please insert again.");
 		boolean result = this.userService.createUser(first_name,last_name,email,username,password,actived,identifier);
+		 URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("").buildAndExpand().toUri();
+		response.setHeader("Location", uri.toASCIIString());
+		
 		if(!result) {
-			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-			request.setAttribute("forbbiden", "There is already a user with this username.please insert again.");
+			
+			return ResponseEntity
+					.status(HttpServletResponse.SC_FORBIDDEN).body(msgf);
+			
 		}else {
-			response.setStatus(HttpServletResponse.SC_ACCEPTED);
+			FailureCreateUser msg_accept = new FailureCreateUser("User created successfully");
+			return ResponseEntity
+					.status(HttpServletResponse.SC_CREATED).body(msg_accept);
 		}
 	}
 	

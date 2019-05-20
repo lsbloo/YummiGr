@@ -11,6 +11,11 @@ import com.com.yummigr.validator.core.Validators;
 import com.com.yummigr.validator.core.Messages;
 import com.com.yummigr.models.User;
 
+/**
+ * Responsible for creating validations regarding system users.
+ * @author osvaldoairon
+ *
+ */
 @Component
 public class UserValidator {
 	
@@ -20,15 +25,14 @@ public class UserValidator {
 	
 	
 	/**
-	 * verifica se ja existe um usuario com o username especificado;
+	 * checks whether a user with the specified username already exists;
 	 * @return
 	 */
 	public Validator<User> checkIfExistUserByUsername(){
 		return (result,user) -> {
 			List<User> usv = this.userRepository.findUserbyUsernameValidator(user.getUsername());
 			if(usv.size() >= 1) {
-				result.error("Usuário ja existe");
-				System.err.println("oO");
+				result.error("User already exists");
 			}else {
 				result.ok();
 			}
