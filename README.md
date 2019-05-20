@@ -5,6 +5,10 @@
 <p>
   YummiGr is an api that has as main objective to provide the sending of automatic messages in whatsapp, the api works in conjunction with umbrellaapi, however it is possible to use its resources without importing the umbrella api. The sending of messages is automatic so you just need to configure your whatsapp that will send messages to the other contacts in the list. the message can be configured and customized according to your needs. including api provides a database for you to store information about whatsapp contacts, messages, files, and so on.
 </p>
+<br>
+<p> 
+O YummiGr é uma API que tem como principal objetivo fornecer o envio de mensagens automáticas no whatsapp, a api trabalha em conjunto com o umbrellaapi, porém é possível utilizar seus recursos sem importar a API guarda-chuva. O envio de mensagens é automático, então você só precisa configurar o seu whatsapp que irá enviar mensagens para os outros contatos da lista. a mensagem pode ser configurada e personalizada de acordo com suas necessidades. incluindo api fornece um banco de dados para você armazenar informações sobre contatos, mensagens, arquivos, etc. do whatsapp.
+</p>
 ## Table of content
 - [Getting Started]
 - [Requirements](
