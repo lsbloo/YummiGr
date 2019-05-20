@@ -29,6 +29,14 @@ public class Role implements GrantedAuthority{
 	@ManyToMany
 	private Collection<User> users;
 	
+	/**
+	 * Default COnstructor;
+	 * @param param
+	 */
+	public Role(String param) {
+		setName(param);
+	}
+	
 	
 	@ManyToMany
 	@JoinTable(name="roles_privilege" , joinColumns= {@JoinColumn(name="role_id", referencedColumnName="id")},
@@ -70,6 +78,16 @@ public class Role implements GrantedAuthority{
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

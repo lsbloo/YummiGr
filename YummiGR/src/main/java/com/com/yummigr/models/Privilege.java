@@ -21,8 +21,13 @@ public class Privilege {
 	@Column(name="id")
 	private long id;
 
-	
-	
+	/**
+	 * Default Constructor;
+	 * @param param
+	 */
+	public Privilege(String param) {
+		setName(param);
+	}
 	public long getId() {
 		return id;
 	}
