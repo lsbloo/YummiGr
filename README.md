@@ -54,7 +54,7 @@ These commands will generate the following file: **YummiGr/YummiGR/target/yummig
 ### How To Run
 
 #### Manually using java environment variables
-Note: This example assumes that you have a mysql instance running on localhost.
+Note: This example assumes that you have a psql instance running on localhost.
 
 bash
 # Go into the repository root
