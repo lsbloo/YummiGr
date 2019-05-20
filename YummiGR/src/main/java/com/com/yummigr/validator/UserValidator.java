@@ -39,4 +39,30 @@ public class UserValidator {
 		};
 	}
 	
+	public Validator<User> checkIfUserHaveAssociateConnectorMessage(){
+		return (result,user) -> {
+			try {
+			Integer msg_id = this.userRepository.getMessengerId(user.getId());
+			if(msg_id!=0 ) {
+				result.ok("Have only Associate!");
+			}
+			}catch(NullPointerException e) {
+				result.error("Dont have Associate!");
+			}
+		};
+	}
+	
+	public Validator<User> checkIfExistUserByIdentifier(){
+		return (result,user) -> {
+			try {
+			User usv = this.userRepository.findByUserIdentifier(user.getIdentifier());
+			if(usv!=null) {
+				result.ok("User Found");
+			}
+			}catch(NullPointerException e) {
+				result.error("Dont exist User");
+			}
+		};
+	}
+	
 }

@@ -138,4 +138,12 @@ public class UserService {
 	public String getRoleById(Integer role_id) {
 		return this.roleRepository.getRoleById(role_id);
 	}
+	
+	public User getUserByIdentifier(String identifier) {
+		return this.userRepository.findUserByIdentifier(identifier).get(0);
+	}
+	
+	public Integer getMessengerIdByIdUser(Long user_id) {
+		return this.userRepository.getMessengerId(user_id);
+	}
 }

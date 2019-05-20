@@ -17,6 +17,14 @@ import javax.persistence.JoinColumn;
 @Table(name="messenger_user")
 public class Messenger implements Serializable{
 	
+	
+	public Messenger() {}
+	
+	public Messenger(String account_sid , String auth_token) {
+		setAccount_sid(account_sid);
+		setAuth_token(auth_token);
+	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name="id")
