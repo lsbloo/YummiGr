@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+
+import com.com.yummigr.models.Contacts;
 import com.com.yummigr.models.Messenger;
 import com.com.yummigr.models.Schedule;
 import com.com.yummigr.models.User;
@@ -142,11 +144,6 @@ public class MessengerService {
 			return this.hashMapVerificUpdate;
 		}
 	}
-	
-	
-	
-	
-	
 	
 	
 	

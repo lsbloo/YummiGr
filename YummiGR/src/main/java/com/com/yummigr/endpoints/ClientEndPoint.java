@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.com.yummigr.dtos.CreateContactMessenger;
 import com.com.yummigr.dtos.CreatedDtoSchdule;
 import com.com.yummigr.dtos.FailureConnectorMessenger;
 import com.com.yummigr.models.Messenger;
+import com.com.yummigr.services.ContactService;
 import com.com.yummigr.services.MessengerService;
 import com.com.yummigr.services.ScheduleService;
 import com.com.yummigr.services.UserService;
@@ -31,13 +33,15 @@ public class ClientEndPoint {
 	
 	private final ScheduleService scheduleService;
 	
-	
+	private ContactService contactService;
 	@Autowired
 	public ClientEndPoint(UserService userService , MessengerService service
-			, ScheduleService scheduleService ) {
+			, ScheduleService scheduleService , ContactService contactService ) {
 		this.userService=userService;
 		this.messengerService=service;
 		this.scheduleService=scheduleService;
+		this.contactService=contactService;
+		
 	}
 	/**
 	 * creates a messenger connector for an associated user, 
@@ -80,6 +84,25 @@ public class ClientEndPoint {
 			
 			return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(creat_f);
 		}
+	}
+	
+	
+	@PostMapping(value = "/messenger/contact/c/" , consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<CreateContactMessenger> createContactMessengerConnection(@RequestParam String message,
+			@RequestParam String phone_number, @RequestParam String email, @RequestParam String identifier,HttpServletRequest request, HttpServletResponse response) {
+	
+			boolean resul = this.contactService.createNewContact(email, phone_number, identifier, message);
+			if(resul) {
+				CreateContactMessenger message_sul = new CreateContactMessenger("successfully create",
+						"new contact added to user messenger connector.");
+				return ResponseEntity.status(HttpServletResponse.SC_CREATED).body(message_sul);
+			}
+			CreateContactMessenger message_fail = new CreateContactMessenger("unsuccessful creation"
+					,"it was not possible to create a new contact for the specified messenger connector, "
+							+ "check the identifier, email, phone_number and message fields.");
+			return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(message_fail);
+		
+		
 	}
 	/**
 	 * 
