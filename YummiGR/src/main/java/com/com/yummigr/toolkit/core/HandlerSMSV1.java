@@ -52,6 +52,8 @@ public class HandlerSMSV1 {
 	 */
 	public HashMap<Integer,String> createMessageForMultipleReceivers(List<ClientSMS> contacts , String message) throws Exception {
 		return sendSMS(getReceivers(contacts), getKeyReceivers(contacts), message);
+	
+	
 	}
 	
 	
@@ -60,14 +62,27 @@ public class HandlerSMSV1 {
 	 * @param contacts
 	 * @param messages
 	 * @return
+	 * @throws Exception 
 	 */
 	public HashMap<Integer,String> createMultipleMessageForMultipleReceivers(List<ClientSMS>
-	contacts, List<String> messages){
+	contacts, List<String> messages) throws Exception{
+		return sendSMSMultiple(getReceivers(contacts), getKeyReceivers(contacts), messages);
 		
-		
-		
-		return null;
 	}
+	
+	public HashMap<Integer,String> sendSMSMultiple(List<String> receivers , List<String> key_receivers , List<String> messages) throws Exception {
+		this.sms_multiple_messages.setUser(getUsername()); this.setPassword(getPassword());
+		this.sms_multiple_messages.setDestinatarios(receivers);
+		this.sms_multiple_messages.setChaveClientes(key_receivers);
+		this.sms_multiple_messages.setMessages(messages);
+		Retorno retorno = SendMessage.multipleSend(this.sms_m);
+		if(retorno != null) {
+			this.result.put(retorno.getCodigo(), retorno.getMensagem());
+		}
+		return this.result;
+	}
+	
+	
 	
 	public HashMap<Integer,String> sendSMS(List<String> receivers , List<String> key_receivers , String message) throws Exception {
 		this.sms_m.setUser(getUsername()); this.setPassword(getPassword());
