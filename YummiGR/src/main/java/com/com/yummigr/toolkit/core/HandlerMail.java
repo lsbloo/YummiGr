@@ -14,6 +14,7 @@ import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import java.util.List;
 import javax.mail.Address;
+import java.io.Serializable;
 
 /**
  * responsible for creating all instances of sessions for sending messages.
@@ -21,7 +22,7 @@ import javax.mail.Address;
  *
  */
 @Component
-public class HandlerMail {
+public class HandlerMail implements Serializable{
 	
 	protected static final String[] HOST_SMTP= {"mail.smtp.host","smtp.gmail.com"};
 	protected static final String[] FACTORY_PORT = {"mail.smtp.socketFactory.port" , "465"};
