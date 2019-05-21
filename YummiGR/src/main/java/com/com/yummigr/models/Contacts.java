@@ -21,6 +21,10 @@ public class Contacts implements Serializable{
 	@Column(name="id")
 	private long id;
 
+	
+	@Column(name="email")
+	private String email;
+	
 	@Column(name="phone_number")
 	private String phone_number;
 	
@@ -41,5 +45,13 @@ public class Contacts implements Serializable{
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

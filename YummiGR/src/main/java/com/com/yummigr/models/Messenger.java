@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 
@@ -24,6 +25,15 @@ public class Messenger implements Serializable{
 		setAccount_sid(account_sid);
 		setAuth_token(auth_token);
 	}
+	
+	/**
+	 * a messenger user here identified as messenger_connector 
+	 * has a one-to-one relationship with a schedule_connector_time.
+	 * this relationship is directly linked to the functionality of customizing 
+	 * message submissions by the toolkit
+	 */
+	@OneToOne
+	private Schedule schedule_connector;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
@@ -55,6 +65,16 @@ public class Messenger implements Serializable{
 	public void setAuth_token(String auth_token) {
 		this.auth_token = auth_token;
 	}
+
+
+	public Schedule getSchedule_connector() {
+		return schedule_connector;
+	}
+
+	public void setSchedule_connector(Schedule schedule_connector) {
+		this.schedule_connector = schedule_connector;
+	}
+
 
 
 	private String account_sid;
