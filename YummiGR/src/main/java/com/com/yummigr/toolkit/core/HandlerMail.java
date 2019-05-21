@@ -45,9 +45,9 @@ public class HandlerMail implements Serializable{
 	 * @param properties
 	 * @param sessionUser
 	 */
-	public HandlerMail(boolean start) {
+	public HandlerMail() {
 		this.properties=new Properties();
-		this.setStart(start);
+		
 	}
 	
 	

@@ -3,11 +3,15 @@ package com.com.yummigr.toolkit.core;
 import org.springframework.stereotype.Component;
 import com.com.yummigr.toolkit.models.ClientSMS;
 
+import br.com.facilitamovel.bean.MO;
 import br.com.facilitamovel.bean.Retorno;
 import br.com.facilitamovel.bean.SmsMultiplo;
 import br.com.facilitamovel.bean.SmsMultiploMessages;
+import br.com.facilitamovel.service.CheckCredit;
+import br.com.facilitamovel.service.ReceiveMessage;
 import br.com.facilitamovel.service.SendMessage;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,10 +37,8 @@ public class HandlerSMSV1 {
 	
 	private HashMap<Integer,String> result;
 	
-	public HandlerSMSV1(String username,String password) {
-		setUsername(username);
-		setPassword(password);
-		this.contacts = new ArrayList<ClientSMS>();
+	public HandlerSMSV1() {
+		this.setContacts(new ArrayList<ClientSMS>());
 		this.sms_m = new SmsMultiplo();
 		this.sms_multiple_messages = new SmsMultiploMessages();
 		this.result = new HashMap<Integer,String>();
@@ -67,7 +69,6 @@ public class HandlerSMSV1 {
 	public HashMap<Integer,String> createMultipleMessageForMultipleReceivers(List<ClientSMS>
 	contacts, List<String> messages) throws Exception{
 		return sendSMSMultiple(getReceivers(contacts), getKeyReceivers(contacts), messages);
-		
 	}
 	
 	public HashMap<Integer,String> sendSMSMultiple(List<String> receivers , List<String> key_receivers , List<String> messages) throws Exception {
@@ -95,6 +96,36 @@ public class HandlerSMSV1 {
 		}
 		return this.result;
 	}
+	
+	/**
+	 * returns received messages if any.
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> getMessagesReceiver() throws Exception{
+		List<MO> inputbox = ReceiveMessage.readUnreadMO(getUsername(), getPassword());
+		List<String> getMessages = new ArrayList<String>();
+		if(inputbox != null || inputbox.size() != 0 ) {
+			for(MO input : inputbox) {
+				getMessages.add(input.getMensagem());
+				getMessages.add(input.getTelefone());
+				getMessages.add(new SimpleDateFormat("dd/MM/yyyy kk:mm").format(input.getDataHora()));
+			}
+		}
+		return getMessages;
+		
+	}
+	
+	/**
+	 * returns the credits for sending sms
+	 * @return
+	 * @throws Exception
+	 */
+	public Integer checkCredits() throws Exception {
+		return CheckCredit.checkRealCredit(getUsername(), getPassword());
+	}
+	
+	
 	
 	public List<String> getReceivers(List<ClientSMS> contacts) {
 		List<String> receiver = new ArrayList<String>();
@@ -128,5 +159,14 @@ public class HandlerSMSV1 {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public List<ClientSMS> getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(List<ClientSMS> contacts) {
+		this.contacts = contacts;
+	}
+	
 	
 }
