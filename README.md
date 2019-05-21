@@ -3,11 +3,11 @@
 ![alt text](https://www.pngkit.com/png/full/405-4055413_yummy-cute-donnut-omnomnom-yamiyami-yummy-pug-in.png)
 <br>
 <p>
-  YummiGr is an api that has as main objective to provide the sending of automatic messages in whatsapp, the api works in conjunction with umbrellaapi, however it is possible to use its resources without importing the umbrella api. The sending of messages is automatic so you just need to configure your whatsapp that will send messages to the other contacts in the list. the message can be configured and customized according to your needs. including api provides a database for you to store information about whatsapp contacts, messages, files, and so on.
+  YummiGr is an API that has as main objective the sending of automatic messages of SMS and emails, an API works in conjunction with the umbrella, however it can be used to protect an umbrella API. The sending of messages is automatic, so you have to configure your SMS/EMAIL that will send messages to the other contacts in the list. A message can be configured and customized according to your needs. Including a database for you, information about contacts, messages, files, etc.
 </p>
 <br>
 <p> 
-O YummiGr é uma API que tem como principal objetivo fornecer o envio de mensagens automáticas no whatsapp, a api trabalha em conjunto com o umbrellaapi, porém é possível utilizar seus recursos sem importar a API guarda-chuva. O envio de mensagens é automático, então você só precisa configurar o seu whatsapp que irá enviar mensagens para os outros contatos da lista. a mensagem pode ser configurada e personalizada de acordo com suas necessidades. incluindo api fornece um banco de dados para você armazenar informações sobre contatos, mensagens, arquivos, etc. do whatsapp.
+O YummiGr é uma API que tem como principal objetivo fornecer o envio de mensagens automáticas de  SMS e emails, a api trabalha em conjunto com o umbrellaapi, porém é possível utilizar seus recursos sem importar a API guarda-chuva. O envio de mensagens é automático, então você só precisa configurar o seu SMS/EMAIL que irá enviar mensagens para os outros contatos da lista. a mensagem pode ser configurada e personalizada de acordo com suas necessidades. incluindo api fornece um banco de dados para você armazenar informações sobre contatos, mensagens, arquivos, etc.
 </p>
 ## Table of content
 - [Getting Started]
@@ -27,6 +27,7 @@ For building and running the application you need:
 
 - [Java JDK 10](http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html)
 - [PostgreSQL 9.6](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
+- [SpringBoot](https://spring.io/)
 
 #### Environment Variables
 
