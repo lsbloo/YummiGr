@@ -2,8 +2,11 @@ package com.com.yummigr.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 import java.util.List;
 import com.com.yummigr.models.Messenger;
+import com.com.yummigr.models.Schedule;
 import com.com.yummigr.models.User;
 import com.com.yummigr.repositories.MessengerRepository;
 import com.com.yummigr.validator.MessengerValidator;
@@ -37,6 +40,9 @@ public class MessengerService {
 	private final UserValidator userValidator;
 	
 	
+	private HashMap<Boolean,Integer> hashMapVerificUpdate;
+	
+	
 	@Autowired
 	private MessengerService( MessengerRepository menssengerRepository , MessengerValidator messengerValidator
 			,UserService userService, UserValidator userValidator) {
@@ -45,6 +51,7 @@ public class MessengerService {
 		this.messengerValidator=messengerValidator;
 		this.userService = userService;
 		this.userValidator=userValidator;
+		this.hashMapVerificUpdate = new HashMap<Boolean,Integer>();
 	}
 	
 	
@@ -115,9 +122,26 @@ public class MessengerService {
 	
 	
 	
+	public Integer insertRelationScheduleConnectorMessenger(Messenger u , Schedule sh) {
+		return this.messengerRepository.updateMessengerConnectorSchedule(sh.getId(), u.getId());
+	}
 	
-	
-	
+	public HashMap<Boolean,Integer> verificExistRelationScheduleConnectorMessenger(Messenger u) {
+		try{
+			Integer result  = this.messengerRepository.getConnectorIdByUser(u.getId());
+			
+			if(result!=0) {
+				this.hashMapVerificUpdate.put(true, result);
+				return this.hashMapVerificUpdate;
+			}else {
+				this.hashMapVerificUpdate.put(false, 0);
+				return this.hashMapVerificUpdate;
+			}
+		}catch(NullPointerException e) {
+			this.hashMapVerificUpdate.put(false, 0);
+			return this.hashMapVerificUpdate;
+		}
+	}
 	
 	
 	

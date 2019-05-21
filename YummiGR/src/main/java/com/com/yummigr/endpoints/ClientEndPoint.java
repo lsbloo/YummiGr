@@ -1,5 +1,6 @@
 package com.com.yummigr.endpoints;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.com.yummigr.dtos.CreatedDtoSchdule;
 import com.com.yummigr.dtos.FailureConnectorMessenger;
 import com.com.yummigr.models.Messenger;
 import com.com.yummigr.services.MessengerService;
+import com.com.yummigr.services.ScheduleService;
 import com.com.yummigr.services.UserService;
+import com.com.yummigr.validator.core.Result;
 
 @RestController
 @RequestMapping("/yummicr/api/v1/toolkit")
@@ -25,11 +29,15 @@ public class ClientEndPoint {
 	
 	private final MessengerService messengerService;
 	
+	private final ScheduleService scheduleService;
+	
 	
 	@Autowired
-	public ClientEndPoint(UserService userService , MessengerService service) {
+	public ClientEndPoint(UserService userService , MessengerService service
+			, ScheduleService scheduleService ) {
 		this.userService=userService;
 		this.messengerService=service;
+		this.scheduleService=scheduleService;
 	}
 	/**
 	 * creates a messenger connector for an associated user, 
@@ -58,6 +66,21 @@ public class ClientEndPoint {
 		
 	}
 	
+	@PostMapping(value="/messenger/schedule/c/" , consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<CreatedDtoSchdule> createSchedule(@RequestParam String time, @RequestParam String identifier,HttpServletResponse response, HttpServletRequest request){
+		boolean result = this.scheduleService.createSchedule(time,identifier);
+		if(result) {
+			CreatedDtoSchdule creat_sh = new CreatedDtoSchdule("object team scheduler successfully created!");
+			
+			return ResponseEntity.status(HttpServletResponse.SC_CREATED).body(creat_sh);
+		}else {
+			CreatedDtoSchdule creat_f = new CreatedDtoSchdule("Enter the time field correctly can not be null or different from zero"
+					+ "    Example input: 500  "
+					+ "Enter identifier of messenger_user correctly");
+			
+			return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(creat_f);
+		}
+	}
 	/**
 	 * 
 	 * @param identifier
