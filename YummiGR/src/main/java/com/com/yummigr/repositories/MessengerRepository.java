@@ -43,6 +43,18 @@ public interface MessengerRepository extends CrudRepository<Messenger,Integer>{
 	@Query(value="insert into users_messenger (yuumi_user_id,messenger_user) values (:user_id,:messenger_id)",nativeQuery=true)
 	void insertRelationMessengerUser(@Param("user_id") Long user_id , @Param("messenger_id") Long messenger_id);
 	
+	
+	
+	@Transactional
+	@Modifying
+	@Query(value="update messenger_user set schedule_connector_id=:id  where id=:id_messenger",nativeQuery=true)
+	Integer updateMessengerConnectorSchedule(@Param("id") Long schedule_id
+			,@Param("id_messenger") Long messenger_id);
+	
+	@Query(value="select schedule_connector_id from messenger_user where id=:id",nativeQuery=true)
+	Integer getConnectorIdByUser(@Param("id") Long id);
+	
+	
 }
 
 
