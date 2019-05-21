@@ -54,4 +54,19 @@ public class Contacts implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public Contacts(String email, String message , String phoneNumber) {
+		setEmail(email);
+		setMessage(message);
+		setPhone_number(phoneNumber);
+	}
+	public Contacts() {}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 }
