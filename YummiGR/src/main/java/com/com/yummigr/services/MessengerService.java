@@ -3,14 +3,20 @@ package com.com.yummigr.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.com.yummigr.context.HandlerAuthentication;
 import com.com.yummigr.models.Contacts;
 import com.com.yummigr.models.Messenger;
 import com.com.yummigr.models.Schedule;
 import com.com.yummigr.models.User;
+import com.com.yummigr.repositories.ContactsRepository;
 import com.com.yummigr.repositories.MessengerRepository;
+import com.com.yummigr.repositories.ScheduleRepository;
+import com.com.yummigr.toolkit.core.ActivatorScheduleEmail;
 import com.com.yummigr.validator.MessengerValidator;
 import com.com.yummigr.validator.UserValidator;
 import com.com.yummigr.validator.core.Result;
@@ -35,6 +41,10 @@ public class MessengerService {
 	 */
 	private final MessengerValidator messengerValidator;
 	
+	private final ContactsRepository contactsRepository;
+	
+	private final ScheduleRepository scheduleRepository;
+	
 	/**
 	 */
 	private final UserService userService;
@@ -44,16 +54,23 @@ public class MessengerService {
 	
 	private HashMap<Boolean,Integer> hashMapVerificUpdate;
 	
+	protected ActivatorScheduleEmail activatorEmail;
+	
+	private HandlerAuthentication handlerAuthentication;
+	
 	
 	@Autowired
 	private MessengerService( MessengerRepository menssengerRepository , MessengerValidator messengerValidator
-			,UserService userService, UserValidator userValidator) {
+			,UserService userService, UserValidator userValidator, ContactsRepository contactsRepository
+			, ScheduleRepository scheduleRepository) {
 		
 		this.messengerRepository= menssengerRepository;
 		this.messengerValidator=messengerValidator;
 		this.userService = userService;
 		this.userValidator=userValidator;
+		this.scheduleRepository=scheduleRepository;
 		this.hashMapVerificUpdate = new HashMap<Boolean,Integer>();
+		this.contactsRepository =contactsRepository;
 	}
 	
 	
@@ -146,7 +163,38 @@ public class MessengerService {
 	}
 	
 	
+	public List<Contacts> getAllContactsForMessenger(Messenger u ){
+		List<Integer> ids_related_contact = this.contactsRepository.getAllIdContactByMessengerId(u.getId());
+		List<Contacts> list_ = new ArrayList<Contacts>();
+		
+		
+		for(Integer y : ids_related_contact) {
+			list_.add(this.contactsRepository.getContact(y));
+		}
+		
+		return list_;
+	}
 	
+	
+	public boolean activateSendEmailMessengerAll(String identifier , boolean activate, String email, String password , String message,String subject_message) throws IOException {
+		
+		Messenger u = this.searchConnectorMessengerUser(identifier);
+		if(u != null) {
+			handlerAuthentication = new HandlerAuthentication();
+			User user = handlerAuthentication.getUserAuthenticate();
+			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
+			
+			activatorEmail = new ActivatorScheduleEmail(sh,u,activate, user, email, password,message,subject_message);
+			
+			System.err.println(this.activatorEmail.getResponseExecution());
+			new Thread(activatorEmail).start();
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
 	
 	
 	

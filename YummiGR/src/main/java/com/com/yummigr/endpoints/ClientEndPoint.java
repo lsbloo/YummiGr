@@ -1,5 +1,7 @@
 package com.com.yummigr.endpoints;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -122,6 +124,27 @@ public class ClientEndPoint {
 			return null;
 		}
 		
+	}
+	
+	
+	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @param identifier
+	 * @return
+	 * @throws IOException 
+	 */
+	@GetMapping(value="/messenger/s/email/all", produces = MediaType.APPLICATION_JSON_VALUE)
+	public boolean sendEmailMessengerConnector(HttpServletRequest request , HttpServletResponse response,
+			@RequestParam String identifier , @RequestParam boolean activate,
+			@RequestParam String email, @RequestParam String password , 
+			@RequestParam String message , @RequestParam String subject_message) throws IOException {
+		
+		this.messengerService.activateSendEmailMessengerAll(identifier, activate,email,password , message , subject_message);
+		
+		return  false;
 	}
 
 }
