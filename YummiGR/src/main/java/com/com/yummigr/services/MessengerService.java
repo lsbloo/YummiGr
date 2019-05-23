@@ -17,6 +17,7 @@ import com.com.yummigr.models.User;
 import com.com.yummigr.repositories.ContactsRepository;
 import com.com.yummigr.repositories.MessengerRepository;
 import com.com.yummigr.repositories.ScheduleRepository;
+import com.com.yummigr.stack.StackActivator;
 import com.com.yummigr.toolkit.core.ActivatorScheduleEmail;
 import com.com.yummigr.validator.MessengerValidator;
 import com.com.yummigr.validator.UserValidator;
@@ -59,6 +60,8 @@ public class MessengerService {
 	
 	private HandlerAuthentication handlerAuthentication;
 	
+	private StackActivator stack;
+	
 	
 	@Autowired
 	private MessengerService( MessengerRepository menssengerRepository , MessengerValidator messengerValidator
@@ -72,6 +75,7 @@ public class MessengerService {
 		this.scheduleRepository=scheduleRepository;
 		this.hashMapVerificUpdate = new HashMap<Boolean,Integer>();
 		this.contactsRepository =contactsRepository;
+		this.stack = new StackActivator(300000);
 	}
 	
 	
@@ -180,7 +184,7 @@ public class MessengerService {
 	}
 	
 	
-	public String activateSendEmailMessengerAll(JavaMailSender sender , String identifier , boolean activate, String email, String message,String subject_message) throws IOException {
+	public String activateSendEmailMessengerAll(JavaMailSender sender , String identifier , boolean activate, String email, String message,String subject_message) throws Exception {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
 		if(u != null) {
 			handlerAuthentication = new HandlerAuthentication();
@@ -188,6 +192,8 @@ public class MessengerService {
 			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
 			
 			activatorEmail = new ActivatorScheduleEmail(sender,this,sh,u,activate, user, email,message,subject_message);
+			this.stack.push(activatorEmail);
+			this.stack.print();
 			
 			return this.activatorEmail.getResponseExecution();
 		}else {

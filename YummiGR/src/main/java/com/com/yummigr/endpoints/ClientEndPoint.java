@@ -139,13 +139,13 @@ public class ClientEndPoint {
 	 * @param response
 	 * @param identifier
 	 * @return
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
 	@GetMapping(value="/messenger/s/email/all", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SendEMailDTO> sendEmailMessengerConnector(HttpServletRequest request , HttpServletResponse response,
 			@RequestParam String identifier , @RequestParam boolean activate,
 			@RequestParam String email, 
-			@RequestParam String message , @RequestParam String subject_message) throws IOException {
+			@RequestParam String message , @RequestParam String subject_message) throws Exception {
 		
 		String result = this.messengerService.activateSendEmailMessengerAll(this.javaMailSender,identifier, activate,email, message , subject_message);
 		if(result != null) {

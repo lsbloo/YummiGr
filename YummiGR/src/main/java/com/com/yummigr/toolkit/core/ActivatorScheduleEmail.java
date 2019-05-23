@@ -1,6 +1,7 @@
 package com.com.yummigr.toolkit.core;
 
 import java.io.IOException;
+import java.lang.Thread.State;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,13 @@ import com.com.yummigr.models.User;
 import com.com.yummigr.services.MessengerService;
 import com.com.yummigr.services.ScheduleService;
 
+import sun.security.util.SecurityConstants;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 /**
  * implementation;;
@@ -26,7 +34,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
  *
  */
 @EnableScheduling
-public class ActivatorScheduleEmail  implements Runnable{
+public class ActivatorScheduleEmail  extends Thread implements Runnable,Future {
 	
 	/**
 	 * Constants
@@ -58,6 +66,10 @@ public class ActivatorScheduleEmail  implements Runnable{
 	protected String subject_message;
 	protected Schedule schedule;
 	private String response;
+	
+	private int threadStatus=0;
+	
+	public ActivatorScheduleEmail() {}
 	/**
 	 * @throws IOException 
 	 * 
@@ -77,6 +89,8 @@ public class ActivatorScheduleEmail  implements Runnable{
 		this.response = this.initiateTasks();
 		
 	}
+	
+	
 	
 	public String getResponseExecution() {
 		if(this.response!=null) return this.response;
@@ -124,6 +138,44 @@ public class ActivatorScheduleEmail  implements Runnable{
 	public void setResponse(String response) {
 		this.response = response;
 	}
-	
+
+
+	@Override
+	public boolean cancel(boolean mayInterruptIfRunning) {
+		// TODO Auto-generated method stub
+		return this.cancel(mayInterruptIfRunning);
+	}
+
+
+
+	@Override
+	public boolean isCancelled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+
+
+	@Override
+	public boolean isDone() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public Object get() throws InterruptedException, ExecutionException {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
+
+
+	@Override
+	public Object get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
