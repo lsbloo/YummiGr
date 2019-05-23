@@ -28,8 +28,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+
 /**
- * implementation;;
+ * this class is reponsavel by the creation of tasks for execution of automatic emails. 
+ * it inherits attributes of the thread class, each instance of that object is connected to a 
+ * connector messenger which in turn defines the runtime in the runnable method call run () method.
  * @author osvaldoairon
  *
  */
