@@ -60,7 +60,7 @@ public class MessengerService {
 	
 	private HandlerAuthentication handlerAuthentication;
 	
-	private StackActivator stack;
+	protected  static StackActivator stack =  new StackActivator(300000);
 	
 	
 	@Autowired
@@ -75,7 +75,6 @@ public class MessengerService {
 		this.scheduleRepository=scheduleRepository;
 		this.hashMapVerificUpdate = new HashMap<Boolean,Integer>();
 		this.contactsRepository =contactsRepository;
-		this.stack = new StackActivator(300000);
 	}
 	
 	
@@ -192,8 +191,9 @@ public class MessengerService {
 			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
 			
 			activatorEmail = new ActivatorScheduleEmail(sender,this,sh,u,activate, user, email,message,subject_message);
-			this.stack.push(activatorEmail);
-			this.stack.print();
+			stack.push(activatorEmail);
+			stack.print();
+			
 			
 			return this.activatorEmail.getResponseExecution();
 		}else {
@@ -201,7 +201,26 @@ public class MessengerService {
 		}
 	}
 	
+	public ActivatorScheduleEmail ActivatorGetSchedule(String  identifier ) {
+		Messenger u = this.searchConnectorMessengerUser(identifier);
+		
+		
+		return stack.getSchedule(u);
+	}
 	
-	
+	public List<String>stopActivatorSch(ActivatorScheduleEmail act) {
+		List<String> list_ = new ArrayList<String>();
+		list_.add(String.valueOf(act.isCancelled())); // status cancel 0
+		list_.add(act.getMessenger().getAccount_sid()); // account_sid messenger connector; 1
+		list_.add(act.getResponseExecution()); // response execution 2
+		list_.add(act.getName()); // name of thread object; 3
+		act.destroy();
+		stack.pop(act);
+		return list_;
+		/**
+		 * Depreciado.
+		 */
+		//act.stop();
+	}
 	
 	}

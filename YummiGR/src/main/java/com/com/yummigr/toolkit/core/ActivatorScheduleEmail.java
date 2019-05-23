@@ -109,6 +109,20 @@ public class ActivatorScheduleEmail  extends Thread implements Runnable,Future {
 		return thread;
 	}
 	
+	public void destroy() {
+		this.pooltaskScheduler = null;
+		this.schedule=null;
+		this.messengerService=null;
+		this.messengerConnector= null;
+		this.activate=false;
+		this.user=null;;
+		this.email=null;;
+		this.sender=null;;
+		this.message_customize=null;;
+		this.subject_message = null;;
+		this.handlerEmail= null;;
+		this.response = null;;
+	}
 	@Override
 	public void run() {
 		
@@ -131,6 +145,9 @@ public class ActivatorScheduleEmail  extends Thread implements Runnable,Future {
 		}
 	}
 
+	public Messenger getMessenger() {
+		return this.messengerConnector;
+	}
 	public String getResponse() {
 		return response;
 	}

@@ -1,6 +1,7 @@
 package com.com.yummigr.endpoints;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -160,6 +161,26 @@ public class ClientEndPoint {
 						,result,false);
 				return ResponseEntity.status(HttpServletResponse.SC_ACCEPTED)
 						.body(sendto);
+		}
+	}
+	
+	@GetMapping(value="/messenger/s/email/all/cancel" , produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SendEMailDTO> cancelSendEmailMessengerConnector(
+			@RequestParam("identifier") String identifier , HttpServletRequest request , HttpServletResponse response){
+		
+		List<String> result = this.messengerService.stopActivatorSch(this.messengerService.ActivatorGetSchedule(identifier));
+		
+		if(result!=null) {
+			SendEMailDTO sendto = new SendEMailDTO(result.get(1),result.get(3), result.get(2),
+					Boolean.valueOf(result.get(0)));
+		
+			return ResponseEntity.status(response.SC_ACCEPTED).body(sendto);
+		}
+		else {
+			SendEMailDTO sendto = new SendEMailDTO("Activator Schdule","Dont Found", "0",
+					false);
+		
+			return ResponseEntity.status(response.SC_BAD_REQUEST).body(sendto);
 		}
 	}
 

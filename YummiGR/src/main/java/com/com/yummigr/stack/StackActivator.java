@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import com.com.yummigr.models.Messenger;
 import com.com.yummigr.stack.core.ThreadActvator;
 import com.com.yummigr.toolkit.core.ActivatorScheduleEmail;
 
@@ -33,6 +34,15 @@ public class StackActivator implements ThreadActvator{
 		this.stack.add(act);
 	}
 	
+	
+	public ActivatorScheduleEmail getSchedule(Messenger u ) {
+		for(int i = 0 ; i < this.stack.size() ; i ++) {
+			if(this.stack.get(i).getMessenger().getAccount_sid().equals(u.getAccount_sid())) {
+				return this.stack.get(i);
+			}
+		}
+		return null;
+	}
 	public boolean stop(ActivatorScheduleEmail act) {
 		for(int i = 0 ; i < this.stack.size() ; i ++) {
 			if(act.equals(this.stack.get(i))) {
@@ -42,7 +52,6 @@ public class StackActivator implements ThreadActvator{
 		}
 		return false;
 	}
-
 	
 	public void print() {
 		System.err.println("Size Stack : " + size());
@@ -50,7 +59,8 @@ public class StackActivator implements ThreadActvator{
 	@Override
 	public ActivatorScheduleEmail pop(ActivatorScheduleEmail act) {
 		// TODO Auto-generated method stub
-		return null;
+		this.stack.remove(act);
+		return act;
 	}
 	@Override
 	public int size() {
