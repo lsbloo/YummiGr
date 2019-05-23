@@ -17,6 +17,7 @@ import com.com.yummigr.models.User;
 import com.com.yummigr.repositories.ContactsRepository;
 import com.com.yummigr.repositories.MessengerRepository;
 import com.com.yummigr.repositories.ScheduleRepository;
+import com.com.yummigr.stack.StackActivator;
 import com.com.yummigr.toolkit.core.ActivatorScheduleEmail;
 import com.com.yummigr.validator.MessengerValidator;
 import com.com.yummigr.validator.UserValidator;
@@ -58,6 +59,8 @@ public class MessengerService {
 	protected ActivatorScheduleEmail activatorEmail;
 	
 	private HandlerAuthentication handlerAuthentication;
+	
+	protected  static StackActivator stack =  new StackActivator(300000);
 	
 	
 	@Autowired
@@ -180,7 +183,7 @@ public class MessengerService {
 	}
 	
 	
-	public String activateSendEmailMessengerAll(JavaMailSender sender , String identifier , boolean activate, String email, String message,String subject_message) throws IOException {
+	public String activateSendEmailMessengerAll(JavaMailSender sender , String identifier , boolean activate, String email, String message,String subject_message) throws Exception {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
 		if(u != null) {
 			handlerAuthentication = new HandlerAuthentication();
@@ -188,6 +191,9 @@ public class MessengerService {
 			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
 			
 			activatorEmail = new ActivatorScheduleEmail(sender,this,sh,u,activate, user, email,message,subject_message);
+			stack.push(activatorEmail);
+			stack.print();
+			
 			
 			return this.activatorEmail.getResponseExecution();
 		}else {
@@ -195,7 +201,26 @@ public class MessengerService {
 		}
 	}
 	
+	public ActivatorScheduleEmail ActivatorGetSchedule(String  identifier ) {
+		Messenger u = this.searchConnectorMessengerUser(identifier);
+		
+		
+		return stack.getSchedule(u);
+	}
 	
-	
+	public List<String>stopActivatorSch(ActivatorScheduleEmail act) {
+		List<String> list_ = new ArrayList<String>();
+		list_.add(String.valueOf(act.isCancelled())); // status cancel 0
+		list_.add(act.getMessenger().getAccount_sid()); // account_sid messenger connector; 1
+		list_.add(act.getResponseExecution()); // response execution 2
+		list_.add(act.getName()); // name of thread object; 3
+		act.destroy();
+		stack.pop(act);
+		return list_;
+		/**
+		 * Depreciado.
+		 */
+		//act.stop();
+	}
 	
 	}

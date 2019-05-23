@@ -115,6 +115,17 @@ public class HandlerMail{
 		return true;
 	}
 
+	
+	public boolean sendMessengerForOnlyContact(JavaMailSender sender ,String email_session, boolean activedDebug,String receiver, String obj_sender, String message_costumize, String subject_message) {
+	
+		return false;
+	}
+	public boolean sendMessengerForSelectedContacts(JavaMailSender sender ,String email_session, boolean activedDebug,List<String> receivers_selected, String obj_sender, String message_costumize, String subject_message) {
+		
+		return false;
+	
+	}
+	
 	public boolean sendMessengerAll(JavaMailSender sender ,String email_session, boolean activedDebug,List<String> receivers, String obj_sender, String message_costumize, String subject_message) {
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 		simpleMailMessage.setSubject(subject_message);
