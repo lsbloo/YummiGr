@@ -138,9 +138,17 @@ public class UserService {
 	public String getRoleById(Integer role_id) {
 		return this.roleRepository.getRoleById(role_id);
 	}
-	
+	/**
+	 * !! find by identifier and actived (true);
+	 * @param identifier
+	 * @return
+	 */
 	public User getUserByIdentifier(String identifier) {
-		return this.userRepository.findUserByIdentifier(identifier).get(0);
+		try {
+		return this.userRepository.findUserByIdentifier(identifier);
+		}catch(NullPointerException e) {
+			return null;
+		}
 	}
 	
 	public Integer getMessengerIdByIdUser(Long user_id) {

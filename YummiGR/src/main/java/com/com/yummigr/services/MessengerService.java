@@ -134,8 +134,11 @@ public class MessengerService {
 	
 	public Messenger searchConnectorMessengerUser(String identifier) {
 		User u = this.userService.getUserByIdentifier(identifier);
+		if(u!=null) {
 		Integer messenger_id = this.userService.getMessengerIdByIdUser(u.getId());
 		return this.messengerRepository.getMessengerEntity(messenger_id);
+		}
+		return null;
 		
 	}
 	
@@ -177,8 +180,7 @@ public class MessengerService {
 	}
 	
 	
-	public boolean activateSendEmailMessengerAll(JavaMailSender sender , String identifier , boolean activate, String email, String message,String subject_message) throws IOException {
-		
+	public String activateSendEmailMessengerAll(JavaMailSender sender , String identifier , boolean activate, String email, String message,String subject_message) throws IOException {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
 		if(u != null) {
 			handlerAuthentication = new HandlerAuthentication();
@@ -187,15 +189,10 @@ public class MessengerService {
 			
 			activatorEmail = new ActivatorScheduleEmail(sender,this,sh,u,activate, user, email,message,subject_message);
 			
-			this.activatorEmail.getResponseExecution();
-			//new Thread(activatorEmail).start();
-			
-			return true;
+			return this.activatorEmail.getResponseExecution();
+		}else {
+			return null;
 		}
-		else {
-			return false;
-		}
-		
 	}
 	
 	

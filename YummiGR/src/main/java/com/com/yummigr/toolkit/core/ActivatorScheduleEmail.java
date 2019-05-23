@@ -82,6 +82,8 @@ public class ActivatorScheduleEmail  implements Runnable{
 		if(this.response!=null) return this.response;
 		return null;
 	}
+	
+	
 	public String initiateTasks() throws IOException{
 		this.pooltaskScheduler.initialize();
 		this.pooltaskScheduler.setPoolSize(POOL_SIZE);

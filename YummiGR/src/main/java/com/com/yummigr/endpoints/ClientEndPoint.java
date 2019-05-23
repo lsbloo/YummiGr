@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.com.yummigr.dtos.CreateContactMessenger;
 import com.com.yummigr.dtos.CreatedDtoSchdule;
 import com.com.yummigr.dtos.FailureConnectorMessenger;
+import com.com.yummigr.dtos.SendEMailDTO;
 import com.com.yummigr.models.Messenger;
 import com.com.yummigr.services.ContactService;
 import com.com.yummigr.services.MessengerService;
@@ -141,14 +142,25 @@ public class ClientEndPoint {
 	 * @throws IOException 
 	 */
 	@GetMapping(value="/messenger/s/email/all", produces = MediaType.APPLICATION_JSON_VALUE)
-	public boolean sendEmailMessengerConnector(HttpServletRequest request , HttpServletResponse response,
+	public ResponseEntity<SendEMailDTO> sendEmailMessengerConnector(HttpServletRequest request , HttpServletResponse response,
 			@RequestParam String identifier , @RequestParam boolean activate,
 			@RequestParam String email, 
 			@RequestParam String message , @RequestParam String subject_message) throws IOException {
 		
-		this.messengerService.activateSendEmailMessengerAll(this.javaMailSender,identifier, activate,email, message , subject_message);
-		
-		return  false;
+		String result = this.messengerService.activateSendEmailMessengerAll(this.javaMailSender,identifier, activate,email, message , subject_message);
+		if(result != null) {
+			SendEMailDTO sendto = new SendEMailDTO("sending email for all contacts"
+				,"this configuration send email for all contacts of the list its enabled."
+					,result + " Milliseconds. ",true);
+			return ResponseEntity.status(HttpServletResponse.SC_ACCEPTED)
+					.body(sendto);
+		}else {
+			SendEMailDTO sendto = new SendEMailDTO("error for activate send email for all contacts."
+					,"this configuration send email for all contacts of the list its not enabled."
+						,result,false);
+				return ResponseEntity.status(HttpServletResponse.SC_ACCEPTED)
+						.body(sendto);
+		}
 	}
 
 }

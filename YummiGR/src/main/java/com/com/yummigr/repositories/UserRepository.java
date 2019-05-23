@@ -22,7 +22,7 @@ public interface UserRepository extends CrudRepository<User,Integer>{
 	
 	
 	@Query(value="select * from yummi_user where identifier=:identifier and actived=true", nativeQuery=true)
-	List<User> findUserByIdentifier(@Param("identifier") 
+	User findUserByIdentifier(@Param("identifier") 
 	String identifier);
 	
 	
