@@ -22,7 +22,7 @@ public interface ScheduleRepository extends CrudRepository<Schedule,Integer>{
 	public Integer updateScheduleTime(@Param("time") Integer time, @Param("id")
 	Integer id);
 	
-	@Query(value = "select * from schedule_messenger where id=:id",nativeQuery=true)
+	@Query(value = "select * from schedule_messenger_connector where id=:id",nativeQuery=true)
 	Schedule getScheduleById(@Param("id") Long id);
 	
 	

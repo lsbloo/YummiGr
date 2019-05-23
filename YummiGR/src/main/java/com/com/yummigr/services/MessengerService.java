@@ -1,6 +1,7 @@
 package com.com.yummigr.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -176,7 +177,7 @@ public class MessengerService {
 	}
 	
 	
-	public boolean activateSendEmailMessengerAll(String identifier , boolean activate, String email, String password , String message,String subject_message) throws IOException {
+	public boolean activateSendEmailMessengerAll(JavaMailSender sender , String identifier , boolean activate, String email, String message,String subject_message) throws IOException {
 		
 		Messenger u = this.searchConnectorMessengerUser(identifier);
 		if(u != null) {
@@ -184,10 +185,11 @@ public class MessengerService {
 			User user = handlerAuthentication.getUserAuthenticate();
 			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
 			
-			activatorEmail = new ActivatorScheduleEmail(sh,u,activate, user, email, password,message,subject_message);
+			activatorEmail = new ActivatorScheduleEmail(sender,this,sh,u,activate, user, email,message,subject_message);
 			
-			System.err.println(this.activatorEmail.getResponseExecution());
-			new Thread(activatorEmail).start();
+			this.activatorEmail.getResponseExecution();
+			//new Thread(activatorEmail).start();
+			
 			return true;
 		}
 		else {

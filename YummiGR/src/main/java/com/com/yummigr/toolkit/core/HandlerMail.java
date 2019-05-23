@@ -2,7 +2,10 @@ package com.com.yummigr.toolkit.core;
 
 import java.util.Properties;
 
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
+
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
@@ -21,14 +24,16 @@ import java.io.Serializable;
  * @author osvaldoairon
  *
  */
-@Component
-public class HandlerMail implements Serializable{
+public class HandlerMail{
+	
+	
+	private JavaMailSender javaMailSender;
 	
 	protected static final String[] HOST_SMTP= {"mail.smtp.host","smtp.gmail.com"};
-	protected static final String[] FACTORY_PORT = {"mail.smtp.socketFactory.port" , "465"};
+	protected static final String[] FACTORY_PORT = {"mail.smtp.socketFactory.port" , "587"};
 	protected static final String[] SSL_FACTORY = {"mail.smtp.socketFactory.class" , "javax.net.ssl.SSLSocketFactory"};
-	protected static final String[] SMTP_AUTH = {"mail.smpt.auth", "true"};
-	protected static final String[] MAIL_PORT = {"mail.smpt.port" , "465"};
+	protected static final String[] SMTP_AUTH = {"mail.smtp.auth", "true"};
+	protected static final String[] MAIL_PORT = {"mail.smtp.port" , "587"};
 
 	
 	private Properties properties;
@@ -38,6 +43,7 @@ public class HandlerMail implements Serializable{
 	private boolean start;
 	
 	private Address[] destination;
+	private String[] receivers;
 	
 	
 	/**
@@ -74,15 +80,7 @@ public class HandlerMail implements Serializable{
 	 * @return
 	 */
 	public Session createAuthenticator(String email_session , String password_email_session, boolean activedDebug) {
-		this.sessionUser = Session.getDefaultInstance(getDefaultValuesSmtp()
-				, new Authenticator() {
-				protected PasswordAuthentication getPasswordAuthenticator() {
-					return new PasswordAuthentication(email_session,password_email_session);
-				}
-		});
-		if(activedDebug) this.sessionUser.setDebug(true);
-		
-		return this.sessionUser;
+		return null;
 	}
 
 	/**
@@ -99,16 +97,35 @@ public class HandlerMail implements Serializable{
 	 * @throws MessagingException
 	 */
 	public boolean sendMessenger(String email_session,String password_email_session, boolean activedDebug,List<String> receivers, String obj_sender, String message_costumize, String subject_message) throws AddressException, MessagingException {
-		Message message = new MimeMessage(createAuthenticator(email_session,password_email_session,activedDebug));
+		
+		this.sessionUser = Session.getDefaultInstance(getDefaultValuesSmtp()
+				, new Authenticator() {
+				protected PasswordAuthentication getPasswordAuthenticator() {
+					return new PasswordAuthentication(email_session,password_email_session);
+				}
+		});
+		this.sessionUser.setDebug(activedDebug);
+		Message message = new MimeMessage(this.sessionUser);
 		message.setFrom(new InternetAddress(obj_sender));
-		String[] receiver=null;
-		message.setRecipients(Message.RecipientType.TO, getDestination(getReceivers(receivers, receiver)));
+		message.setRecipients(Message.RecipientType.TO, getDestination(getReceivers(receivers)));
 		message.setSubject(subject_message);
 		message.setText(message_costumize);
+		
 		Transport.send(message);
 		return true;
 	}
 
+	public boolean sendMessengerAll(JavaMailSender sender ,String email_session, boolean activedDebug,List<String> receivers, String obj_sender, String message_costumize, String subject_message) {
+		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+		simpleMailMessage.setSubject(subject_message);
+		for(String receiver : receivers) {
+			simpleMailMessage.setTo(receiver);
+			simpleMailMessage.setFrom(email_session);
+			simpleMailMessage.setText(message_costumize);
+			sender.send(simpleMailMessage);
+		}
+		return true;
+	}
 	public boolean isStart() {
 		return start;
 	}
@@ -118,12 +135,13 @@ public class HandlerMail implements Serializable{
 		this.start = start;
 	}
 	
-	public String[] getReceivers(List<String> receiver_customize, String[] receiver) {
+	public String[] getReceivers(List<String> receiver_customize) {
+		receivers = new String[receiver_customize.size()];
 		for(int i = 0 ; i<receiver_customize.size() ; i ++) {
-			receiver[i] = receiver_customize.get(i);
+			receivers[i] = receiver_customize.get(i);
 		}
 		
-		return receiver;
+		return receivers;
 	}
 	
 	/**

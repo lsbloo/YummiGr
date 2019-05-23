@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,14 +37,17 @@ public class ClientEndPoint {
 	private final ScheduleService scheduleService;
 	
 	private ContactService contactService;
+	
+	private JavaMailSender javaMailSender;
 	@Autowired
 	public ClientEndPoint(UserService userService , MessengerService service
-			, ScheduleService scheduleService , ContactService contactService ) {
+			, ScheduleService scheduleService , ContactService contactService 
+			, JavaMailSender javaMailSender) {
 		this.userService=userService;
 		this.messengerService=service;
 		this.scheduleService=scheduleService;
 		this.contactService=contactService;
-		
+		this.javaMailSender=javaMailSender;
 	}
 	/**
 	 * creates a messenger connector for an associated user, 
@@ -139,10 +143,10 @@ public class ClientEndPoint {
 	@GetMapping(value="/messenger/s/email/all", produces = MediaType.APPLICATION_JSON_VALUE)
 	public boolean sendEmailMessengerConnector(HttpServletRequest request , HttpServletResponse response,
 			@RequestParam String identifier , @RequestParam boolean activate,
-			@RequestParam String email, @RequestParam String password , 
+			@RequestParam String email, 
 			@RequestParam String message , @RequestParam String subject_message) throws IOException {
 		
-		this.messengerService.activateSendEmailMessengerAll(identifier, activate,email,password , message , subject_message);
+		this.messengerService.activateSendEmailMessengerAll(this.javaMailSender,identifier, activate,email, message , subject_message);
 		
 		return  false;
 	}

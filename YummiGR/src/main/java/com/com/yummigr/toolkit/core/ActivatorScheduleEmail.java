@@ -8,6 +8,7 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +32,7 @@ public class ActivatorScheduleEmail  implements Runnable{
 	 * Constants
 	 */
 	protected static final String PREFIX="Schedule Execution Send Emails";
-	protected static final Integer POOL_SIZE = 2;
+	protected static final Integer POOL_SIZE = 1;
 	
 	/**
 	 * MySendConnectorMessenger;
@@ -39,13 +40,11 @@ public class ActivatorScheduleEmail  implements Runnable{
 	private Messenger messengerConnector;
 	
 	
+	private JavaMailSender sender;
+	
+	private MessengerService messengerService;
 	private boolean activate;
 	private User user;
-	@Autowired
-	private MessengerService messengerService;
-	
-	@Autowired
-	private ScheduleService schedulerService;
 	
 	private ThreadPoolTaskScheduler pooltaskScheduler;
 	
@@ -63,14 +62,15 @@ public class ActivatorScheduleEmail  implements Runnable{
 	 * @throws IOException 
 	 * 
 	 */
-	public ActivatorScheduleEmail(Schedule sh ,Messenger conector, boolean activate , User u , String email, String password,String message,String subject_message) throws IOException {
+	public ActivatorScheduleEmail(JavaMailSender sender , MessengerService msn ,Schedule sh ,Messenger conector, boolean activate , User u , String email,String message,String subject_message) throws IOException {
 		this.pooltaskScheduler = new ThreadPoolTaskScheduler();
 		this.schedule=sh;
+		this.messengerService=msn;
 		this.messengerConnector= conector;
 		this.activate=activate;
 		this.user=u;
 		this.email=email;
-		this.password=password;
+		this.sender=sender;
 		this.message_customize=message;
 		this.subject_message = subject_message;
 		this.handlerEmail= new HandlerMail();
@@ -95,21 +95,24 @@ public class ActivatorScheduleEmail  implements Runnable{
 	
 	@Override
 	public void run() {
+		
+		
 		List<Contacts> receiver = this.messengerService.getAllContactsForMessenger(this.messengerConnector);
+		
+		
 		List<String> receiver_email = new ArrayList<String>();
 		for(Contacts c :receiver) {
 			receiver_email.add(c.getEmail());
 		}
+		this.handlerEmail.sendMessengerAll(this.sender,this.email, true, 
+		receiver_email, this.email, this.message_customize, this.subject_message);
+	
 		try {
-			this.handlerEmail.sendMessenger(this.email, this.password, true, 
-					receiver_email, this.email, this.message_customize, this.subject_message);
-			
-			
-		} catch (MessagingException e) {
+			initiateTasks();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
 	}
 
 	public String getResponse() {
