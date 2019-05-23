@@ -1,0 +1,129 @@
+package com.com.yummigr.toolkit.core;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.mail.MessagingException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.stereotype.Component;
+
+import com.com.yummigr.models.Contacts;
+import com.com.yummigr.models.Messenger;
+import com.com.yummigr.models.Schedule;
+import com.com.yummigr.models.User;
+import com.com.yummigr.services.MessengerService;
+import com.com.yummigr.services.ScheduleService;
+
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+/**
+ * implementation;;
+ * @author osvaldoairon
+ *
+ */
+@EnableScheduling
+public class ActivatorScheduleEmail  implements Runnable{
+	
+	/**
+	 * Constants
+	 */
+	protected static final String PREFIX="Schedule Execution Send Emails";
+	protected static final Integer POOL_SIZE = 1;
+	
+	/**
+	 * MySendConnectorMessenger;
+	 */
+	private Messenger messengerConnector;
+	
+	
+	private JavaMailSender sender;
+	
+	private MessengerService messengerService;
+	private boolean activate;
+	private User user;
+	
+	private ThreadPoolTaskScheduler pooltaskScheduler;
+	
+	protected HandlerMail handlerEmail;
+	
+	protected String email;
+	
+	protected String password;
+	
+	protected String message_customize;
+	protected String subject_message;
+	protected Schedule schedule;
+	private String response;
+	/**
+	 * @throws IOException 
+	 * 
+	 */
+	public ActivatorScheduleEmail(JavaMailSender sender , MessengerService msn ,Schedule sh ,Messenger conector, boolean activate , User u , String email,String message,String subject_message) throws IOException {
+		this.pooltaskScheduler = new ThreadPoolTaskScheduler();
+		this.schedule=sh;
+		this.messengerService=msn;
+		this.messengerConnector= conector;
+		this.activate=activate;
+		this.user=u;
+		this.email=email;
+		this.sender=sender;
+		this.message_customize=message;
+		this.subject_message = subject_message;
+		this.handlerEmail= new HandlerMail();
+		this.response = this.initiateTasks();
+		
+	}
+	
+	public String getResponseExecution() {
+		if(this.response!=null) return this.response;
+		return null;
+	}
+	
+	
+	public String initiateTasks() throws IOException{
+		this.pooltaskScheduler.initialize();
+		this.pooltaskScheduler.setPoolSize(POOL_SIZE);
+		this.pooltaskScheduler.setThreadNamePrefix(PREFIX);
+		this.pooltaskScheduler.schedule(this, new Date(System.currentTimeMillis() 
+				+ this.schedule.getTime()));
+		
+		String thread = "Thread Init time: " + this.schedule.getTime();
+		return thread;
+	}
+	
+	@Override
+	public void run() {
+		
+		
+		List<Contacts> receiver = this.messengerService.getAllContactsForMessenger(this.messengerConnector);
+		
+		
+		List<String> receiver_email = new ArrayList<String>();
+		for(Contacts c :receiver) {
+			receiver_email.add(c.getEmail());
+		}
+		this.handlerEmail.sendMessengerAll(this.sender,this.email, true, 
+		receiver_email, this.email, this.message_customize, this.subject_message);
+	
+		try {
+			initiateTasks();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public String getResponse() {
+		return response;
+	}
+
+	public void setResponse(String response) {
+		this.response = response;
+	}
+	
+
+}
