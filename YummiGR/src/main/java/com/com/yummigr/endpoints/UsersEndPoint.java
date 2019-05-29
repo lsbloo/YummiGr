@@ -32,16 +32,18 @@ import com.com.yummigr.models.User;
  *
  */
 @RestController
-@RequestMapping("/yummicr/api/v1/mgmnt/user")
+@RequestMapping("/yummicr/api/v1/mgmnt/users")
 public class UsersEndPoint {
-	
-	
-	@Autowired 
+
+
 	private UserService userService;
-	
-	
-	
-	
+
+	@Autowired
+	public UsersEndPoint(UserService userService){
+		this.userService=userService;
+	}
+
+
 	@PostMapping(value="/c/" , consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<FailureCreateUser> createUser(
 			@RequestParam String first_name,
@@ -65,8 +67,5 @@ public class UsersEndPoint {
 					.status(HttpServletResponse.SC_CREATED).body(msg_accept);
 		}
 	}
-	
-	
-	
 
 }

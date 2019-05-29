@@ -31,8 +31,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.cors().and().csrf().disable().authorizeRequests()
+				.antMatchers(HttpMethod.GET, "/").permitAll()
         .antMatchers(HttpMethod.POST, "/login").permitAll().
-        antMatchers(HttpMethod.POST,"/yummicr/api/v1/mgmnt/user/c/").permitAll()
+        antMatchers(HttpMethod.POST,"/yummicr/api/v1/mgmnt/users/c/").permitAll()
         .anyRequest().authenticated()
         .and()
         .addFilter(new JWTAuthenticationFilter(authenticationManager()))

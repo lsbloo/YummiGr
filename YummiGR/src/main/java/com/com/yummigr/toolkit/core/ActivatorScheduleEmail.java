@@ -18,10 +18,8 @@ import com.com.yummigr.models.Messenger;
 import com.com.yummigr.models.Schedule;
 import com.com.yummigr.models.User;
 import com.com.yummigr.services.MessengerService;
-import com.com.yummigr.services.ScheduleService;
 
-import sun.security.util.SecurityConstants;
-import java.util.concurrent.Callable;
+
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
