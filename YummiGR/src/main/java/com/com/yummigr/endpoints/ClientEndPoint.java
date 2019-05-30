@@ -140,10 +140,10 @@ public class ClientEndPoint {
 	@GetMapping(value="/messenger/s/email/all", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SendEMailDTO> sendEmailMessengerConnector(HttpServletRequest request , HttpServletResponse response,
 			@RequestParam String identifier , @RequestParam boolean activate,
-			@RequestParam String email, 
+			@RequestParam String email, @RequestParam String password,
 			@RequestParam String message , @RequestParam String subject_message) throws Exception {
 		
-		String result = this.messengerService.activateSendEmailMessengerAll(this.javaMailSender,identifier, activate,email, message , subject_message);
+		String result = this.messengerService.activateSendEmailMessengerAll(this.javaMailSender,identifier, activate,email,password, message , subject_message);
 		if(result != null) {
 			SendEMailDTO sendto = new SendEMailDTO("sending email for all contacts"
 				,"this configuration send email for all contacts of the list its enabled."
@@ -162,11 +162,10 @@ public class ClientEndPoint {
 	public ResponseEntity<SendEmailSelDTO> sendEmailSelect(
 			HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String identifier, @RequestParam boolean activate,
-			@RequestParam String email, @RequestParam String message, @RequestParam String subject_message,
-			@RequestParam List<String> emails_contact_select
+			@RequestParam String email, @RequestParam String password,@RequestParam String message, @RequestParam String subject_message,
+			@RequestParam String emails_contact_select
 	) throws Exception{
-
-		String result = this.messengerService.activateSendEmailMessengerSelectedContacts(this.javaMailSender,identifier,activate,email,message,subject_message,emails_contact_select);
+		String result = this.messengerService.activateSendEmailMessengerSelectedContacts(this.javaMailSender,identifier,activate,email,password,message,subject_message,emails_contact_select);
 		if(result != null) {
 			SendEmailSelDTO sendEmailSelDTO = new SendEmailSelDTO("sending email for all contacts",
 					"this configuration send email for select contacts of the list its enabled."

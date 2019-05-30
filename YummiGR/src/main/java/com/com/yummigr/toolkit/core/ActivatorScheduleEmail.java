@@ -55,6 +55,8 @@ public class ActivatorScheduleEmail  extends Thread implements Runnable,Future {
 
 	private boolean activate;
 	private User user;
+
+
 	
 	private ThreadPoolTaskScheduler pooltaskScheduler;
 	
@@ -78,7 +80,7 @@ public class ActivatorScheduleEmail  extends Thread implements Runnable,Future {
 	 * @throws IOException 
 	 * 
 	 */
-	public ActivatorScheduleEmail(JavaMailSender sender , MessengerService msn ,Schedule sh ,Messenger conector, boolean activate , User u , String email,String message,String subject_message) throws IOException {
+	public ActivatorScheduleEmail(JavaMailSender sender , MessengerService msn ,Schedule sh ,Messenger conector, boolean activate , User u , String email,String password,String message,String subject_message) throws IOException {
 		this.pooltaskScheduler = new ThreadPoolTaskScheduler();
 		this.schedule=sh;
 		this.messengerService=msn;
@@ -86,6 +88,7 @@ public class ActivatorScheduleEmail  extends Thread implements Runnable,Future {
 		this.activate=activate;
 		this.user=u;
 		this.email=email;
+		this.password=password;
 		this.sender=sender;
 		this.message_customize=message;
 		this.subject_message = subject_message;
@@ -139,7 +142,7 @@ public class ActivatorScheduleEmail  extends Thread implements Runnable,Future {
 		for(Contacts c :receiver) {
 			receiver_email.add(c.getEmail());
 		}
-		this.handlerEmail.sendMessengerAll(this.sender,this.email, true, 
+		this.handlerEmail.sendMessengerAll(this.sender,this.email, this.password,true,
 		receiver_email, this.email, this.message_customize, this.subject_message);
 	
 		try {

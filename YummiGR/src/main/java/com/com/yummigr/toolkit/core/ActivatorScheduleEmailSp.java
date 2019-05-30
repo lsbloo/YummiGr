@@ -8,6 +8,7 @@ import com.com.yummigr.services.MessengerService;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
@@ -30,10 +31,11 @@ public class ActivatorScheduleEmailSp extends ActivatorScheduleEmail{
 	protected List<String> emails_selected;
 
 
-	public ActivatorScheduleEmailSp(JavaMailSender sender , MessengerService msn , Schedule sh , Messenger conector, boolean activate , User u , String email, String message, String subject_message , List<Contacts>cc) throws IOException {
+	public ActivatorScheduleEmailSp(JavaMailSender sender , MessengerService msn , Schedule sh , Messenger conector, boolean activate , User u , String email, String password,String message, String subject_message , List<Contacts>cc) throws IOException {
 		super(sender,msn,sh,conector,activate,u,email,message, subject_message);
 		this.sender=sender;
 		this.email=email;
+		this.password=password;
 		this.message_customize=message;
 		this.subject_message=subject_message;
 		this.activate=activate;
@@ -52,9 +54,13 @@ public class ActivatorScheduleEmailSp extends ActivatorScheduleEmail{
 	public void run() {
 
 		handlerMail = new HandlerMail();
-
-		this.handlerMail.sendMessengerForSelectedContacts(sender
-		,email,activate,this.emails_selected,null,this.message_customize,this.subject_message);
+		System.err.println(this.emails_selected);
+		try {
+			this.handlerMail.sendMessengerForSelectedContacts(sender
+			,email,password,activate,this.emails_selected,null,this.message_customize,this.subject_message);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
 
 		try{
 			initiateTasks();

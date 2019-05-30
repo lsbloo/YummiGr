@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import javax.mail.Session;
@@ -126,29 +127,71 @@ public class HandlerMail{
 		return true;
 	}
 
-	public boolean sendMessengerForSelectedContacts(JavaMailSender sender ,String email_session, boolean activedDebug,List<String> receivers_selected, String obj_sender, String message_costumize, String subject_message) {
-		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-		simpleMailMessage.setSubject(subject_message);
+	public Properties getProperties(){
+		Properties props = new Properties();
+		/** Parâmetros de conexão com servidor Gmail */
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.socketFactory.port", "465");
+		props.put("mail.smtp.socketFactory.class",
+				"javax.net.ssl.SSLSocketFactory");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.port", "465");
 
+		return props;
+	}
+
+	public boolean sendMessengerForSelectedContacts(JavaMailSender sender ,String email_session,String password_email_session, boolean activedDebug,List<String> receivers_selected, String obj_sender, String message_costumize, String subject_message) throws MessagingException {
+
+		Session session = Session.getDefaultInstance(getProperties(),
+				new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication()
+					{
+						return new PasswordAuthentication(email_session,
+								password_email_session);
+					}
+				});
+
+		MimeMessage message = new MimeMessage(session);
+		message.setSubject(subject_message);
+		MimeMessageHelper helper = new MimeMessageHelper(message,true);
 		for(String receiver : receivers_selected){
-			simpleMailMessage.setTo(receiver);
-			simpleMailMessage.setFrom(email_session);
-			simpleMailMessage.setText(message_costumize);
-			sender.send(simpleMailMessage);
+			helper.setTo(receiver);
+			helper.setFrom(email_session);
+			helper.setText(message_costumize);
+			//helper.addAttachment("seila.jpg",path);
+			Transport.send(message);
 		}
 		return true;
 	
 	}
 	
-	public boolean sendMessengerAll(JavaMailSender sender ,String email_session, boolean activedDebug,List<String> receivers, String obj_sender, String message_costumize, String subject_message) {
-		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-		simpleMailMessage.setSubject(subject_message);
-		for(String receiver : receivers) {
-			simpleMailMessage.setTo(receiver);
-			simpleMailMessage.setFrom(email_session);
-			simpleMailMessage.setText(message_costumize);
-			sender.send(simpleMailMessage);
+	public boolean sendMessengerAll(JavaMailSender sender ,String email_session,String password_session, boolean activedDebug,List<String> receivers, String obj_sender, String message_costumize, String subject_message) {
+
+		Session session = Session.getDefaultInstance(getProperties(),
+				new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(email_session,
+								password_session);
+					}
+				});
+		try{
+
+			MimeMessage message = new MimeMessage(session);
+			message.setSubject(subject_message);
+			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			for (String receiver : receivers) {
+				helper.setTo(receiver);
+				helper.setFrom(email_session);
+				helper.setText(message_costumize);
+				Transport.send(message);
+			}
+
+
+		}catch(MessagingException e){
+			e.printStackTrace();
+			return false;
 		}
+
 		return true;
 	}
 

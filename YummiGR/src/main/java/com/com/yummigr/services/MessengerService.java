@@ -174,8 +174,6 @@ public class MessengerService {
 	public List<Contacts> getAllContactsForMessenger(Messenger u ){
 		List<Integer> ids_related_contact = this.contactsRepository.getAllIdContactByMessengerId(u.getId());
 		List<Contacts> list_ = new ArrayList<Contacts>();
-		
-		
 		for(Integer y : ids_related_contact) {
 			list_.add(this.contactsRepository.getContact(y));
 		}
@@ -184,33 +182,41 @@ public class MessengerService {
 	}
 	
 	
-	public String activateSendEmailMessengerAll(JavaMailSender sender , String identifier , boolean activate, String email, String message,String subject_message) throws Exception {
+	public String activateSendEmailMessengerAll(JavaMailSender sender , String identifier , boolean activate, String email,String password, String message,String subject_message) throws Exception {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
 		if(u != null) {
 			handlerAuthentication = new HandlerAuthentication();
 			User user = handlerAuthentication.getUserAuthenticate();
 			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
 			
-			activatorEmail = new ActivatorScheduleEmail(sender,this,sh,u,activate, user, email,message,subject_message);
+			activatorEmail = new ActivatorScheduleEmail(sender,this,sh,u,activate, user, email,password,message,subject_message);
 			stack.push(activatorEmail);
 			stack.print();
-			
-			
 			return this.activatorEmail.getResponseExecution();
 		}else {
 			return null;
 		}
 	}
 
-	public  String activateSendEmailMessengerSelectedContacts(JavaMailSender sender , String identifier , boolean activate , String email, String message , String subject_message
-	,List<String> contacts_selected) throws Exception{
+	public List<String> getSelectEmails(String contactsSelect){
+		List<String> result = new ArrayList<String>();
+		String[] rr = contactsSelect.split(",");
+		for(int i = 0 ; i < rr.length; i++){
+			result.add(rr[i]);
+		}
+		return result;
+	}
+
+	public  String activateSendEmailMessengerSelectedContacts(JavaMailSender sender , String identifier , boolean activate , String email, String password , String message , String subject_message
+	,String contacts_selected) throws Exception{
 		Messenger u = this.searchConnectorMessengerUser(identifier);
-		List<Contacts> contactsList = getContactsByLisString(contacts_selected);
+		List<Contacts> contactsList = getContactsByLisString(getSelectEmails(contacts_selected));
 		if(u != null){
+			System.err.println(email);
 			handlerAuthentication = new HandlerAuthentication();
 			User user = handlerAuthentication.getUserAuthenticate();
 			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
-			activatorScheduleEmailSp = new ActivatorScheduleEmailSp(sender,this,sh,u,activate, user, email,message,subject_message,contactsList);
+			activatorScheduleEmailSp = new ActivatorScheduleEmailSp(sender,this,sh,u,activate, user, email,password,message,subject_message,contactsList);
 			stack.push(activatorScheduleEmailSp);
 			stack.print();
 
@@ -223,9 +229,11 @@ public class MessengerService {
 	public List<Contacts> getContactsByLisString(List<String> contacts){
 		List<Contacts> result = new ArrayList<Contacts>();
 		for(String r : contacts) {
+			//System.err.println(r);
 			Contacts c = this.contactsRepository.getContactsByEmail(r);
 			result.add(c);
 		}
+		System.err.println(result);
 		return result;
 	}
 
