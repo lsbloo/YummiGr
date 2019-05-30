@@ -7,7 +7,17 @@ package com.com.yummigr.dtos;
  */
 public class CreateContactMessenger {
 
-	
+	private String id;
+
+	public String getId() {
+
+		return this.id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	private String name;
 	
 	private String description;
@@ -28,9 +38,10 @@ public class CreateContactMessenger {
 		this.description = description;
 	}
 	
-	public CreateContactMessenger(String param,String description) {
+	public CreateContactMessenger(String param,String description,String id) {
 		setName(param);
 		setDescription(description);
+		setId(id);
 	}
 	public CreateContactMessenger() {}
 	

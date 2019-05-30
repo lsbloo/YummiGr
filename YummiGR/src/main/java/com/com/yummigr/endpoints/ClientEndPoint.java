@@ -5,17 +5,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Response;
 
 import com.com.yummigr.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.com.yummigr.models.Messenger;
 import com.com.yummigr.services.ContactService;
@@ -99,16 +96,65 @@ public class ClientEndPoint {
 			boolean resul = this.contactService.createNewContact(email, phone_number, identifier, message);
 			if(resul) {
 				CreateContactMessenger message_sul = new CreateContactMessenger("successfully create",
-						"new contact added to user messenger connector.");
+						"new contact added to user messenger connector.",null);
 				return ResponseEntity.status(HttpServletResponse.SC_CREATED).body(message_sul);
 			}
 			CreateContactMessenger message_fail = new CreateContactMessenger("unsuccessful creation"
 					,"it was not possible to create a new contact for the specified messenger connector, "
-							+ "check the identifier, email, phone_number and message fields.");
+							+ "check the identifier, email, phone_number and message fields.",null);
 			return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(message_fail);
 		
 		
 	}
+
+	/**
+	 * GET THIS ID FOR OBJECT CONTACT BY EMAIL PARAM
+	 * @param request
+	 * @param email
+	 * @return
+	 */
+	@GetMapping(value="/messenger/contact/id/", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<CreateContactMessenger> getContactId(HttpServletRequest request, @RequestParam String email,@RequestParam String phone_number){
+		String result = this.messengerService.getContactId(email,phone_number);
+		if(result != null){
+			CreateContactMessenger	c = new CreateContactMessenger("Acceept"
+			,null,result);
+			return ResponseEntity.status(HttpServletResponse.SC_ACCEPTED).body(c);
+		}
+		else{
+			CreateContactMessenger	c_error = new CreateContactMessenger("Forbbiden"
+					,null,result);
+			return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(c_error);
+		}
+	}
+
+	/**
+	 * update contact by id;
+	 * @param request
+	 * @param email
+	 * @param message
+	 * @param phone_number
+	 * @return
+	 */
+	// Update Contact
+	@PutMapping(value="/messenger/contact/u/", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<CreateContactMessenger> updateContact(HttpServletRequest request, @RequestParam String email,
+																@RequestParam String message , @RequestParam String phone_number,
+																@RequestParam String id_contact){
+
+
+		return null;
+	}
+
+
+	// Delete Contact
+
+	@DeleteMapping(value="/messenger/contact/d/", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<CreateContactMessenger> deleteContact(@RequestParam String id_contact){
+
+		return null;
+	}
+
 	/**
 	 * 
 	 * @param identifier
@@ -158,6 +204,7 @@ public class ClientEndPoint {
 						.body(sendto);
 		}
 	}
+
 	@PostMapping(value="/messenger/s/email/select/", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SendEmailSelDTO> sendEmailSelect(
 			HttpServletRequest request, HttpServletResponse response,

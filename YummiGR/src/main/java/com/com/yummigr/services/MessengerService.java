@@ -147,7 +147,11 @@ public class MessengerService {
 	}
 	
 	
-	
+
+	public String getContactId(String email, String phone_number){
+		return String.valueOf(this.contactsRepository.getContactsByEmailId(email,phone_number));
+
+	}
 	
 	public Integer insertRelationScheduleConnectorMessenger(Messenger u , Schedule sh) {
 		return this.messengerRepository.updateMessengerConnectorSchedule(sh.getId(), u.getId());
@@ -188,7 +192,6 @@ public class MessengerService {
 			handlerAuthentication = new HandlerAuthentication();
 			User user = handlerAuthentication.getUserAuthenticate();
 			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
-			
 			activatorEmail = new ActivatorScheduleEmail(sender,this,sh,u,activate, user, email,password,message,subject_message);
 			stack.push(activatorEmail);
 			stack.print();

@@ -33,8 +33,8 @@ public class ActivatorScheduleEmailOnly extends ActivatorScheduleEmail{
 	 * @param cc
 	 * @throws IOException
 	 */
-	public ActivatorScheduleEmailOnly(JavaMailSender sender , MessengerService msn ,Schedule sh ,Messenger conector, boolean activate , User u , String email,String message,String subject_message , Contacts cc) throws IOException {
-		super(sender,msn,sh,conector,activate,u,email,message, subject_message);
+	public ActivatorScheduleEmailOnly(JavaMailSender sender , MessengerService msn ,Schedule sh ,Messenger conector, boolean activate , User u , String email,String password,String message,String subject_message , Contacts cc) throws IOException {
+		super(sender,msn,sh,conector,activate,u,email,password,message, subject_message);
 		
 		this.setContacts(cc);
 	}

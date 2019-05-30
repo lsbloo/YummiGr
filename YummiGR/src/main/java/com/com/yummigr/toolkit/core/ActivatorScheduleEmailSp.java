@@ -32,7 +32,7 @@ public class ActivatorScheduleEmailSp extends ActivatorScheduleEmail{
 
 
 	public ActivatorScheduleEmailSp(JavaMailSender sender , MessengerService msn , Schedule sh , Messenger conector, boolean activate , User u , String email, String password,String message, String subject_message , List<Contacts>cc) throws IOException {
-		super(sender,msn,sh,conector,activate,u,email,message, subject_message);
+		super(sender,msn,sh,conector,activate,u,email,password,message, subject_message);
 		this.sender=sender;
 		this.email=email;
 		this.password=password;
