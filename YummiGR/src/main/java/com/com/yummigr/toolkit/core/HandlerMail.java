@@ -116,7 +116,17 @@ public class HandlerMail{
 		return true;
 	}
 
-	
+	/**
+	 * depreciado!;
+	 * @param sender
+	 * @param email_session
+	 * @param activedDebug
+	 * @param receiver
+	 * @param obj_sender
+	 * @param message_costumize
+	 * @param subject_message
+	 * @return
+	 */
 	public boolean sendMessengerForOnlyContact(JavaMailSender sender ,String email_session, boolean activedDebug,String receiver, String obj_sender, String message_costumize, String subject_message) {
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 		simpleMailMessage.setSubject(subject_message);
