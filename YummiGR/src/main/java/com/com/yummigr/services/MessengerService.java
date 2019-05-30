@@ -23,7 +23,7 @@ import com.com.yummigr.validator.MessengerValidator;
 import com.com.yummigr.validator.UserValidator;
 import com.com.yummigr.validator.core.Result;
 import com.com.yummigr.validator.core.ValidatorBuilder;
-
+import com.com.yummigr.toolkit.core.ActivatorScheduleEmailSp;
 
 /**
  * all interactions of services(messenger-connector) and controlls ; 
@@ -57,6 +57,7 @@ public class MessengerService {
 	private HashMap<Boolean,Integer> hashMapVerificUpdate;
 	
 	protected ActivatorScheduleEmail activatorEmail;
+	private ActivatorScheduleEmailSp activatorScheduleEmailSp;
 	
 	private HandlerAuthentication handlerAuthentication;
 	
@@ -200,7 +201,34 @@ public class MessengerService {
 			return null;
 		}
 	}
-	
+
+	public  String activateSendEmailMessengerSelectedContacts(JavaMailSender sender , String identifier , boolean activate , String email, String message , String subject_message
+	,List<String> contacts_selected) throws Exception{
+		Messenger u = this.searchConnectorMessengerUser(identifier);
+		List<Contacts> contactsList = getContactsByLisString(contacts_selected);
+		if(u != null){
+			handlerAuthentication = new HandlerAuthentication();
+			User user = handlerAuthentication.getUserAuthenticate();
+			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
+			activatorScheduleEmailSp = new ActivatorScheduleEmailSp(sender,this,sh,u,activate, user, email,message,subject_message,contactsList);
+			stack.push(activatorScheduleEmailSp);
+			stack.print();
+
+			return this.activatorScheduleEmailSp.getResponseExecution();
+		}
+
+		return null;
+	}
+
+	public List<Contacts> getContactsByLisString(List<String> contacts){
+		List<Contacts> result = new ArrayList<Contacts>();
+		for(String r : contacts) {
+			Contacts c = this.contactsRepository.getContactsByEmail(r);
+			result.add(c);
+		}
+		return result;
+	}
+
 	public ActivatorScheduleEmail ActivatorGetSchedule(String  identifier ) {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
 		

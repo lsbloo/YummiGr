@@ -18,9 +18,7 @@ public class StackActivator implements ThreadActvator{
 
 	public List<ActivatorScheduleEmail> list;
 	protected  Integer capacity;
-	protected  final double CAPACITY_TOTAL = 10000000000000000000000000000000000000.0;
 	protected List<ActivatorScheduleEmail> stack= new Stack<ActivatorScheduleEmail>();
-	protected int top = -1;
 	
 	public StackActivator(Integer capacity) {
 		this.list = new ArrayList<ActivatorScheduleEmail>();
@@ -62,6 +60,8 @@ public class StackActivator implements ThreadActvator{
 		this.stack.remove(act);
 		return act;
 	}
+
+
 	@Override
 	public int size() {
 		// TODO Auto-generated method stub

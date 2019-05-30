@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.com.yummigr.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.com.yummigr.dtos.CreateContactMessenger;
-import com.com.yummigr.dtos.CreatedDtoSchdule;
-import com.com.yummigr.dtos.FailureConnectorMessenger;
-import com.com.yummigr.dtos.SendEMailDTO;
 import com.com.yummigr.models.Messenger;
 import com.com.yummigr.services.ContactService;
 import com.com.yummigr.services.MessengerService;
@@ -54,9 +51,9 @@ public class ClientEndPoint {
 	/**
 	 * creates a messenger connector for an associated user, 
 	 * an associated user can only have a messenger co-connector
-	 * @param identifierUser
-	 * @param message
-	 * @param phone_number
+	 * @param
+	 * @param
+	 * @param
 	 * @return ResponseEntity
 	 */
 	@PostMapping(value="/messenger/c/", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -132,8 +129,6 @@ public class ClientEndPoint {
 		
 	}
 	
-	
-	
 	/**
 	 * 
 	 * @param request
@@ -159,11 +154,34 @@ public class ClientEndPoint {
 			SendEMailDTO sendto = new SendEMailDTO("error for activate send email for all contacts."
 					,"this configuration send email for all contacts of the list its not enabled."
 						,result,false);
-				return ResponseEntity.status(HttpServletResponse.SC_ACCEPTED)
+				return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN)
 						.body(sendto);
 		}
 	}
-	
+	@PostMapping(value="/messenger/s/email/select/", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SendEmailSelDTO> sendEmailSelect(
+			HttpServletRequest request, HttpServletResponse response,
+			@RequestParam String identifier, @RequestParam boolean activate,
+			@RequestParam String email, @RequestParam String message, @RequestParam String subject_message,
+			@RequestParam List<String> emails_contact_select
+	) throws Exception{
+
+		String result = this.messengerService.activateSendEmailMessengerSelectedContacts(this.javaMailSender,identifier,activate,email,message,subject_message,emails_contact_select);
+		if(result != null) {
+			SendEmailSelDTO sendEmailSelDTO = new SendEmailSelDTO("sending email for all contacts",
+					"this configuration send email for select contacts of the list its enabled."
+					, result + "Milliseconds", true);
+			return ResponseEntity.status(HttpServletResponse.SC_ACCEPTED).body(sendEmailSelDTO);
+		}else{
+			SendEmailSelDTO sendto = new SendEmailSelDTO("error for activate send email for all contacts."
+					,"this configuration send email for select contacts of the list its not enabled."
+					,result,false);
+			return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN)
+					.body(sendto);
+		}
+
+	}
+
 	@GetMapping(value="/messenger/s/email/all/cancel" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SendEMailDTO> cancelSendEmailMessengerConnector(
 			@RequestParam("identifier") String identifier , HttpServletRequest request , HttpServletResponse response){

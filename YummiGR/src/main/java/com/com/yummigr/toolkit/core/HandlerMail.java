@@ -48,8 +48,8 @@ public class HandlerMail{
 	
 	/**
 	 * default constructor
-	 * @param properties
-	 * @param sessionUser
+	 * @param
+	 * @param
 	 */
 	public HandlerMail() {
 		this.properties=new Properties();
@@ -117,12 +117,26 @@ public class HandlerMail{
 
 	
 	public boolean sendMessengerForOnlyContact(JavaMailSender sender ,String email_session, boolean activedDebug,String receiver, String obj_sender, String message_costumize, String subject_message) {
-	
-		return false;
+		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+		simpleMailMessage.setSubject(subject_message);
+		simpleMailMessage.setTo(receiver);
+		simpleMailMessage.setFrom(email_session);
+		simpleMailMessage.setText(message_costumize);
+		sender.send(simpleMailMessage);
+		return true;
 	}
+
 	public boolean sendMessengerForSelectedContacts(JavaMailSender sender ,String email_session, boolean activedDebug,List<String> receivers_selected, String obj_sender, String message_costumize, String subject_message) {
-		
-		return false;
+		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+		simpleMailMessage.setSubject(subject_message);
+
+		for(String receiver : receivers_selected){
+			simpleMailMessage.setTo(receiver);
+			simpleMailMessage.setFrom(email_session);
+			simpleMailMessage.setText(message_costumize);
+			sender.send(simpleMailMessage);
+		}
+		return true;
 	
 	}
 	
@@ -137,6 +151,7 @@ public class HandlerMail{
 		}
 		return true;
 	}
+
 	public boolean isStart() {
 		return start;
 	}

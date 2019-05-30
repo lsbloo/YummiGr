@@ -52,6 +52,7 @@ public class ActivatorScheduleEmail  extends Thread implements Runnable,Future {
 	private JavaMailSender sender;
 	
 	private MessengerService messengerService;
+
 	private boolean activate;
 	private User user;
 	
@@ -67,9 +68,11 @@ public class ActivatorScheduleEmail  extends Thread implements Runnable,Future {
 	protected String subject_message;
 	protected Schedule schedule;
 	private String response;
-	
-	private int threadStatus=0;
-	
+
+
+	/**
+	 * Default Constructor
+	 */
 	public ActivatorScheduleEmail() {}
 	/**
 	 * @throws IOException 
@@ -116,14 +119,15 @@ public class ActivatorScheduleEmail  extends Thread implements Runnable,Future {
 		this.messengerService=null;
 		this.messengerConnector= null;
 		this.activate=false;
-		this.user=null;;
-		this.email=null;;
-		this.sender=null;;
-		this.message_customize=null;;
-		this.subject_message = null;;
-		this.handlerEmail= null;;
-		this.response = null;;
+		this.user=null;
+		this.email=null;
+		this.sender=null;
+		this.message_customize=null;
+		this.subject_message = null;
+		this.handlerEmail= null;
+		this.response = null;
 	}
+
 	@Override
 	public void run() {
 		

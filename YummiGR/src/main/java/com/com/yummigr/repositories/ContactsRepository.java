@@ -14,7 +14,10 @@ import java.util.List;
 @Repository
 public interface ContactsRepository extends CrudRepository<Contacts,Integer>{
 
-	
+
+
+	@Query(value="select * from contacts_yummi where email=:email",nativeQuery=true)
+	Contacts getContactsByEmail(@Param("email") String email);
 	
 	@Query(value= "select * from contacts_yummi where email=:email or phone_number=:number", nativeQuery=true)
 	Contacts checkExistContact(@Param("email") String email, @Param("number") String number);
