@@ -15,6 +15,10 @@ import java.util.List;
 public interface ContactsRepository extends CrudRepository<Contacts,Integer>{
 
 
+	@Query(value="select * from contacts_yummi where id=:id",nativeQuery = true)
+	Contacts getContactById(@Param("id") Long id);
+
+
 	@Query(value="select id from contacts_yummi where email=:email and phone_number=:number",nativeQuery=true)
 	Long  getContactsByEmailId(@Param("email") String email , @Param("number") String phone_number);
 
@@ -51,5 +55,8 @@ public interface ContactsRepository extends CrudRepository<Contacts,Integer>{
 	
 	@Query(value ="select * from contacts_yummi where id=:id",nativeQuery=true)
 	Contacts getContact(@Param("id") Integer id);
-	
+
+
+	@Query(value="select messenger_id from contacts_messenger where contacts_id=:id",nativeQuery=true)
+	Long getMessengerId(@Param("id") Long contact_id);
 }

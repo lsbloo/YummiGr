@@ -114,8 +114,8 @@ public class ClientEndPoint {
 	 * @return
 	 */
 	@GetMapping(value="/messenger/contact/id/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CreateContactMessenger> getContactId(HttpServletRequest request, @RequestParam String email,@RequestParam String phone_number){
-		String result = this.messengerService.getContactId(email,phone_number);
+	public ResponseEntity<CreateContactMessenger> getContactId(HttpServletRequest request, @RequestParam String email,@RequestParam String phone_number, @RequestParam String identifier){
+		String result = this.messengerService.getContactId(email,phone_number,identifier);
 		if(result != null){
 			CreateContactMessenger	c = new CreateContactMessenger("Acceept"
 			,null,result);
@@ -140,10 +140,17 @@ public class ClientEndPoint {
 	@PutMapping(value="/messenger/contact/u/", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreateContactMessenger> updateContact(HttpServletRequest request, @RequestParam String email,
 																@RequestParam String message , @RequestParam String phone_number,
-																@RequestParam String id_contact){
-
-
-		return null;
+																@RequestParam String id_contact , @RequestParam String identifier ){
+		boolean result = this.contactService.updateContact(id_contact,identifier,message,email,phone_number);
+		if(result){
+			CreateContactMessenger c = new CreateContactMessenger("aceppt"
+			,"update contact" , id_contact);
+			return ResponseEntity.status(HttpServletResponse.SC_ACCEPTED).body(c);
+		}else{
+			CreateContactMessenger c = new CreateContactMessenger("forbbiden"
+					,"update contact" , id_contact);
+			return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(c);
+		}
 	}
 
 

@@ -50,12 +50,19 @@ public class ContactService {
 				Contacts ci = this.contactRepository.save(c);
 				this.contactRepository.insertRelationContactsMessenger(m.getId(), ci.getId());
 				return true;
-			}else {
-				Contacts cy = this.contactRepository.checkExistContact(c.getEmail(), c.getPhone_number());
-				this.contactRepository.updateContacts(c.getEmail(), c.getPhone_number(), c.getMessage() , cy.getId());
-				return true;
 			}
 		}	
+		return false;
+	}
+
+	public boolean updateContact(String id , String identifierUser , String message , String email ,String phone_number){
+		Messenger u = this.messengerService.searchConnectorMessengerUser(identifierUser);
+		Contacts cy = this.contactRepository.getContactById(Long.valueOf(id));
+		Long messenger_id = this.contactRepository.getMessengerId(cy.getId());
+		if(messenger_id == u.getId()) {
+			this.contactRepository.updateContacts(email, phone_number, message , cy.getId());
+			return true;
+		}
 		return false;
 	}
 

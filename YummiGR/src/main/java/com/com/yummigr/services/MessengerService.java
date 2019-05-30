@@ -148,8 +148,18 @@ public class MessengerService {
 	
 	
 
-	public String getContactId(String email, String phone_number){
-		return String.valueOf(this.contactsRepository.getContactsByEmailId(email,phone_number));
+	public String getContactId(String email, String phone_number,String identifier){
+		Messenger u = this.searchConnectorMessengerUser(identifier);
+		String id = String.valueOf(this.contactsRepository.getContactsByEmailId(email,phone_number));
+		Long messenger_id = this.contactsRepository.getMessengerId(Long.valueOf(id));
+		if(messenger_id!=null) {
+			if (messenger_id == u.getId()) {
+				return (id);
+			} else {
+				return null;
+			}
+		}
+		return null;
 
 	}
 	
