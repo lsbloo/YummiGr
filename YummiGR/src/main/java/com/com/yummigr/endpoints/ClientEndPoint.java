@@ -3,6 +3,7 @@ package com.com.yummigr.endpoints;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.Response;
@@ -155,6 +156,21 @@ public class ClientEndPoint {
 
 
 	// Delete Contact
+	@DeleteMapping(value="/messenger/contact/d/" , consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<CreateContactMessenger> deleteContact(HttpServletRequest request, HttpServletResponse response,@RequestParam String identifier, @RequestParam String email, @RequestParam String phone_number){
+
+		boolean result = this.messengerService.actionDeleteContact(identifier,email,phone_number);
+		if(result){
+			CreateContactMessenger e = new CreateContactMessenger("delete contact"
+			,"delete contact sucess",null);
+			return ResponseEntity.status(HttpServletResponse.SC_OK).body(e);
+		}else{
+			CreateContactMessenger e = new CreateContactMessenger("delete contact"
+					,"forbbiden delete contact",null);
+			return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(e);
+		}
+
+	}
 
 	@DeleteMapping(value="/messenger/contact/d/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreateContactMessenger> deleteContact(@RequestParam String id_contact){

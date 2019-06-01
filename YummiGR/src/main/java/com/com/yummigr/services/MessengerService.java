@@ -145,18 +145,29 @@ public class MessengerService {
 		return null;
 		
 	}
-	
-	
-
+	public boolean actionDeleteContact(String identifier , String email, String phone_number){
+		Messenger u = this.searchConnectorMessengerUser(identifier);
+		if(u!=null){
+			String id = this.getContactId(email,phone_number,identifier);
+			if(id!=null && !id.isEmpty() && id != "null") {
+				this.contactsRepository.deleteContactRelation(Long.valueOf(id));
+				this.contactsRepository.deleteContact(Long.valueOf(id));
+				return true;
+			}
+		}
+		return false;
+	}
 	public String getContactId(String email, String phone_number,String identifier){
 		Messenger u = this.searchConnectorMessengerUser(identifier);
 		String id = String.valueOf(this.contactsRepository.getContactsByEmailId(email,phone_number));
-		Long messenger_id = this.contactsRepository.getMessengerId(Long.valueOf(id));
-		if(messenger_id!=null) {
-			if (messenger_id == u.getId()) {
-				return (id);
-			} else {
-				return null;
+		if(id!=null && !id.isEmpty() && id != "null") {
+			Long messenger_id = this.contactsRepository.getMessengerId(Long.valueOf(id));
+			if (messenger_id != null) {
+				if (messenger_id == u.getId()) {
+					return (id);
+				} else {
+					return null;
+				}
 			}
 		}
 		return null;

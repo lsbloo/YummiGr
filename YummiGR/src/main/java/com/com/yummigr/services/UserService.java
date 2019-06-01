@@ -78,6 +78,15 @@ public class UserService {
 		return true;
 	}
 
+	public boolean desativeUser(String identifier){
+		User u = this.userRepository.findByUserIdentifier(identifier);
+		if(u!=null){
+			this.userRepository.desativeUser(u.getId());
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * creates a new bcryptpassword object and encrypts the user's password.
 	 * 
@@ -125,7 +134,7 @@ public class UserService {
 	
 	/**
 	 * Insert new Object Privilege;
-	 * @param privilege
+	 * @param
 	 */
 	public void insertRoleEntity(Role role) {
 		this.roleRepository.save(role);

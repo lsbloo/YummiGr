@@ -5,16 +5,12 @@ import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.com.yummigr.dtos.DesactiveUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.com.yummigr.services.UserService;
@@ -41,6 +37,24 @@ public class UsersEndPoint {
 	@Autowired
 	public UsersEndPoint(UserService userService){
 		this.userService=userService;
+	}
+
+
+
+	@DeleteMapping(value="/desative/account/user" , consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<DesactiveUser> desactiveUser(@RequestParam String identifier){
+
+		boolean result = this.userService.desativeUser(identifier);
+		if(result){
+			DesactiveUser dd = new DesactiveUser("User: " + identifier , " This user are desactived!");
+			return ResponseEntity.status(HttpServletResponse.SC_OK).body(dd);
+		}
+		else{
+			DesactiveUser dd = new DesactiveUser("User: " + identifier , " This user don't are desactived!");
+			return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(dd);
+		}
+
+
 	}
 
 

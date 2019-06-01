@@ -15,6 +15,17 @@ import java.util.List;
 public interface ContactsRepository extends CrudRepository<Contacts,Integer>{
 
 
+	@Transactional
+	@Modifying
+	@Query(value="delete from contacts_yummi where id=:id",nativeQuery=true)
+	void deleteContact(@Param("id") Long id);
+
+	@Transactional
+	@Modifying
+	@Query(value="delete from contacts_messenger where contacts_id=:id",nativeQuery=true)
+	void deleteContactRelation(@Param("id") Long id);
+
+
 	@Query(value="select * from contacts_yummi where id=:id",nativeQuery = true)
 	Contacts getContactById(@Param("id") Long id);
 
