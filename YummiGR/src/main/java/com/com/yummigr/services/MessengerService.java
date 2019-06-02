@@ -139,8 +139,8 @@ public class MessengerService {
 	public Messenger searchConnectorMessengerUser(String identifier) {
 		User u = this.userService.getUserByIdentifier(identifier);
 		if(u!=null) {
-		Integer messenger_id = this.userService.getMessengerIdByIdUser(u.getId());
-		return this.messengerRepository.getMessengerEntity(messenger_id);
+			Integer messenger_id = this.userService.getMessengerIdByIdUser(u.getId());
+		return this.messengerRepository.getMessengerEntity(Long.valueOf(messenger_id));
 		}
 		return null;
 		

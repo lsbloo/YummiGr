@@ -34,12 +34,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.GET, "/").permitAll()
         .antMatchers(HttpMethod.POST, "/login").permitAll().
         antMatchers(HttpMethod.POST,"/yummicr/api/v1/mgmnt/users/c/").permitAll()
-        .anyRequest().authenticated()
+        .antMatchers(HttpMethod.GET,"/yummicr/api/v1/mgmnt/users/list/all/users")
+				.authenticated()
+				.anyRequest().authenticated()
         .and()
         .addFilter(new JWTAuthenticationFilter(authenticationManager()))
         .addFilter(new JWTAuthorizationFilter(authenticationManager()))
         // this disables session creation on Spring Security
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 	}
 	
 	

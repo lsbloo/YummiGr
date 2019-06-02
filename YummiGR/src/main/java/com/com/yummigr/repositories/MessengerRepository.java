@@ -34,7 +34,7 @@ public interface MessengerRepository extends CrudRepository<Messenger,Integer>{
 	
 	
 	@Query(value="select * from messenger_user where id=:id",nativeQuery=true)
-	Messenger getMessengerEntity(@Param("id") Integer user_id);
+	Messenger getMessengerEntity(@Param("id") Long user_id);
 	
 	
 	

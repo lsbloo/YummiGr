@@ -1,15 +1,22 @@
 package com.com.yummigr.endpoints;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.com.yummigr.dtos.DesactiveUser;
+import com.com.yummigr.dtos.DtoUserInformation;
+import com.com.yummigr.models.Contacts;
+import com.com.yummigr.models.Messenger;
+import com.com.yummigr.services.MessengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -34,12 +41,56 @@ public class UsersEndPoint {
 
 	private UserService userService;
 
+	private MessengerService messengerService;
+
 	@Autowired
-	public UsersEndPoint(UserService userService){
+	public UsersEndPoint(UserService userService,MessengerService messengerService){
 		this.userService=userService;
+		this.messengerService=messengerService;
 	}
 
 
+
+
+
+
+
+	@GetMapping(value="/list/select/user",consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<DtoUserInformation>> getUserEnabled(@RequestParam String identifier){
+		List<DtoUserInformation> users = new ArrayList<DtoUserInformation>();
+		User u = this.userService.getUserByIdentifier(identifier);
+		if(u != null){
+			DtoUserInformation d  = new DtoUserInformation();
+			List<Contacts> listc = this.messengerService.getAllContactsForMessenger(this.messengerService.searchConnectorMessengerUser(u.getIdentifier()));
+			d.setMessenger(this.messengerService.searchConnectorMessengerUser(u.getIdentifier()));
+			d.setContatos(listc);
+			d.setUsername(u.getUsername());
+			d.setStatus_account(u.isActived());
+			d.setIdentifier(u.getIdentifier());
+			users.add(d);
+		}
+		return ResponseEntity.status(HttpServletResponse.SC_OK).body(users);
+	}
+
+	@GetMapping(value="/list/all/users" , consumes=MediaType.APPLICATION_JSON_VALUE)
+	@Secured("ADMIN")
+	public ResponseEntity<List<DtoUserInformation>> getAllUsersEnabled(){
+		List<DtoUserInformation> users = new ArrayList<DtoUserInformation>();
+		for(User u  : this.userService.getAllUsers()){
+			DtoUserInformation d  = new DtoUserInformation();
+			List<Contacts> listc = this.messengerService.getAllContactsForMessenger(this.messengerService.searchConnectorMessengerUser(u.getIdentifier()));
+			d.setMessenger(this.messengerService.searchConnectorMessengerUser(u.getIdentifier()));
+			d.setContatos(listc);
+			d.setUsername(u.getUsername());
+			d.setStatus_account(u.isActived());
+			d.setIdentifier(u.getIdentifier());
+
+			users.add(d);
+
+		}
+		return ResponseEntity.status(HttpServletResponse.SC_OK).body(users);
+
+	}
 
 	@DeleteMapping(value="/desative/account/user" , consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DesactiveUser> desactiveUser(@RequestParam String identifier){

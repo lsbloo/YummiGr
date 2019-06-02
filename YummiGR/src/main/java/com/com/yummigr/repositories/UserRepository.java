@@ -16,6 +16,10 @@ import javax.transaction.Transactional;
 public interface UserRepository extends CrudRepository<User,Integer>{
 	
 
+	@Query(value="select * from yummi_user where actived=true",nativeQuery = true)
+	List<User> getAllUsersEnabled();
+
+
 	@Modifying
 	@Transactional
 	@Query(value =" update yummi_user set actived=false where id=:id",nativeQuery = true)

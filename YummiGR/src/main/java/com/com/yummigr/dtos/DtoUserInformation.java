@@ -2,6 +2,7 @@ package com.com.yummigr.dtos;
 
 import com.com.yummigr.models.Contacts;
 import com.com.yummigr.models.Messenger;
+import com.com.yummigr.models.Schedule;
 
 import java.util.List;
 
@@ -16,6 +17,19 @@ public class DtoUserInformation {
     private List<Contacts> contatos;
 
     private Messenger messenger;
+
+    private Schedule scheduleTime;
+
+    public Schedule getScheduleTime() {
+        return scheduleTime;
+    }
+
+    public void setScheduleTime(Schedule scheduleTime) {
+        this.scheduleTime = scheduleTime;
+    }
+
+
+    public DtoUserInformation(){}
 
     public DtoUserInformation(String username,boolean actived,String identifier, List<Contacts> contacts, Messenger messenger){
         setUsername(username);

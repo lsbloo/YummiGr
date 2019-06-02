@@ -47,7 +47,7 @@ public class UserDetailService implements UserDetailsService{
 			if(u==null) {
 				throw new UsernameNotFoundException(username);
 			}
-		
+
 		return new org.springframework.security.core.userdetails.User(
 				
 		          u.getEmail(), u.getPassword(), u.isActived(), true, true, 
@@ -63,11 +63,8 @@ public class UserDetailService implements UserDetailsService{
 		        //Integer id_r = this.userService.getRoleIdByUserId(id);
 		        //String role = this.userService.getRoleById(role_id);
 		        for (Role privilege : roles) {
-		        	
-		        	
 		            authorities.add(new SimpleGrantedAuthority(privilege.getAuthority()));
 		        }
-		      
 		        return authorities;
 		    }
 		    

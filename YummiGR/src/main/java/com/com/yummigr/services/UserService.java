@@ -1,6 +1,7 @@
 package com.com.yummigr.services;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,7 +39,11 @@ public class UserService {
 		this.privilegeRepository=privilegeRepository;
 		this.roleRepository=roleRepository;
 	}
-	
+
+
+	public List<User> getAllUsers(){
+		return this.userRepository.getAllUsersEnabled();
+	}
 	/**
 	 * method responsible for creating users in the system.
 	 * returns the boolean for the appropriate responseEntity.

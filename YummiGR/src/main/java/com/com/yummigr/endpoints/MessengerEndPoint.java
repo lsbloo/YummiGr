@@ -3,6 +3,7 @@ package com.com.yummigr.endpoints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,6 +23,7 @@ public class MessengerEndPoint {
 	
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/ga/" , produces = MediaType.APPLICATION_JSON_VALUE)
+	@Secured("ADMIN")
 	public List<Messenger> getAllMessenger(){
 		return this.messengerService.getAllMessengers();
 	}

@@ -1,6 +1,7 @@
 package com.com.yummigr.models;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -59,6 +61,9 @@ public class User implements UserDetails,Serializable{
 	@JsonProperty("identifier")
 	@Column(name="identifier")
 	private String identifier;
+
+	@CreationTimestamp
+	private Date date;
 
 	public long getId() {
 		return id;
