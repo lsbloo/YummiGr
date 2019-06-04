@@ -38,11 +38,6 @@ In order to run the application you must need to define the following environmen
  **YUMMIGR_DB_DATABASE**      --***yuumigrdb***--      Defines the database/schema on which tables and data will be stored.                                                                                                         
  **YUMMIGR_DB_USERNAME**     --***postgres***--         Defines the database username.                                                                                                                                                
  **YUMMIGR_DB_PASSWORD**   --***admin***--         Defines the database password.
- <br>
- **YUMMIGR_JAVA_MAIL**     --***custom***--        Defines the email account of gmail connector javaMail.
- <br>
- **YUMMIGR_JAVA_MAIL_PASS** --***custom***--   Defines the email password account of gmail connector javaMail.
- 
  ### How To Build
 
 From your command line:
