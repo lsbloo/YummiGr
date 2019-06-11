@@ -12,7 +12,7 @@ import com.com.yummigr.toolkit.core.ActivatorScheduleEmail;
  * stack of threads activator schedule;
  * @author osvaldoairon
  *
- * @param <ActivatorScheduleEmail>
+ *
  */
 public class StackActivator implements ThreadActvator{
 

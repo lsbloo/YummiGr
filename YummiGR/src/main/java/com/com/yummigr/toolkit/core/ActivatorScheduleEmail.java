@@ -116,7 +116,7 @@ public class ActivatorScheduleEmail  extends Thread implements Runnable,Future {
 		return thread;
 	}
 	
-	public void destroy() {
+	public void destroyActivator() {
 		this.pooltaskScheduler = null;
 		this.schedule=null;
 		this.messengerService=null;

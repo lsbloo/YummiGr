@@ -1,5 +1,6 @@
 package com.com.yummigr.toolkit.core;
 
+import com.com.yummigr.toolkit.models.AuthorizationSMSFacilita;
 import org.springframework.stereotype.Component;
 import com.com.yummigr.toolkit.models.ClientSMS;
 
@@ -33,15 +34,20 @@ public class HandlerSMSV1 {
 	private SmsMultiplo sms_m;
 	
 	private SmsMultiploMessages sms_multiple_messages;
-	
+
+	private AuthorizationSMSFacilita auth;
 	
 	private HashMap<Integer,String> result;
 	
-	public HandlerSMSV1() {
+	public HandlerSMSV1(AuthorizationSMSFacilita auth) {
 		this.setContacts(new ArrayList<ClientSMS>());
 		this.sms_m = new SmsMultiplo();
 		this.sms_multiple_messages = new SmsMultiploMessages();
 		this.result = new HashMap<Integer,String>();
+		this.auth=auth;
+		setUsername(this.auth.getUsername());
+		setPassword(this.auth.getPassword());
+
 	}
 	
 	/**

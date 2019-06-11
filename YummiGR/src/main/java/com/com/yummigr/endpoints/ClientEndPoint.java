@@ -271,4 +271,21 @@ public class ClientEndPoint {
 		}
 	}
 
+
+	//SMS SENDER;
+	@PostMapping(value="/messenger/s/sms/all/", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SendEMailDTO> senderSmsAll(@RequestParam String identifier,
+													 @RequestParam String username,
+													 @RequestParam String password,
+													 @RequestParam boolean activate,
+													 @RequestParam String subject_message,
+													 @RequestParam String message){
+
+
+
+
+		return null;
+	}
+
+
 }

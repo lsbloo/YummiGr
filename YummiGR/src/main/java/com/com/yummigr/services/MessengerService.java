@@ -1,5 +1,8 @@
 package com.com.yummigr.services;
 
+import com.com.yummigr.stack.StackActivatorSMS;
+import com.com.yummigr.toolkit.core.ActivatorScheduleSMS;
+import com.com.yummigr.toolkit.models.AuthorizationSMSFacilita;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -57,13 +60,16 @@ public class MessengerService {
 	private HashMap<Boolean,Integer> hashMapVerificUpdate;
 	
 	protected ActivatorScheduleEmail activatorEmail;
+	protected ActivatorScheduleSMS activatorSMS;
+
 	private ActivatorScheduleEmailSp activatorScheduleEmailSp;
 	
 	private HandlerAuthentication handlerAuthentication;
 	
 	protected  static StackActivator stack =  new StackActivator(300000);
-	
-	
+	protected  static StackActivatorSMS stack_sms = new StackActivatorSMS();
+
+
 	@Autowired
 	private MessengerService( MessengerRepository menssengerRepository , MessengerValidator messengerValidator
 			,UserService userService, UserValidator userValidator, ContactsRepository contactsRepository
@@ -205,8 +211,23 @@ public class MessengerService {
 		
 		return list_;
 	}
-	
-	
+
+
+	public String activateSendSMSMessengerAllContacts(String identifier,String username, String password,boolean activate,String subject_message,String message) throws Exception {
+		Messenger u = this.searchConnectorMessengerUser(identifier);
+		if(u != null){
+			AuthorizationSMSFacilita auth = new AuthorizationSMSFacilita(username,password);
+			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
+			activatorSMS = new ActivatorScheduleSMS(sh,this,u,auth,true,subject_message,message);
+			stack_sms.push(activatorSMS);
+
+		}
+
+
+
+		return null;
+	}
+
 	public String activateSendEmailMessengerAll(JavaMailSender sender , String identifier , boolean activate, String email,String password, String message,String subject_message) throws Exception {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
 		if(u != null) {
@@ -274,7 +295,7 @@ public class MessengerService {
 		list_.add(act.getMessenger().getAccount_sid()); // account_sid messenger connector; 1
 		list_.add(act.getResponseExecution()); // response execution 2
 		list_.add(act.getName()); // name of thread object; 3
-		act.destroy();
+		act.destroyActivator();
 		stack.pop(act);
 		return list_;
 		/**
