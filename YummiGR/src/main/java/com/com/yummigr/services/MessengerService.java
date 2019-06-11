@@ -61,9 +61,11 @@ public class MessengerService {
 	
 	protected ActivatorScheduleEmail activatorEmail;
 	protected ActivatorScheduleSMS activatorSMS;
+	private AuthorizationSMSFacilita auth;
 
 	private ActivatorScheduleEmailSp activatorScheduleEmailSp;
-	
+
+
 	private HandlerAuthentication handlerAuthentication;
 	
 	protected  static StackActivator stack =  new StackActivator(300000);
@@ -216,15 +218,13 @@ public class MessengerService {
 	public String activateSendSMSMessengerAllContacts(String identifier,String username, String password,boolean activate,String subject_message,String message) throws Exception {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
 		if(u != null){
-			AuthorizationSMSFacilita auth = new AuthorizationSMSFacilita(username,password);
+			auth = new AuthorizationSMSFacilita(username,password);
 			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
 			activatorSMS = new ActivatorScheduleSMS(sh,this,u,auth,true,subject_message,message);
 			stack_sms.push(activatorSMS);
-
+			stack_sms.print();
+			return this.activatorSMS.getResponseExecution();
 		}
-
-
-
 		return null;
 	}
 

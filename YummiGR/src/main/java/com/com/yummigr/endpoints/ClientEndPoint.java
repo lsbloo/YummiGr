@@ -206,7 +206,7 @@ public class ClientEndPoint {
 	 * @return
 	 * @throws Exception 
 	 */
-	@GetMapping(value="/messenger/s/email/all", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="/messenger/s/email/all/" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SendEMailDTO> sendEmailMessengerConnector(HttpServletRequest request , HttpServletResponse response,
 			@RequestParam String identifier , @RequestParam boolean activate,
 			@RequestParam String email, @RequestParam String password,
@@ -279,12 +279,15 @@ public class ClientEndPoint {
 													 @RequestParam String password,
 													 @RequestParam boolean activate,
 													 @RequestParam String subject_message,
-													 @RequestParam String message){
+													 @RequestParam String message) throws Exception {
+		String result = this.messengerService.activateSendSMSMessengerAllContacts(identifier,username,password,activate,subject_message,message);
+		if(result != null){
+			SendEMailDTO dt = new SendEMailDTO("sending sms for all contacts","broadcast of sender sms activate",result,true);
 
-
-
-
-		return null;
+			return ResponseEntity.status(HttpServletResponse.SC_ACCEPTED).body(dt);
+		}
+		SendEMailDTO dt = new SendEMailDTO("error for activate send sms for all contacts.","this configuration send sms for all contacts of the list its not enabled.",result,true);
+		return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(dt);
 	}
 
 

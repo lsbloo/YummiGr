@@ -38,16 +38,21 @@ public class HandlerSMSV1 {
 	private AuthorizationSMSFacilita auth;
 	
 	private HashMap<Integer,String> result;
-	
-	public HandlerSMSV1(AuthorizationSMSFacilita auth) {
+
+	public AuthorizationSMSFacilita getAuth() {
+		return auth;
+	}
+
+	public void setAuth(AuthorizationSMSFacilita auth) {
+		this.auth = auth;
+	}
+
+
+	public HandlerSMSV1() {
 		this.setContacts(new ArrayList<ClientSMS>());
 		this.sms_m = new SmsMultiplo();
 		this.sms_multiple_messages = new SmsMultiploMessages();
 		this.result = new HashMap<Integer,String>();
-		this.auth=auth;
-		setUsername(this.auth.getUsername());
-		setPassword(this.auth.getPassword());
-
 	}
 	
 	/**

@@ -49,7 +49,7 @@ public class ActivatorScheduleSMS extends Thread implements Runnable, Future {
         this.auth=auth;
         this.message_customize=message;
         this.subject_message = subject_message;
-        this.handlerSMSV1=new HandlerSMSV1(this.auth);
+        this.handlerSMSV1= new HandlerSMSV1();
         this.response = this.initiateTasks();
 
     }
@@ -62,6 +62,8 @@ public class ActivatorScheduleSMS extends Thread implements Runnable, Future {
             receiver_phone_number.add(c.getPhone_number());
         }
         try {
+            this.handlerSMSV1.setUsername(auth.getUsername());
+            this.handlerSMSV1.setPassword(auth.getPassword());
             this.handlerSMSV1.sendSMS(receiver_phone_number,null,this.message_customize);
 
         } catch (Exception e) {
@@ -98,16 +100,18 @@ public class ActivatorScheduleSMS extends Thread implements Runnable, Future {
      * @throws IOException
      */
     public String initiateTasks() throws IOException {
-        this.pooltaskScheduler.initialize();
-        this.pooltaskScheduler.setPoolSize(POOL_SIZE);
-        this.pooltaskScheduler.setThreadNamePrefix(PREFIX);
-        this.pooltaskScheduler.schedule(this, new Date(System.currentTimeMillis()
-                + this.schedule.getTime()));
+        if (this.pooltaskScheduler != null) {
+            this.pooltaskScheduler.initialize();
+            this.pooltaskScheduler.setPoolSize(POOL_SIZE);
+            this.pooltaskScheduler.setThreadNamePrefix(PREFIX);
+            this.pooltaskScheduler.schedule(this, new Date(System.currentTimeMillis()
+                    + this.schedule.getTime()));
 
-        String thread = "Thread Init time: " + this.schedule.getTime();
-        return thread;
+            String thread = "Thread Init time: " + this.schedule.getTime();
+            return thread;
+        }
+        return null;
     }
-
 
     public HandlerSMSV1 getHandlerSMSV1() {
         return handlerSMSV1;

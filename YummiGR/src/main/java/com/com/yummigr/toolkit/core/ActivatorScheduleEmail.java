@@ -106,14 +106,17 @@ public class ActivatorScheduleEmail  extends Thread implements Runnable,Future {
 	
 	
 	public String initiateTasks() throws IOException{
-		this.pooltaskScheduler.initialize();
-		this.pooltaskScheduler.setPoolSize(POOL_SIZE);
-		this.pooltaskScheduler.setThreadNamePrefix(PREFIX);
-		this.pooltaskScheduler.schedule(this, new Date(System.currentTimeMillis() 
-				+ this.schedule.getTime()));
-		
-		String thread = "Thread Init time: " + this.schedule.getTime();
-		return thread;
+		if(this.pooltaskScheduler != null){
+			this.pooltaskScheduler.initialize();
+			this.pooltaskScheduler.setPoolSize(POOL_SIZE);
+			this.pooltaskScheduler.setThreadNamePrefix(PREFIX);
+			this.pooltaskScheduler.schedule(this, new Date(System.currentTimeMillis()
+					+ this.schedule.getTime()));
+
+			String thread = "Thread Init time: " + this.schedule.getTime();
+			return thread;
+		}
+		return null;
 	}
 	
 	public void destroyActivator() {
@@ -136,8 +139,7 @@ public class ActivatorScheduleEmail  extends Thread implements Runnable,Future {
 		
 		
 		List<Contacts> receiver = this.messengerService.getAllContactsForMessenger(this.messengerConnector);
-		
-		
+
 		List<String> receiver_email = new ArrayList<String>();
 		for(Contacts c :receiver) {
 			receiver_email.add(c.getEmail());
