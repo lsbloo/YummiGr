@@ -171,13 +171,6 @@ public class ClientEndPoint {
 		}
 
 	}
-
-	@DeleteMapping(value="/messenger/contact/d/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CreateContactMessenger> deleteContact(@RequestParam String id_contact){
-
-		return null;
-	}
-
 	/**
 	 * 
 	 * @param identifier
