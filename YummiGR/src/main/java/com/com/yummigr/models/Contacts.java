@@ -1,14 +1,12 @@
 package com.com.yummigr.models;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.io.Serializable;
+import java.sql.Date;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
-
-import javax.persistence.Id;
+import javax.persistence.*;
 
 
 @Entity
@@ -21,7 +19,50 @@ public class Contacts implements Serializable{
 	@Column(name="id")
 	private long id;
 
-	
+	@Column(name="path_img" , length = 2048)
+	private String path_img;
+
+	public String getPath_img() {
+		return path_img;
+	}
+
+	public void setPath_img(String path_img) {
+		this.path_img = path_img;
+	}
+
+	@OneToMany
+	private List<LoggerSender> loggerSenders;
+
+	@CreationTimestamp
+	private Date created_at;
+
+
+	private java.util.Date update_at;
+
+	public Date getCreated_at() {
+		return created_at;
+	}
+
+	public java.util.Date getUpdate_at() {
+		return update_at;
+	}
+
+	public List<LoggerSender> getLoggerSenders() {
+		return loggerSenders;
+	}
+
+	public void setCreated_at(Date created_at) {
+		this.created_at = created_at;
+	}
+
+	public void setLoggerSenders(List<LoggerSender> loggerSenders) {
+		this.loggerSenders = loggerSenders;
+	}
+
+	public void setUpdate_at(java.util.Date update_at) {
+		this.update_at = update_at;
+	}
+
 	@Column(name="email")
 	private String email;
 	
