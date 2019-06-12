@@ -1,5 +1,6 @@
 package com.com.yummigr.services;
 
+import com.com.yummigr.util.MyCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +25,15 @@ public class ContactService {
 	private final ContactsRepository contactRepository;
 	
 	private final MessengerService messengerService;
-	
+
+	private MyCalendar myCalendar;
 	
 	@Autowired
 	private ContactService( ContactValidator contactValidator , ContactsRepository  contactRepository, MessengerService messengerService) {
 		this.contactRepository=contactRepository;
 		this.contactValidator=contactValidator;
 		this.messengerService=messengerService;
+		this.myCalendar = new MyCalendar();
 	}
 	
 	
@@ -60,7 +63,8 @@ public class ContactService {
 		Contacts cy = this.contactRepository.getContactById(Long.valueOf(id));
 		Long messenger_id = this.contactRepository.getMessengerId(cy.getId());
 		if(messenger_id == u.getId()) {
-			this.contactRepository.updateContacts(email, phone_number, message , cy.getId());
+			String date_update = this.myCalendar.getDateToday();
+			this.contactRepository.updateContacts(email, phone_number, message,date_update , cy.getId());
 			return true;
 		}
 		return false;

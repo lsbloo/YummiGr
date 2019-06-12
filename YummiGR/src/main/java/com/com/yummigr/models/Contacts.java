@@ -37,13 +37,13 @@ public class Contacts implements Serializable{
 	private Date created_at;
 
 
-	private java.util.Date update_at;
+	private String update_at;
 
 	public Date getCreated_at() {
 		return created_at;
 	}
 
-	public java.util.Date getUpdate_at() {
+	public String getUpdate_at() {
 		return update_at;
 	}
 
@@ -59,7 +59,7 @@ public class Contacts implements Serializable{
 		this.loggerSenders = loggerSenders;
 	}
 
-	public void setUpdate_at(java.util.Date update_at) {
+	public void setUpdate_at(String update_at) {
 		this.update_at = update_at;
 	}
 

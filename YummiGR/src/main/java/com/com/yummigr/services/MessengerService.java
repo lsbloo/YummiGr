@@ -1,5 +1,6 @@
 package com.com.yummigr.services;
 
+import com.com.yummigr.repositories.LoggerSenderRepository;
 import com.com.yummigr.stack.StackActivatorSMS;
 import com.com.yummigr.toolkit.core.ActivatorScheduleSMS;
 import com.com.yummigr.toolkit.models.AuthorizationSMSFacilita;
@@ -49,6 +50,8 @@ public class MessengerService {
 	private final ContactsRepository contactsRepository;
 	
 	private final ScheduleRepository scheduleRepository;
+
+	private final LoggerSenderRepository loggerSenderRepository;
 	
 	/**
 	 */
@@ -75,7 +78,7 @@ public class MessengerService {
 	@Autowired
 	private MessengerService( MessengerRepository menssengerRepository , MessengerValidator messengerValidator
 			,UserService userService, UserValidator userValidator, ContactsRepository contactsRepository
-			, ScheduleRepository scheduleRepository) {
+			, ScheduleRepository scheduleRepository , LoggerSenderRepository loggerSenderRepository1) {
 		
 		this.messengerRepository= menssengerRepository;
 		this.messengerValidator=messengerValidator;
@@ -84,6 +87,7 @@ public class MessengerService {
 		this.scheduleRepository=scheduleRepository;
 		this.hashMapVerificUpdate = new HashMap<Boolean,Integer>();
 		this.contactsRepository =contactsRepository;
+		this.loggerSenderRepository=loggerSenderRepository1;
 	}
 	
 	
