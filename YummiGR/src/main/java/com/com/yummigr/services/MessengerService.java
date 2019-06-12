@@ -221,15 +221,22 @@ public class MessengerService {
 	public String activateSendSMSMessengerAllContacts(String identifier,String username, String password,boolean activate,String subject_message,String message) throws Exception {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
 		if(u != null){
+			this.myCalendar = new MyCalendar();
+			String date = this.myCalendar.getDateToday();
+			String[] result = this.myCalendar.getFormatedDataToday(date);
+			LoggerSender l_sender = new LoggerSender(result[0],result[1],result[2],result[3],"sms");
 			auth = new AuthorizationSMSFacilita(username,password);
 			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
 			activatorSMS = new ActivatorScheduleSMS(sh,this,u,auth,true,subject_message,message);
+			LoggerSender ss = this.loggerSenderRepository.save(l_sender);
 			stack_sms.push(activatorSMS);
 			stack_sms.print();
+			insertRelationContactsSenderEmailBroadCast(getAllContactsForMessenger(u),ss);
 			return this.activatorSMS.getResponseExecution();
 		}
 		return null;
 	}
+
 
 	public String activateSendEmailMessengerAll(JavaMailSender sender , String identifier , boolean activate, String email,String password, String message,String subject_message) throws Exception {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
@@ -256,6 +263,11 @@ public class MessengerService {
 			this.contactsRepository.insertRelationContactsSenderLogger(c.getId(),sender.getId());
 		}
 	}
+	public void insertRelationContactsSenderEmailSelect(List<Contacts> select , LoggerSender sender){
+		for(Contacts c : select){
+			this.contactsRepository.insertRelationContactsSenderLogger(c.getId(),sender.getId());
+		}
+	}
 
 	public List<String> getSelectEmails(String contactsSelect){
 		List<String> result = new ArrayList<String>();
@@ -271,13 +283,18 @@ public class MessengerService {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
 		List<Contacts> contactsList = getContactsByLisString(getSelectEmails(contacts_selected));
 		if(u != null){
+			this.myCalendar = new MyCalendar();
+			String date = this.myCalendar.getDateToday();
+			String[] result = this.myCalendar.getFormatedDataToday(date);
+			LoggerSender l_sender = new LoggerSender(result[0],result[1],result[2],result[3],"email");
 			handlerAuthentication = new HandlerAuthentication();
 			User user = handlerAuthentication.getUserAuthenticate();
 			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
 			activatorScheduleEmailSp = new ActivatorScheduleEmailSp(sender,this,sh,u,activate, user, email,password,message,subject_message,contactsList);
+			LoggerSender ss = this.loggerSenderRepository.save(l_sender);
 			stack.push(activatorScheduleEmailSp);
 			stack.print();
-
+			insertRelationContactsSenderEmailBroadCast(contactsList,ss);
 			return this.activatorScheduleEmailSp.getResponseExecution();
 		}
 
