@@ -33,6 +33,16 @@ public class LoggerSender {
     @Column(name="tracker" , length = 512)
     private String tracker;
 
+    @Column(name="day" , length = 512)
+    private String day;
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
 
 
     public LoggerSender(){}
@@ -44,11 +54,12 @@ public class LoggerSender {
      * @param hour
      * @param tracker
      */
-    public LoggerSender(String month,String year, String hour, String tracker){
+    public LoggerSender(String day,String month,String year ,String hour, String tracker){
         setMonth(month);
         setHour(hour);
         setTracker(tracker);
         setYear(year);
+        setDay(day);
     }
     public String getTracker() {
         return tracker;

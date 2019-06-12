@@ -1,9 +1,11 @@
 package com.com.yummigr.services;
 
+import com.com.yummigr.models.*;
 import com.com.yummigr.repositories.LoggerSenderRepository;
 import com.com.yummigr.stack.StackActivatorSMS;
 import com.com.yummigr.toolkit.core.ActivatorScheduleSMS;
 import com.com.yummigr.toolkit.models.AuthorizationSMSFacilita;
+import com.com.yummigr.util.MyCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -14,10 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.com.yummigr.context.HandlerAuthentication;
-import com.com.yummigr.models.Contacts;
-import com.com.yummigr.models.Messenger;
-import com.com.yummigr.models.Schedule;
-import com.com.yummigr.models.User;
 import com.com.yummigr.repositories.ContactsRepository;
 import com.com.yummigr.repositories.MessengerRepository;
 import com.com.yummigr.repositories.ScheduleRepository;
@@ -68,6 +66,7 @@ public class MessengerService {
 
 	private ActivatorScheduleEmailSp activatorScheduleEmailSp;
 
+	private MyCalendar myCalendar;
 
 	private HandlerAuthentication handlerAuthentication;
 	
@@ -88,6 +87,7 @@ public class MessengerService {
 		this.hashMapVerificUpdate = new HashMap<Boolean,Integer>();
 		this.contactsRepository =contactsRepository;
 		this.loggerSenderRepository=loggerSenderRepository1;
+		this.myCalendar= new MyCalendar();
 	}
 	
 	
@@ -235,15 +235,25 @@ public class MessengerService {
 	public String activateSendEmailMessengerAll(JavaMailSender sender , String identifier , boolean activate, String email,String password, String message,String subject_message) throws Exception {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
 		if(u != null) {
+			String date = this.myCalendar.getDateToday();
+			String[] result = this.myCalendar.getFormatedDataToday(date);
+			LoggerSender l_sender = new LoggerSender(result[0],result[1],result[2],result[3],"email");
 			handlerAuthentication = new HandlerAuthentication();
 			User user = handlerAuthentication.getUserAuthenticate();
 			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
 			activatorEmail = new ActivatorScheduleEmail(sender,this,sh,u,activate, user, email,password,message,subject_message);
+			LoggerSender ss = this.loggerSenderRepository.save(l_sender);
 			stack.push(activatorEmail);
 			stack.print();
+			insertRelationContactsSenderEmailBroadCast(getAllContactsForMessenger(u),ss);
 			return this.activatorEmail.getResponseExecution();
 		}else {
 			return null;
+		}
+	}
+	public void insertRelationContactsSenderEmailBroadCast(List<Contacts> broads,LoggerSender sender){
+		for(Contacts c : broads){
+			this.contactsRepository.insertRelationContactsSenderLogger(c.getId(),sender.getId());
 		}
 	}
 
@@ -261,7 +271,6 @@ public class MessengerService {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
 		List<Contacts> contactsList = getContactsByLisString(getSelectEmails(contacts_selected));
 		if(u != null){
-			System.err.println(email);
 			handlerAuthentication = new HandlerAuthentication();
 			User user = handlerAuthentication.getUserAuthenticate();
 			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());

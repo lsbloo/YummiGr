@@ -30,7 +30,7 @@ public class Contacts implements Serializable{
 		this.path_img = path_img;
 	}
 
-	@OneToMany
+	@ManyToMany
 	private List<LoggerSender> loggerSenders;
 
 	@CreationTimestamp
