@@ -87,7 +87,6 @@ public class MessengerService {
 		this.hashMapVerificUpdate = new HashMap<Boolean,Integer>();
 		this.contactsRepository =contactsRepository;
 		this.loggerSenderRepository=loggerSenderRepository1;
-		this.myCalendar= new MyCalendar();
 	}
 	
 	
@@ -235,6 +234,7 @@ public class MessengerService {
 	public String activateSendEmailMessengerAll(JavaMailSender sender , String identifier , boolean activate, String email,String password, String message,String subject_message) throws Exception {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
 		if(u != null) {
+			this.myCalendar = new MyCalendar();
 			String date = this.myCalendar.getDateToday();
 			String[] result = this.myCalendar.getFormatedDataToday(date);
 			LoggerSender l_sender = new LoggerSender(result[0],result[1],result[2],result[3],"email");
