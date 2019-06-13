@@ -34,8 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.GET, "/").permitAll()
         .antMatchers(HttpMethod.POST, "/login").permitAll().
         antMatchers(HttpMethod.POST,"/yummicr/api/v1/mgmnt/users/c/").permitAll()
-        .antMatchers(HttpMethod.GET,"/yummicr/api/v1/mgmnt/users/list/all/users")
-				.authenticated()
+        .antMatchers(HttpMethod.GET,"/yummicr/api/v1/mgmnt/users/list/all/users").hasRole("ADMIN")
 				.anyRequest().authenticated()
         .and()
         .addFilter(new JWTAuthenticationFilter(authenticationManager()))

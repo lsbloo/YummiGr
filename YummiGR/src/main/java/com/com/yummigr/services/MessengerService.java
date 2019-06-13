@@ -27,6 +27,8 @@ import com.com.yummigr.validator.core.Result;
 import com.com.yummigr.validator.core.ValidatorBuilder;
 import com.com.yummigr.toolkit.core.ActivatorScheduleEmailSp;
 
+import javax.validation.constraints.Null;
+
 /**
  * all interactions of services(messenger-connector) and controlls ; 
  * @author osvaldoairon
@@ -150,8 +152,17 @@ public class MessengerService {
 	public Messenger searchConnectorMessengerUser(String identifier) {
 		User u = this.userService.getUserByIdentifier(identifier);
 		if(u!=null) {
-			Integer messenger_id = this.userService.getMessengerIdByIdUser(u.getId());
-		return this.messengerRepository.getMessengerEntity(Long.valueOf(messenger_id));
+			try {
+				Integer messenger_id = this.userService.getMessengerIdByIdUser(u.getId());
+				if (messenger_id != 0 ) {
+					Messenger e = this.messengerRepository.getMessengerEntity(Long.valueOf(messenger_id));
+					if (e != null) {
+						return e;
+					}
+				}
+			}catch(NullPointerException e){
+				return null;
+			}
 		}
 		return null;
 		
@@ -208,13 +219,17 @@ public class MessengerService {
 	
 	
 	public List<Contacts> getAllContactsForMessenger(Messenger u ){
-		List<Integer> ids_related_contact = this.contactsRepository.getAllIdContactByMessengerId(u.getId());
-		List<Contacts> list_ = new ArrayList<Contacts>();
-		for(Integer y : ids_related_contact) {
-			list_.add(this.contactsRepository.getContact(y));
+		try {
+			List<Integer> ids_related_contact = this.contactsRepository.getAllIdContactByMessengerId(u.getId());
+			List<Contacts> list_ = new ArrayList<Contacts>();
+			for (Integer y : ids_related_contact) {
+				list_.add(this.contactsRepository.getContact(y));
+			}
+
+			return list_;
+		}catch(NullPointerException e){
+			return null;
 		}
-		
-		return list_;
 	}
 
 
