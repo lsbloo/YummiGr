@@ -5,6 +5,8 @@ import java.util.Collection;
 
 import javax.transaction.Transactional;
 
+import com.com.yummigr.models.User;
+import com.com.yummigr.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -26,15 +28,19 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 	 * default service for manager users;
 	 */
 	private final UserService userService;
+
+	private final RoleRepository roleRepository;
 	/**
 	 * Default Constructor;
 	 * @param userService
+	 * @param roleRepository
 	 */
 	@Autowired
-	public DataLoader(UserService userService) {
+	public DataLoader(UserService userService, RoleRepository roleRepository) {
 		this.userService=userService;
+		this.roleRepository = roleRepository;
 	}
-	
+	protected static final String ADMIN="ROLE_ADMIN";
 	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -47,13 +53,30 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 		Privilege privilege_write = createPrivilegeIfNotFound("WRITE_PRIVILEGE");
 		
 		Collection<Privilege> adminPrivileges = Arrays.asList(privilege,privilege_write);
-		createRoleIfNotFound("ROLE_ADMIN" , adminPrivileges);
-		createRoleIfNotFound("ROLE_USER" , Arrays.asList(privilege));
+		Role admin = createRoleIfNotFound("ROLE_ADMIN" , adminPrivileges);
+		Role user = createRoleIfNotFound("ROLE_USER" , Arrays.asList(privilege));
 		
 		Role r = this.userService.getRoleByName("ROLE_ADMIN");
+
+		if(this.userService.searchUserByIdentifier()) {
+			User u = new User();
+			u.setPassword("$2a$10$WwnEzg0ppWn1q1qBwgnMEe5PN5m.a00VKrwtg2HRvBrcirJPK90b2");
+			u.setUsername("admin");
+			u.setActived(true);
+			u.setEmail("osvaldo.airon@dce.ufpb.br");
+			u.setIdentifier("admin");
+			u.setFirst_name("OSVALDO AIRON");
+			u.setLast_name("CAVALCANTI");
+			u.setRoles(Arrays.asList(this.roleRepository.findRoleByNameParam(ADMIN)));
+			this.userService.addUser(u);
+		}
 		s = true;
 	}
-	
+
+	private void insertRelationAdmin(Long user_id, Long role_id){
+		this.userService.insertRelationUser(user_id,role_id);
+	}
+
 	
 	/**
 	 * creates the roles of users for administrator and normal user being 

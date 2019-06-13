@@ -46,4 +46,10 @@ public interface UserRepository extends CrudRepository<User,Integer>{
 	@Query(value="select * from yummi_user where identifier=:identifier and actived=true",nativeQuery=true)
 	User findByUserIdentifier(@Param("identifier") String identifier);
 
+	@Modifying
+	@Transactional
+	@Query(value="insert into usuarios_role (usuarios_id,role_id) values (usuarios_id,role_id)",nativeQuery = true)
+	void insertRelationUser(@Param("usuarios_id") Long usuarios_id , @Param("role_id") Long role_id);
+
+
 }

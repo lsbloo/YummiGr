@@ -40,7 +40,22 @@ public class UserService {
 		this.roleRepository=roleRepository;
 	}
 
+	public void insertRelationUser(Long user_id , Long role_id){
+		this.userRepository.insertRelationUser(user_id,role_id);
+	}
 
+	public boolean searchUserByIdentifier(){
+		User u = this.userRepository.findUserByIdentifier("admin");
+		if(u == null){
+			return true;
+		}
+		return false;
+	}
+
+
+	public void addUser(User u){
+		this.userRepository.save(u);
+	}
 	public List<User> getAllUsers(){
 		return this.userRepository.getAllUsersEnabled();
 	}
