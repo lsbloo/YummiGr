@@ -150,6 +150,40 @@ public class HandlerMail{
 		return props;
 	}
 
+	
+	
+	
+	public boolean sendMessengerForSelectedContactsPredetermined(JavaMailSender sender ,String email_session,String password_email_session, boolean activedDebug,List<String> receivers_selected, String obj_sender,List<String> messages_pre , List<String> subject_messages_pre) {
+		
+		Session session = Session.getDefaultInstance(getProperties(),
+				new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication()
+					{
+						return new PasswordAuthentication(email_session,
+								password_email_session);
+					}
+				});
+		
+		try {
+			
+			for(int i = 0 ; i < receivers_selected.size(); i ++) {
+				MimeMessage message = new MimeMessage(session);
+				message.setSubject(subject_messages_pre.get(i));
+				MimeMessageHelper helper = new MimeMessageHelper(message,true);
+				helper.setTo(receivers_selected.get(i));
+				helper.setFrom(email_session);
+				helper.setText(messages_pre.get(i));
+				Transport.send(message);
+			}
+		}catch(MessagingException e) {
+			e.printStackTrace();
+			return false;
+			
+		}
+		return true;
+	}
+	
+	
 	public boolean sendMessengerForSelectedContacts(JavaMailSender sender ,String email_session,String password_email_session, boolean activedDebug,List<String> receivers_selected, String obj_sender, String message_costumize, String subject_message) throws MessagingException {
 
 		Session session = Session.getDefaultInstance(getProperties(),
@@ -161,6 +195,7 @@ public class HandlerMail{
 					}
 				});
 
+		try {
 		MimeMessage message = new MimeMessage(session);
 		message.setSubject(subject_message);
 		MimeMessageHelper helper = new MimeMessageHelper(message,true);
@@ -171,10 +206,42 @@ public class HandlerMail{
 			//helper.addAttachment("seila.jpg",path);
 			Transport.send(message);
 		}
+		}catch(MessagingException e) {
+			e.printStackTrace();
+			return false;
+			
+		}
 		return true;
 	
 	}
 	
+	
+	public boolean sendeMessengerAllPredetermined(JavaMailSender sender , String email_session,String password_session,boolean activate, List<String> receivers, String obj_sender,List<String> messages_pre , List<String> subject_message_pre) {
+		Session session = Session.getDefaultInstance(getProperties(),
+				new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(email_session,
+								password_session);
+					}
+				});
+		try {
+			for(int i = 0 ; i < receivers.size() ; i ++) {
+				MimeMessage message = new MimeMessage(session);
+				message.setSubject(subject_message_pre.get(i));
+				MimeMessageHelper helper = new MimeMessageHelper(message,true);
+				helper.setTo(receivers.get(i));
+				helper.setFrom(email_session);
+				helper.setText(messages_pre.get(i));
+				Transport.send(message);
+			}
+			
+		}catch(MessagingException e) {
+			e.printStackTrace();
+			return false;
+			
+		}
+		return true;
+	}
 	public boolean sendMessengerAll(JavaMailSender sender ,String email_session,String password_session, boolean activedDebug,List<String> receivers, String obj_sender, String message_costumize, String subject_message) {
 
 		Session session = Session.getDefaultInstance(getProperties(),

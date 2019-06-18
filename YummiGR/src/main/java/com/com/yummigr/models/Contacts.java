@@ -29,6 +29,10 @@ public class Contacts implements Serializable{
 	public void setPath_img(String path_img) {
 		this.path_img = path_img;
 	}
+	
+	
+	@Column(name="subject_message")
+	private String subject_message;
 
 	@ManyToMany
 	private List<LoggerSender> loggerSenders;
@@ -96,10 +100,11 @@ public class Contacts implements Serializable{
 		this.email = email;
 	}
 	
-	public Contacts(String email, String message , String phoneNumber) {
+	public Contacts(String email, String message , String phoneNumber , String subject_message) {
 		setEmail(email);
 		setMessage(message);
 		setPhone_number(phoneNumber);
+		setSubject_message(subject_message);
 	}
 	public Contacts() {}
 
@@ -109,5 +114,13 @@ public class Contacts implements Serializable{
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getSubject_message() {
+		return subject_message;
+	}
+
+	public void setSubject_message(String subject_message) {
+		this.subject_message = subject_message;
 	}
 }

@@ -252,6 +252,25 @@ public class MessengerService {
 		return null;
 	}
 
+	public String activateSendEmailMessengerAllPredetermined(JavaMailSender sender , String identifier, boolean activate, String email, String password) throws Exception {
+		Messenger u = this.searchConnectorMessengerUser(identifier);
+		if(u != null) {
+			this.myCalendar = new MyCalendar();
+			String date = this.myCalendar.getDateToday();
+			String[] result = this.myCalendar.getFormatedDataToday(date);
+			LoggerSender l_sender = new LoggerSender(result[0],result[1],result[2],result[3],"email");
+			handlerAuthentication = new HandlerAuthentication();
+			User user = handlerAuthentication.getUserAuthenticate();
+			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
+			activatorEmail = new ActivatorScheduleEmail(sender,this,sh,u,activate, user, email,password,null,null);
+			LoggerSender ss = this.loggerSenderRepository.save(l_sender);
+			stack.push(activatorEmail);
+			stack.print();
+			insertRelationContactsSenderEmailBroadCast(getAllContactsForMessenger(u),ss);
+			return this.activatorEmail.getResponseExecution();
+		}
+		return null;
+	}
 
 	public String activateSendEmailMessengerAll(JavaMailSender sender , String identifier , boolean activate, String email,String password, String message,String subject_message) throws Exception {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
@@ -273,6 +292,7 @@ public class MessengerService {
 			return null;
 		}
 	}
+	
 	public void insertRelationContactsSenderEmailBroadCast(List<Contacts> broads,LoggerSender sender){
 		for(Contacts c : broads){
 			this.contactsRepository.insertRelationContactsSenderLogger(c.getId(),sender.getId());
@@ -293,6 +313,29 @@ public class MessengerService {
 		return result;
 	}
 
+	
+	public String activateSendEmailMessengerSelectedContactsPredetermined(JavaMailSender sender , String identifier , boolean activate , String email, String password,String contacts_selected) throws Exception {
+		Messenger u = this.searchConnectorMessengerUser(identifier);
+		List<Contacts> contactsList = getContactsByLisString(getSelectEmails(contacts_selected));
+		if(u != null) {
+			this.myCalendar = new MyCalendar();
+			String date = this.myCalendar.getDateToday();
+			String[] result = this.myCalendar.getFormatedDataToday(date);
+			LoggerSender l_sender = new LoggerSender(result[0],result[1],result[2],result[3],"email");
+			handlerAuthentication = new HandlerAuthentication();
+			User user = handlerAuthentication.getUserAuthenticate();
+			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
+			activatorScheduleEmailSp = new ActivatorScheduleEmailSp(sender,this,sh,u,activate, user, email,password,null,null,contactsList);
+			LoggerSender ss = this.loggerSenderRepository.save(l_sender);
+			stack.push(activatorScheduleEmailSp);
+			stack.print();
+			insertRelationContactsSenderEmailBroadCast(contactsList,ss);
+			return this.activatorScheduleEmailSp.getResponseExecution();
+		}
+		
+		return null;
+	}
+	
 	public  String activateSendEmailMessengerSelectedContacts(JavaMailSender sender , String identifier , boolean activate , String email, String password , String message , String subject_message
 	,String contacts_selected) throws Exception{
 		Messenger u = this.searchConnectorMessengerUser(identifier);

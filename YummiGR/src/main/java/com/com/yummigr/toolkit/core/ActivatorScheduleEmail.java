@@ -144,9 +144,19 @@ public class ActivatorScheduleEmail  extends Thread implements Runnable,Future {
 		for(Contacts c :receiver) {
 			receiver_email.add(c.getEmail());
 		}
+		if(this.message_customize != null && this.subject_message != null) {
 		this.handlerEmail.sendMessengerAll(this.sender,this.email, this.password,true,
 		receiver_email, this.email, this.message_customize, this.subject_message);
-	
+		}else {
+			List<String> receiver_message = new ArrayList<String>();
+			List<String> receiver_subject_message = new ArrayList<String>();
+			for(Contacts c : receiver) {
+				receiver_message.add(c.getMessage());
+				receiver_subject_message.add(c.getSubject_message());
+			}
+			this.handlerEmail.sendeMessengerAllPredetermined(this.sender,
+					this.email, this.password, true, receiver_email, this.email,receiver_message,receiver_subject_message);
+		}
 		try {
 			initiateTasks();
 		} catch (IOException e) {

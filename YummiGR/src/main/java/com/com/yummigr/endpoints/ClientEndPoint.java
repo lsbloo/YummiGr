@@ -92,9 +92,9 @@ public class ClientEndPoint {
 	
 	@PostMapping(value = "/messenger/contact/c/" , consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreateContactMessenger> createContactMessengerConnection(@RequestParam String message,
-			@RequestParam String phone_number, @RequestParam String email, @RequestParam String identifier,HttpServletRequest request, HttpServletResponse response) {
+			@RequestParam String phone_number, @RequestParam String subject_message,@RequestParam String email, @RequestParam String identifier,HttpServletRequest request, HttpServletResponse response) {
 	
-			boolean resul = this.contactService.createNewContact(email, phone_number, identifier, message);
+			boolean resul = this.contactService.createNewContact(email,subject_message, phone_number, identifier, message);
 			if(resul) {
 				CreateContactMessenger message_sul = new CreateContactMessenger("successfully create",
 						"new contact added to user messenger connector.",null);
@@ -114,7 +114,7 @@ public class ClientEndPoint {
 	 * @param email
 	 * @return
 	 */
-	@GetMapping(value="/messenger/contact/id/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value="/messenger/contact/id/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreateContactMessenger> getContactId(HttpServletRequest request, @RequestParam String email,@RequestParam String phone_number, @RequestParam String identifier){
 		String result = this.messengerService.getContactId(email,phone_number,identifier);
 		if(result != null){
@@ -140,9 +140,9 @@ public class ClientEndPoint {
 	// Update Contact
 	@PutMapping(value="/messenger/contact/u/", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreateContactMessenger> updateContact(HttpServletRequest request, @RequestParam String email,
-																@RequestParam String message , @RequestParam String phone_number,
+																@RequestParam String message , @RequestParam String subject_message ,@RequestParam String phone_number,
 																@RequestParam String id_contact , @RequestParam String identifier ){
-		boolean result = this.contactService.updateContact(id_contact,identifier,message,email,phone_number);
+		boolean result = this.contactService.updateContact(id_contact,identifier,message,subject_message,email,phone_number);
 		if(result){
 			CreateContactMessenger c = new CreateContactMessenger("aceppt"
 			,"update contact" , id_contact);
@@ -177,7 +177,7 @@ public class ClientEndPoint {
 	 * @param response
 	 * @return
 	 */
-	@GetMapping(value="/messenger/g/identifier", produces =  MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="/messenger/g/identifier/", produces =  MediaType.APPLICATION_JSON_VALUE)
 	public Messenger getConnectonMessengerUser(@RequestParam String identifier
 			,HttpServletResponse response) {
 		boolean result = this.messengerService.getMessengerConnectorUser(identifier);
@@ -191,6 +191,31 @@ public class ClientEndPoint {
 		
 	}
 	
+	@PostMapping(value="/messenger/s/email/all/p/", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SendEMailDTO> sendEmailMessengerConnectorPredetermined(HttpServletRequest request , HttpServletResponse response,
+			@RequestParam String identifier , @RequestParam boolean activate,
+			@RequestParam String email, @RequestParam String password
+			) throws Exception{
+		
+		
+		String result = this.messengerService.activateSendEmailMessengerAllPredetermined(this.javaMailSender, identifier, activate, email, password);
+		
+		if(result != null) {
+			SendEMailDTO sendto = new SendEMailDTO("sending email for all contacts"
+				,"this configuration send email and message pre-defined for all contacts of the list its enabled."
+					,result + " Milliseconds. ",true);
+			return ResponseEntity.status(HttpServletResponse.SC_ACCEPTED)
+					.body(sendto);
+		}else {
+			SendEMailDTO sendto = new SendEMailDTO("error for activate send email for all contacts."
+					,"this configuration send email for all contacts of the list its not enabled."
+						,result,false);
+				return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN)
+						.body(sendto);
+		}
+		
+		
+	}
 	/**
 	 * 
 	 * @param request
@@ -199,7 +224,7 @@ public class ClientEndPoint {
 	 * @return
 	 * @throws Exception 
 	 */
-	@GetMapping(value="/messenger/s/email/all/" , produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value="/messenger/s/email/all/" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SendEMailDTO> sendEmailMessengerConnector(HttpServletRequest request , HttpServletResponse response,
 			@RequestParam String identifier , @RequestParam boolean activate,
 			@RequestParam String email, @RequestParam String password,
@@ -221,6 +246,30 @@ public class ClientEndPoint {
 		}
 	}
 
+	
+	@PostMapping(value="/messenger/s/email/select/p/", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SendEmailSelDTO> sendEmailSelectPredetermined(
+			HttpServletRequest request, HttpServletResponse response,
+			@RequestParam String identifier, @RequestParam boolean activate,
+			@RequestParam String email, @RequestParam String password,
+			@RequestParam String emails_contact_select
+	) throws Exception{
+		String result = this.messengerService.activateSendEmailMessengerSelectedContactsPredetermined(this.javaMailSender,identifier,activate,email,password,emails_contact_select);
+		if(result != null) {
+			SendEmailSelDTO sendEmailSelDTO = new SendEmailSelDTO("sending email for all contacts",
+					"this configuration send email and message predetermined for select contacts of the list its enabled."
+					, result + "Milliseconds", true);
+			return ResponseEntity.status(HttpServletResponse.SC_ACCEPTED).body(sendEmailSelDTO);
+		}else{
+			SendEmailSelDTO sendto = new SendEmailSelDTO("error for activate send email for all contacts."
+					,"this configuration send email for select contacts of the list its not enabled."
+					,result,false);
+			return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN)
+					.body(sendto);
+		}
+
+	}
+	
 	@PostMapping(value="/messenger/s/email/select/", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SendEmailSelDTO> sendEmailSelect(
 			HttpServletRequest request, HttpServletResponse response,
@@ -244,7 +293,7 @@ public class ClientEndPoint {
 
 	}
 
-	@GetMapping(value="/messenger/s/email/all/cancel" , produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="/messenger/s/email/all/cancel/" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SendEMailDTO> cancelSendEmailMessengerConnector(
 			@RequestParam("identifier") String identifier , HttpServletRequest request , HttpServletResponse response){
 		

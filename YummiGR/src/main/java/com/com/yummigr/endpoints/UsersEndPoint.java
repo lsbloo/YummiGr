@@ -55,7 +55,7 @@ public class UsersEndPoint {
 
 
 
-	@GetMapping(value="/list/select/user",consumes = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="/list/select/user/",consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<DtoUserInformation>> getUserEnabled(@RequestParam String identifier){
 		List<DtoUserInformation> users = new ArrayList<DtoUserInformation>();
 		User u = this.userService.getUserByIdentifier(identifier);
@@ -72,7 +72,7 @@ public class UsersEndPoint {
 		return ResponseEntity.status(HttpServletResponse.SC_OK).body(users);
 	}
 
-	@GetMapping(value="/list/all/users" , consumes=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="/list/all/users/" , consumes=MediaType.APPLICATION_JSON_VALUE)
 	@Secured("ADMIN")
 	public ResponseEntity<List<DtoUserInformation>> getAllUsersEnabled(){
 		List<DtoUserInformation> users = new ArrayList<DtoUserInformation>();
