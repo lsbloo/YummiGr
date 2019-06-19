@@ -84,11 +84,21 @@ $ java \
  Create username yummi: /yummicr/api/v1/mgmnt/users/c/
  
 This url is responsible for creating yummi users and admits some values. Your HTTP verb is POST
-#####username(String)
-#####password(String)
-#####first_name(String)
-#####last_name(String)
-#####email(String)
-#####actived(boolean)
-#####identifier(String)
+
+##### username(String)
+##### password(String)
+##### first_name(String)
+##### last_name(String)
+##### email(String)
+##### actived(boolean)
+##### identifier(String)
  </p>
+ <br>
+ <h4>Authentication of users.</h4>
+ <p>
+  Authentication of user : /localhost:8080/login.
+  This url provides authentication of users in yummi, given a user created and authenticated successfully is generated a    token with validity of 10 days. 
+the HTTP verb is POST.
+  ##### username(String)
+  ##### password(String)
+  </p>
