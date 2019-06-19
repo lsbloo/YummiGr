@@ -312,6 +312,26 @@ public class ClientEndPoint {
 			return ResponseEntity.status(response.SC_BAD_REQUEST).body(sendto);
 		}
 	}
+	
+	@GetMapping(value="/messenger/s/sms/all/cancel/" , produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SendEMailDTO> cancelSendSMSMessengerConnector(
+			@RequestParam("identifier") String identifier , HttpServletRequest request , HttpServletResponse response){
+		
+		List<String> result = this.messengerService.stopActivatorSMS(this.messengerService.ActivatorGetSMSSch(identifier));
+		
+		if(result!=null) {
+			SendEMailDTO sendto = new SendEMailDTO(result.get(1),result.get(3), result.get(2),
+					Boolean.valueOf(result.get(0)));
+		
+			return ResponseEntity.status(response.SC_ACCEPTED).body(sendto);
+		}
+		else {
+			SendEMailDTO sendto = new SendEMailDTO("Activator Schdule","Dont Found", "0",
+					false);
+		
+			return ResponseEntity.status(response.SC_BAD_REQUEST).body(sendto);
+		}
+	}
 
 
 	//SMS SENDER;
@@ -332,5 +352,20 @@ public class ClientEndPoint {
 		return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(dt);
 	}
 
+	
+	@PostMapping(value="/messenger/s/sms/all/p/", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SendEMailDTO> senderSmsAllPredetermined(@RequestParam String identifier,
+													 @RequestParam String username,
+													 @RequestParam String password,
+													 @RequestParam boolean activate
+													 ) throws Exception {
+		String result = this.messengerService.activateSendSMSMessengerAllContactsPreDetermined(identifier,username,password,activate);
+		if(result != null){
+			SendEMailDTO dt = new SendEMailDTO("sending sms message predetermined for all contacts","broadcast of sender sms activate",result,true);
+			return ResponseEntity.status(HttpServletResponse.SC_ACCEPTED).body(dt);
+		}
+		SendEMailDTO dt = new SendEMailDTO("error for activate send sms for all contacts.","this configuration send sms for all contacts of the list its not enabled.",result,true);
+		return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(dt);
+	}
 
 }

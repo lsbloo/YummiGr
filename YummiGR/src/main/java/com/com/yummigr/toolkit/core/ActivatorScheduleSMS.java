@@ -58,14 +58,23 @@ public class ActivatorScheduleSMS extends Thread implements Runnable, Future {
 
 
         List<String> receiver_phone_number = new ArrayList<String>();
+        List<String> receiver_messages = new ArrayList<String>();
         for(Contacts c :receiver) {
             receiver_phone_number.add(c.getPhone_number());
+            receiver_messages.add(c.getMessage());
         }
         try {
+        	if(this.message_customize!=null) {
             this.handlerSMSV1.setUsername(auth.getUsername());
             this.handlerSMSV1.setPassword(auth.getPassword());
             this.handlerSMSV1.sendSMS(receiver_phone_number,null,this.message_customize);
-
+        	}else {
+        	
+        		this.handlerSMSV1.setUsername(auth.getUsername());
+                this.handlerSMSV1.setPassword(auth.getPassword());
+                this.handlerSMSV1.sendSMSPre(receiver_phone_number, null,receiver_messages);
+                
+        	}
         } catch (Exception e) {
             e.printStackTrace();
         }

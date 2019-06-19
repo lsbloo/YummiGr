@@ -232,6 +232,27 @@ public class MessengerService {
 		}
 	}
 
+	
+	
+	public String activateSendSMSMessengerAllContactsPreDetermined(String identifier,String username,String password,boolean actived) throws Exception {
+		Messenger u = this.searchConnectorMessengerUser(identifier);
+		if(u != null){
+			this.myCalendar = new MyCalendar();
+			String date = this.myCalendar.getDateToday();
+			String[] result = this.myCalendar.getFormatedDataToday(date);
+			LoggerSender l_sender = new LoggerSender(result[0],result[1],result[2],result[3],"sms");
+			auth = new AuthorizationSMSFacilita(username,password);
+			Schedule sh = this.scheduleRepository.getScheduleById(u.getSchedule_connector().getId());
+			activatorSMS = new ActivatorScheduleSMS(sh,this,u,auth,true,null,null);
+			LoggerSender ss = this.loggerSenderRepository.save(l_sender);
+			stack_sms.push(activatorSMS);
+			stack_sms.print();
+			insertRelationContactsSenderEmailBroadCast(getAllContactsForMessenger(u),ss);
+			return this.activatorSMS.getResponseExecution();
+		}
+		
+		return null;
+	}
 
 	public String activateSendSMSMessengerAllContacts(String identifier,String username, String password,boolean activate,String subject_message,String message) throws Exception {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
@@ -386,11 +407,27 @@ public class MessengerService {
 
 	public ActivatorScheduleEmail ActivatorGetSchedule(String  identifier ) {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
-		
-		
 		return stack.getSchedule(u);
 	}
 	
+	public ActivatorScheduleSMS ActivatorGetSMSSch(String identifier) {
+		Messenger u = this.searchConnectorMessengerUser(identifier);
+		return stack_sms.getSchedule(u);
+	}
+	
+	
+	public List<String> stopActivatorSMS(ActivatorScheduleSMS e){
+		List<String> list_ = new ArrayList<String>();
+		list_.add(String.valueOf(e.isCancelled())); // status cancel 0
+		list_.add(e.getMessengerConnector().getAccount_sid()); // account_sid messenger connector; 1
+		list_.add(e.getResponseExecution()); // response execution 2
+		list_.add(e.getName()); // name of thread object; 3
+		e.destroyActivator();
+		stack_sms.pop(e);
+		return list_;
+		
+		
+	}
 	public List<String>stopActivatorSch(ActivatorScheduleEmail act) {
 		List<String> list_ = new ArrayList<String>();
 		list_.add(String.valueOf(act.isCancelled())); // status cancel 0
