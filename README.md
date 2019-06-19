@@ -84,11 +84,11 @@ $ java \
  Create username yummi: /yummicr/api/v1/mgmnt/users/c/
  
 This url is responsible for creating yummi users and admits some values. Your HTTP verb is POST
-  username(String)
-  password(String)
-  first_name(String)
-  last_name(String)
-  email(String)
-  actived(boolean)
-  identifier(String)
+-username(String)
+-password(String)
+-first_name(String)
+-last_name(String)
+-email(String)
+-actived(boolean)
+-identifier(String)
  </p>
