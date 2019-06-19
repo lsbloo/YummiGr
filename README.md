@@ -109,7 +109,16 @@ the HTTP verb is POST
   Disable : /yummicr/api/v1/mgmnt/users/desative/account/user
   
   This url provides the deactivation of a user whose data still persists in api.
+  the verb http is delete.
 
- #### identifier
+ #### identifier(String)
  
  </p>
+ <br>
+ <h4>View Information Users</h4>
+ <p>
+  View Information Users:  /yummicr/api/v1/mgmnt/users/list/all/users/
+  Viewing all active users on the system, only the user who has access permission (ADMIN) can view. 
+  the verb http is get.
+  </p>
+  <br>
