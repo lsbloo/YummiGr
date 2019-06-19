@@ -150,6 +150,8 @@ Messenger Connector is an entity responsible for creating contacts. This entity 
 
   <p>
   Schedule Connector is an entity responsible for the time management of sending emails and sms, this entity is directly related to the messenger connector, in this way the user can customize the time of sending messages. verb is POST.
+   
+  The user can change the time when sending automatic messages.To update the shipping time, you can use this same url.
   
   Creating: /yummicr/api/v1/toolkit/messenger/schedule/c/
   
@@ -158,3 +160,20 @@ Messenger Connector is an entity responsible for creating contacts. This entity 
    #### time(String) Default is milliseconds.
 
 </p>
+<br>
+<h5>Creating contacts for the messenger connector.</h5>
+
+  <p>
+  
+As previously stated, the messenger connector is responsible for activating the sms and email sending capabilities. In this way a connector entity may have one or more contacts to send messages.
+  
+  Creating: /yummicr/api/v1/toolkit/messenger/contact/c/
+  
+  #### identifier(String)
+  #### message(String)
+  #### phone_number(String)
+  #### subject_message(String)
+  #### email(String)
+  </p>
+ <br>
+ 
