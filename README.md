@@ -207,6 +207,50 @@ Broadcast pre-configured messages: /yummicr/api/v1/toolkit/messenger/s/email/all
    #### password(String) (sender)
    #### activate(String)(Default true)
 
+  
+ Broadcast messages: /yummicr/api/v1/toolkit/messenger/s/email/all/p/ (POST).
+ 
+ BroadCast for sending emails, with customized message (message and subject).
+ 
+ 
+   #### identifier(String)
+   #### email(String) (sender)
+   #### password(String) (sender)
+   #### activate(String)(Default true)
+   #### message(String)
+   #### subject_message(STRING)
+   
+ Send pre-configured messages to selected contacts
+ 
+ Sender Selected Contacts: /yummicr/api/v1/toolkit/messenger/s/email/select/p/ (POST)
+ 
+   #### identifier(String)
+   #### email(String) (sender)
+   #### password(String) (sender)
+   #### activate(String)(Default true)
+   #### emails_contacts_select(String)
+   
+ Sender Selected Contacts for sending emails, with customized message (message and subject).
+ 
+ Sender Selected Contacts for sending emails : /yummicr/api/v1/toolkit/messenger/s/email/select/
+ 
+  #### identifier(String)
+  #### email(String) (sender)
+  #### password(String) (sender)
+  #### activate(String)(Default true)
+  #### message(String)
+  #### subject_message(STRING)
+ 
+  
+  Stop sending custom or pre-configured messages.
+  
+  /yummicr/api/v1/toolkit/messenger/s/email/all/cancel/ (GET)
+ 
+  /yummicr/api/v1/toolkit/messenger/s/sms/all/cancel/ (GET)
+ 
+  #### identifier(String)
 </p>
+
+
  
  
