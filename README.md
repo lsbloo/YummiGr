@@ -135,7 +135,7 @@ The yummi has some interesting features for sending emails and sms. The user can
 
 Messenger Connector is an entity responsible for creating contacts. This entity supports some values, such as account_sid, auth_token, and user identifier. Understand how account_sid and auth_token generated high hash fields for api. these fields are not the user's responsibility to fill in, and yes the system creates those values. The user identifier is part of the same premise as field 1) where the identifier is unique for each user in the system.
 
-  <h6>Creating a messenger connector bound to a user.</h6>
+<h5>Creating a messenger connector bound to a user.</h5>
       
    Creating: /yummicr/api/v1/toolkit/messenger/contact/c/
    
@@ -146,3 +146,4 @@ Messenger Connector is an entity responsible for creating contacts. This entity 
    This url provides the creation of a connector for a user. It supports the user identifier and two self-generated      fields for api (account_sid, auth_token).
 </p>
 <br>
+
