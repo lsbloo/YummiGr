@@ -250,7 +250,27 @@ Broadcast pre-configured messages: /yummicr/api/v1/toolkit/messenger/s/email/all
  
   #### identifier(String)
 </p>
+<br>
 
-
+<h4>Sending SMS</h4>
+<p>
+  /yummicr/api/v1/toolkit/messenger/messenger/s/sms/all/ (POST)
+  
+  #### identifier(String)
+  #### email(String) (sender) (Login facilitaapi).
+  #### password(String) (sender) (password facilitaapi).
+  #### activate(String)(Default true)
+  #### message(String)
+  #### subject_message(STRING)
  
+ /yummicr/api/v1/toolkit/messenger/messenger/s/sms/all/p/ (POST)
  
+ #### identifier(String)
+ #### email(String) (sender) (Login facilitaapi).
+ #### password(String) (sender) (password facilitaapi).
+ #### activate(String)(Default true)
+</p>
+<br>
+<h3>Specialized graphics.</h3>
+ <br>
+<h3>JSON images generated.</h3>
