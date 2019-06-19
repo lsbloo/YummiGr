@@ -96,9 +96,20 @@ This url is responsible for creating yummi users and admits some values. Your HT
  <br>
  <h4>Authentication of users.</h4>
  <p>
-  Authentication of user : /localhost:8080/login.
+  Authentication of user : localhost:8080/login.
   This url provides authentication of users in yummi, given a user created and authenticated successfully is generated a    token with validity of 10 days. 
-the HTTP verb is POST.
+the HTTP verb is POST
+  
   ##### username(String)
   ##### password(String)
   </p>
+<br>
+<h4>Disable user</h4>
+<p>
+  Disable : /yummicr/api/v1/mgmnt/users/desative/account/user
+  
+  This url provides the deactivation of a user whose data still persists in api.
+
+ #### identifier
+ 
+ </p>
