@@ -97,7 +97,8 @@ This url is responsible for creating yummi users and admits some values. Your HT
  <h4>Authentication of users.</h4>
  <p>
   Authentication of user : localhost:8080/login.
-  This url provides authentication of users in yummi, given a user created and authenticated successfully is generated a    token with validity of 10 days. 
+  
+This url provides authentication of users in yummi, given a user created and authenticated successfully is generated a    token with validity of 10 days. 
 the HTTP verb is POST
   
   ##### username(String)
@@ -134,5 +135,14 @@ The yummi has some interesting features for sending emails and sms. The user can
 
 Messenger Connector is an entity responsible for creating contacts. This entity supports some values, such as account_sid, auth_token, and user identifier. Understand how account_sid and auth_token generated high hash fields for api. these fields are not the user's responsibility to fill in, and yes the system creates those values. The user identifier is part of the same premise as field 1) where the identifier is unique for each user in the system.
 
-
+  <h6>Creating a messenger connector bound to a user.</h6>
+      
+   Creating: /yummicr/api/v1/toolkit/messenger/contact/c/
+       
+   This url provides the creation of a connector for a user. It supports the user identifier and two self-generated      fields for api (account_sid, auth_token). 
+      
+   ####identifier(String)
+   ####account_sid(String)GeneratedValue
+   ####auth_token(String)GeneratedValue.
 </p>
+<br>
