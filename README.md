@@ -138,11 +138,11 @@ Messenger Connector is an entity responsible for creating contacts. This entity 
   <h6>Creating a messenger connector bound to a user.</h6>
       
    Creating: /yummicr/api/v1/toolkit/messenger/contact/c/
+   
+   #### identifier(String)
+   #### account_sid(String)GeneratedValue
+   #### auth_token(String)GeneratedValue.
        
-   This url provides the creation of a connector for a user. It supports the user identifier and two self-generated      fields for api (account_sid, auth_token). 
-      
-   ####identifier(String)
-   ####account_sid(String)GeneratedValue
-   ####auth_token(String)GeneratedValue.
+   This url provides the creation of a connector for a user. It supports the user identifier and two self-generated      fields for api (account_sid, auth_token).
 </p>
 <br>
