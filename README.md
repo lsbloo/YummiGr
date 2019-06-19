@@ -71,11 +71,14 @@ $ ./mvnw clean package
 $ java \
 -YUMMIGR_DB_POSTGRESQL=localhost \
 -YUMMIGR_DB_PORT=5432 \
--YUMMIGR_DB_DATABASE=tracytd \
+-YUMMIGR_DB_DATABASE=yummidb \
 -YUMMIGR_DB_USERNAME=postgresql \
 -YUMMIGR_DB_PASSWORD=admin \
 -jar YummiGr/YummiGR/target/yummigr.jar
 
  
+ # How to use the urls in this api.
+ 
+ <h4>Creation of users.</h4>
  
  
