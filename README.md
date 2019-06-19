@@ -165,15 +165,48 @@ Messenger Connector is an entity responsible for creating contacts. This entity 
 
   <p>
   
-As previously stated, the messenger connector is responsible for activating the sms and email sending capabilities. In this way a connector entity may have one or more contacts to send messages.
+As previously stated, the messenger connector is responsible for activating the sms and email sending capabilities. In this way a connector entity may have one or more contacts to send messages. this verb http is POST.
   
-  Creating: /yummicr/api/v1/toolkit/messenger/contact/c/
+  Creating: /yummicr/api/v1/toolkit/messenger/contact/c/ (POST)
   
   #### identifier(String)
   #### message(String)
   #### phone_number(String)
   #### subject_message(String)
   #### email(String)
+  
+  Updating: /yummicr/api/v1/toolkit/messenger/contact/u/ (PUT)
+  
+   #### id_contact(String)
+   
+   Get ID Contact: /yummicr/api/v1/toolkit/messenger/contact/u/ (GET)
+    
+   #### email(String)
+   #### identifier(String)
+   #### phone_number(String)
+   
+   Delete Contact: /yummicr/api/v1/toolkit/messenger/contact/d/ (DELETE)
+   
+   #### email(String)
+   #### identifier(String)
+   #### phone_number(String)
+      
   </p>
  <br>
+ 
+ <h4>Sending Messages.</h4>
+ 
+<p>
+  
+This url provides the sending of automatic messages so that the message and the title of the contact created specified, is sent without the need of a customization of sending of the user.
+
+Broadcast pre-configured messages: /yummicr/api/v1/toolkit/messenger/s/email/all/p/ (POST).
+  
+   #### identifier(String)
+   #### email(String) (sender)
+   #### password(String) (sender)
+   #### activate(String)(Default true)
+
+</p>
+ 
  
