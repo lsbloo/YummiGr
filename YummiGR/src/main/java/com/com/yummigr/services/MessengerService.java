@@ -304,20 +304,36 @@ public class MessengerService {
 		}
 	}
 
-	public List<String> getSelectEmails(String contactsSelect){
+	public List<Long> getSelectEmails(String contactsSelect,Messenger u){
 		List<String> result = new ArrayList<String>();
 		String[] rr = contactsSelect.split(",");
 		for(int i = 0 ; i < rr.length; i++){
 			result.add(rr[i]);
 		}
-		return result;
+		List<Contacts> cc = this.getAllContactsForMessenger(u);
+		List<Long> exit = new ArrayList<Long>();
+		for(String r : result) {
+			Long id = checkContactSelected(r,cc);
+			if(id!=null) {
+				exit.add(id);
+			}
+		}
+		return exit;
+	}
+	public Long checkContactSelected(String result , List<Contacts> cc) {
+		for(Contacts c : cc) {
+			if(c.getEmail() .equals(result)) {
+				return c.getId();
+			}
+		}
+		return null;
 	}
 
 	
 	public String activateSendEmailMessengerSelectedContactsPredetermined(JavaMailSender sender , String identifier , boolean activate , String email, String password,String contacts_selected) throws Exception {
 		Messenger u = this.searchConnectorMessengerUser(identifier);
-		List<Contacts> contactsList = getContactsByLisString(getSelectEmails(contacts_selected));
 		if(u != null) {
+			List<Contacts> contactsList = getContactsByLisString(getSelectEmails(contacts_selected,u));
 			this.myCalendar = new MyCalendar();
 			String date = this.myCalendar.getDateToday();
 			String[] result = this.myCalendar.getFormatedDataToday(date);
@@ -339,7 +355,7 @@ public class MessengerService {
 	public  String activateSendEmailMessengerSelectedContacts(JavaMailSender sender , String identifier , boolean activate , String email, String password , String message , String subject_message
 	,String contacts_selected) throws Exception{
 		Messenger u = this.searchConnectorMessengerUser(identifier);
-		List<Contacts> contactsList = getContactsByLisString(getSelectEmails(contacts_selected));
+		List<Contacts> contactsList = getContactsByLisString(getSelectEmails(contacts_selected,u));
 		if(u != null){
 			this.myCalendar = new MyCalendar();
 			String date = this.myCalendar.getDateToday();
@@ -359,14 +375,12 @@ public class MessengerService {
 		return null;
 	}
 
-	public List<Contacts> getContactsByLisString(List<String> contacts){
+	public List<Contacts> getContactsByLisString(List<Long> contacts_id){
 		List<Contacts> result = new ArrayList<Contacts>();
-		for(String r : contacts) {
-			//System.err.println(r);
-			Contacts c = this.contactsRepository.getContactsByEmail(r);
+		for(Long r : contacts_id) {
+			Contacts c = this.contactsRepository.getContactById(r);
 			result.add(c);
 		}
-		System.err.println(result);
 		return result;
 	}
 
