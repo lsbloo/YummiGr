@@ -137,13 +137,24 @@ Messenger Connector is an entity responsible for creating contacts. This entity 
 
 <h5>Creating a messenger connector bound to a user.</h5>
       
-   Creating: /yummicr/api/v1/toolkit/messenger/contact/c/
+   Creating: /yummicr/api/v1/toolkit/messenger/c/
    
    #### identifier(String)
    #### account_sid(String)GeneratedValue
    #### auth_token(String)GeneratedValue.
        
-   This url provides the creation of a connector for a user. It supports the user identifier and two self-generated      fields for api (account_sid, auth_token).
+   This url provides the creation of a connector for a user. It supports the user identifier and two self-generated      fields for api (account_sid, auth_token). verb is POST.
 </p>
 <br>
+<h5>Create schedule connector.</h5>
 
+  <p>
+  Schedule Connector is an entity responsible for the time management of sending emails and sms, this entity is directly related to the messenger connector, in this way the user can customize the time of sending messages. verb is POST.
+  
+  Creating: /yummicr/api/v1/toolkit/messenger/schedule/c/
+  
+   #### identifier(String)
+   
+   #### time(String) Default is milliseconds.
+
+</p>
