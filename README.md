@@ -80,5 +80,15 @@ $ java \
  # How to use the urls in this api.
  
  <h4>Creation of users.</h4>
+ <p>
+ Create username yummi: /yummicr/api/v1/mgmnt/users/c/
  
- 
+This url is responsible for creating yummi users and admits some values. Your HTTP verb is POST
+  username(String)
+  password(String)
+  first_name(String)
+  last_name(String)
+  email(String)
+  actived(boolean)
+  identifier(String)
+ </p>
