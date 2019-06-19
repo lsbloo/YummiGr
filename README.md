@@ -118,7 +118,21 @@ the HTTP verb is POST
  <h4>View Information Users</h4>
  <p>
   View Information Users:  /yummicr/api/v1/mgmnt/users/list/all/users/
+  
   Viewing all active users on the system, only the user who has access permission (ADMIN) can view. 
   the verb http is get.
   </p>
   <br>
+  
+<h3>Yummigr Tools.</h3>
+<p>
+  
+The yummi has some interesting features for sending emails and sms. The user can create a connector to manage the automatic sending of messages either by sms or email. The sending of messages can contain customized messages or already loaded in the creation of a specific contact.
+
+<br>
+<h5>Create MessengerConnector </h5>
+
+Messenger Connector is an entity responsible for creating contacts. This entity supports some values, such as account_sid, auth_token, and user identifier. Understand how account_sid and auth_token generated high hash fields for api. these fields are not the user's responsibility to fill in, and yes the system creates those values. The user identifier is part of the same premise as field 1) where the identifier is unique for each user in the system.
+
+
+</p>
