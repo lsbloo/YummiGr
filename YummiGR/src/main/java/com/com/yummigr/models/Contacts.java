@@ -39,6 +39,10 @@ public class Contacts implements Serializable{
 
 	@ManyToMany
 	private List<LoggerSender> loggerSenders;
+	
+	
+	@ManyToMany
+	private List<ContactsIMGS> imgs_urls;
 
 	@CreationTimestamp
 	private Date created_at;

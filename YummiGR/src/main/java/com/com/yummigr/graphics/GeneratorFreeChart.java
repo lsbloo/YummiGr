@@ -75,7 +75,7 @@ public class GeneratorFreeChart {
 		for(int i = 0 ; i < list_maps.size() ; i ++) {
 			HashMap<LoggerSender, Integer> m = list_maps.get(i);
 			for(LoggerSender s : m.keySet()) {		
-				default_category_emails_contact.addValue(m.get(s), "maximum value", cc_related.get(i).getEmail());
+				default_category_emails_contact.addValue(m.get(s), "maximum value", cc_related.get(i).getName());
 			}
 		}
 		}
