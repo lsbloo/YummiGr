@@ -57,11 +57,11 @@ public interface ContactsRepository extends CrudRepository<Contacts,Integer>{
 	
 	@Modifying
 	@Transactional
-	@Query(value="update contacts_yummi set email=:email , phone_number=:phone_number , message=:message , subject_message=:subject , update_at=:update_at"
+	@Query(value="update contacts_yummi set email=:email , phone_number=:phone_number , message=:message , subject_message=:subject , name=:name ,update_at=:update_at"
 			+ " where id=:id", nativeQuery=true)
 	Integer updateContacts(@Param("email") String email, @Param("phone_number") String phone_number,
 						   @Param("message") String message , @Param("subject") String subject_message,
-						   @Param("update_at") String update_at, @Param("id") Long id);
+						   @Param("update_at") String update_at, @Param("name") String name , @Param("id") Long id);
 	
 	
 	@Query(value=" select contacts_id from contacts_messenger where messenger_id=:id", nativeQuery=true)

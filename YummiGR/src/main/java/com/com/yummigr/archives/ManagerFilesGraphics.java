@@ -37,7 +37,8 @@ public class ManagerFilesGraphics{
 	public void save() throws IOException {
 		if(this.manipulator.checkExistenceDir(this.identifier)) {
 			OutputStream file = new FileOutputStream(this.manipulator.PATH_USERS+identifier+"/"+name_arq);
-			ChartUtilities.writeChartAsPNG(file, this.jFreeChart, 550, 400);
+			ChartUtilities.writeChartAsPNG(file, this.jFreeChart, 860, 480);
+			
 			file.close();
 		}else {
 			System.err.println("Directory User dont create");

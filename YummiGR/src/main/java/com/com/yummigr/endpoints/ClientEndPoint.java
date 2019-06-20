@@ -101,9 +101,9 @@ public class ClientEndPoint {
 	
 	@PostMapping(value = "/messenger/contact/c/" , consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreateContactMessenger> createContactMessengerConnection(@RequestParam String message,
-			@RequestParam String phone_number, @RequestParam String subject_message,@RequestParam String email, @RequestParam String identifier,HttpServletRequest request, HttpServletResponse response) {
+			@RequestParam String phone_number, @RequestParam String subject_message,@RequestParam String email,@RequestParam String  name ,@RequestParam String identifier,HttpServletRequest request, HttpServletResponse response) {
 	
-			boolean resul = this.contactService.createNewContact(email,subject_message, phone_number, identifier, message);
+			boolean resul = this.contactService.createNewContact(email,subject_message, phone_number, identifier, message,name);
 			if(resul) {
 				CreateContactMessenger message_sul = new CreateContactMessenger("successfully create",
 						"new contact added to user messenger connector.",null);
@@ -150,8 +150,8 @@ public class ClientEndPoint {
 	@PutMapping(value="/messenger/contact/u/", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreateContactMessenger> updateContact(HttpServletRequest request, @RequestParam String email,
 																@RequestParam String message , @RequestParam String subject_message ,@RequestParam String phone_number,
-																@RequestParam String id_contact , @RequestParam String identifier ){
-		boolean result = this.contactService.updateContact(id_contact,identifier,message,subject_message,email,phone_number);
+																@RequestParam String id_contact , @RequestParam String identifier , @RequestParam String name){
+		boolean result = this.contactService.updateContact(id_contact,identifier,message,subject_message,email,phone_number,name);
 		if(result){
 			CreateContactMessenger c = new CreateContactMessenger("aceppt"
 			,"update contact" , id_contact);
@@ -388,7 +388,7 @@ public class ClientEndPoint {
 				this.generatorFreeChartService.getAttrInformationContactTrackerEmailsMnth(cc, month),
 				this.generatorFreeChartService.getLoggerRelated(
 						this.generatorFreeChartService.getAttrInformationContactTrackerEmailsMnth(cc, month)
-						)), option),"teste.png",identifier);
+						)), option),identifier+"_emails_.png",identifier);
 		
 		return null;
 		

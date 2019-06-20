@@ -30,6 +30,9 @@ public class Contacts implements Serializable{
 		this.path_img = path_img;
 	}
 	
+	@Column(name="name")
+	private String name;
+	
 	
 	@Column(name="subject_message")
 	private String subject_message;
@@ -100,11 +103,13 @@ public class Contacts implements Serializable{
 		this.email = email;
 	}
 	
-	public Contacts(String email, String message , String phoneNumber , String subject_message) {
+	public Contacts(String email, String message , String phoneNumber , String subject_message,String name) {
 		setEmail(email);
 		setMessage(message);
 		setPhone_number(phoneNumber);
 		setSubject_message(subject_message);
+		setName(name);
+		
 	}
 	public Contacts() {}
 
@@ -122,5 +127,13 @@ public class Contacts implements Serializable{
 
 	public void setSubject_message(String subject_message) {
 		this.subject_message = subject_message;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

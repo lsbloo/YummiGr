@@ -47,8 +47,8 @@ public class ContactService {
 	}
 	
 	
-	public boolean createNewContact(String email, String subject,String phone_number, String identifier,String message) {
-		Contacts c = new Contacts(email,message,phone_number,subject);
+	public boolean createNewContact(String email, String subject,String phone_number, String identifier,String message,String name) {
+		Contacts c = new Contacts(email,message,phone_number,subject,name);
 		
 		Result result = new ValidatorBuilder<Contacts>().apply(this.contactValidator.validatePhoneNumber())
 				.apply(contactValidator.validateEmail())
@@ -67,13 +67,13 @@ public class ContactService {
 		return false;
 	}
 
-	public boolean updateContact(String id , String identifierUser , String message,String subject_message , String email ,String phone_number){
+	public boolean updateContact(String id , String identifierUser , String message,String subject_message , String email ,String phone_number,String name){
 		Messenger u = this.messengerService.searchConnectorMessengerUser(identifierUser);
 		Contacts cy = this.contactRepository.getContactById(Long.valueOf(id));
 		Long messenger_id = this.contactRepository.getMessengerId(cy.getId());
 		if(messenger_id == u.getId()) {
 			String date_update = this.myCalendar.getDateToday();
-			this.contactRepository.updateContacts(email, phone_number, message,subject_message,date_update , cy.getId());
+			this.contactRepository.updateContacts(email, phone_number, message,subject_message,date_update,name , cy.getId());
 			return true;
 		}
 		return false;
