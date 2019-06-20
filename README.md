@@ -283,5 +283,37 @@ Broadcast pre-configured messages: /yummicr/api/v1/toolkit/messenger/s/email/all
 </p>
 <br>
 <h3>Specialized graphics.</h3>
+
+  Regarding the creation of graphics. The yummi contains a package of information visualization related to sending emails and sms. The search filter is divided into three parts, search for the month of submission, the year of submission and the complete record (month, year, day).
+  
+  
+The endpoints support some configurations of the type of graph to be generated. bar graph, line graph. etc; the option parameter defines this configuration and 3 configurations are currently supported. (1) - bar graph, (2), line graph (3) 3D graph;
+
+  
+  localhost:8085/yummicr/api/v1/toolkit/graphics/view/emails/year/ (POST).
+  
+   #### identifier(String) (identifier-user)
+   #### option(Integer) (1)
+   #### year(String) Example(2019)
+   
+   
+   localhost:8085/yummicr/api/v1/toolkit/graphics/view/emails/full/ (POST).
+  
+   #### identifier(String) (identifier-user)
+   #### option(Integer) (1)
+   #### year(String) Example(2019)
+   #### month(String) Example(06)
+   #### day(String) Example(19)
+   
+   localhost:8085/yummicr/api/v1/toolkit/graphics/view/emails/month/ (POST).
+   
+   #### identifier(String) (identifier-user)
+   #### option(Integer) (1)
+   #### month(String) Example(06)
+   
+   
+   
+   
+   
  <br>
 <h3>JSON images generated.</h3>
