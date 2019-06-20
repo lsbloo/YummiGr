@@ -1,12 +1,19 @@
 package com.com.yummigr.services;
 
 import com.com.yummigr.util.MyCalendar;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.com.yummigr.models.Contacts;
+import com.com.yummigr.models.LoggerSender;
 import com.com.yummigr.models.Messenger;
 import com.com.yummigr.repositories.ContactsRepository;
+import com.com.yummigr.repositories.LoggerSenderRepository;
 import com.com.yummigr.validator.ContactValidator;
 import com.com.yummigr.validator.core.Result;
 import com.com.yummigr.validator.core.ValidatorBuilder;
@@ -25,15 +32,18 @@ public class ContactService {
 	private final ContactsRepository contactRepository;
 	
 	private final MessengerService messengerService;
+	
+	private final LoggerSenderRepository logger;
 
 	private MyCalendar myCalendar;
 	
 	@Autowired
-	private ContactService( ContactValidator contactValidator , ContactsRepository  contactRepository, MessengerService messengerService) {
+	private ContactService( LoggerSenderRepository logger ,ContactValidator contactValidator , ContactsRepository  contactRepository, MessengerService messengerService) {
 		this.contactRepository=contactRepository;
 		this.contactValidator=contactValidator;
 		this.messengerService=messengerService;
 		this.myCalendar = new MyCalendar();
+		this.logger=logger;
 	}
 	
 	
@@ -70,4 +80,41 @@ public class ContactService {
 	}
 
 	
+	public LoggerSender getLoggerById(Long id) {
+	
+		return this.logger.getLoggerById(id);
+	
+	}
+	
+	public HashMap<LoggerSender,Integer> getLoggerEmailByDataMonth(List<LoggerSender> cc , String month) {
+		HashMap<LoggerSender, Integer> m = new HashMap<LoggerSender, Integer>();
+		List<LoggerSender> ss = new ArrayList<LoggerSender>();
+		List<Integer> occorencia = new ArrayList<Integer>();
+		Integer cont=0;
+		for(LoggerSender s : cc ) {
+			if(s.getMonth().equals(month)) {
+				cont++;
+			}
+		}
+		m.put(cc.get(0), cont);
+		return m;
+	}
+	
+	public List<Long> getIdsLoggerSenderRelatedContact(Long contact_id){
+		return this.logger.getIdsLoggersRelatedContact(contact_id);
+	}
+	
+	public Contacts getContactById(Long id_contact) {
+		return this.contactRepository.getContactById(id_contact);
+	}
+	
+	public Contacts getContactRelatedDirectLogger(LoggerSender sender) {
+		List<Long> conts_id = this.logger.getDistinctContactsIdByLoggerId(sender.getId());
+		List<Contacts> cc = new ArrayList<Contacts>();
+		for(Long cont : conts_id) {
+			cc.add(this.contactRepository.getContactById(cont));
+		}
+		return cc.get(0);
+		
+	}
 }

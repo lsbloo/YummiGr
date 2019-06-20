@@ -9,12 +9,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.Response;
 
 import com.com.yummigr.dtos.*;
+import com.com.yummigr.graphics.GeneratorFreeChart;
+import com.com.yummigr.graphics.GeneratorFreeChartService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
+import com.com.yummigr.models.Contacts;
 import com.com.yummigr.models.Messenger;
 import com.com.yummigr.services.ContactService;
 import com.com.yummigr.services.MessengerService;
@@ -26,6 +30,7 @@ import com.com.yummigr.validator.core.Result;
 @RequestMapping("/yummicr/api/v1/toolkit")
 public class ClientEndPoint {
 	
+
 	
 	private final UserService userService;
 	
@@ -35,16 +40,20 @@ public class ClientEndPoint {
 	
 	private ContactService contactService;
 	
+	private final GeneratorFreeChartService generatorFreeChartService;
+	
+	
 	private JavaMailSender javaMailSender;
 	@Autowired
 	public ClientEndPoint(UserService userService , MessengerService service
 			, ScheduleService scheduleService , ContactService contactService 
-			, JavaMailSender javaMailSender) {
+			, JavaMailSender javaMailSender , GeneratorFreeChartService cc) {
 		this.userService=userService;
 		this.messengerService=service;
 		this.scheduleService=scheduleService;
 		this.contactService=contactService;
 		this.javaMailSender=javaMailSender;
+		this.generatorFreeChartService=cc;
 	}
 	/**
 	 * creates a messenger connector for an associated user, 
@@ -368,4 +377,20 @@ public class ClientEndPoint {
 		return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(dt);
 	}
 
+	
+	@PostMapping(value="/graphics/view/emails/month/", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GraphicsDTO> viewInformationEmailsMonth(@RequestParam String identifier , @RequestParam String month) throws IOException{
+		GeneratorFreeChart generator = new GeneratorFreeChart();
+		List<Contacts> cc = this.generatorFreeChartService.getContactsByMessengerConnector(identifier);
+		
+		generator.saveGraphicPNG(generator.createGraficEmailsByMonth(generator.TITTLE_EMAIL_GRAPHS_MONTH,generator.getDataSet(
+				this.generatorFreeChartService.getAttrInformationContactTrackerEmailsMnth(cc, month),
+				this.generatorFreeChartService.getLoggerRelated(
+						this.generatorFreeChartService.getAttrInformationContactTrackerEmailsMnth(cc, month)
+						))),"teste.png");
+		
+		return null;
+		
+	}
+	
 }
