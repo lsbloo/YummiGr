@@ -63,6 +63,33 @@ public class GeneratorFreeChartService {
 		return maps;
 		
 	}
+	public List<HashMap<LoggerSender,Integer>> getAttrInformationContactTrackerEmailsYear(List<Contacts> cc , String year){
+		Integer cont = 0 ;
+		List<HashMap<LoggerSender,Integer>> maps = new ArrayList<HashMap<LoggerSender,Integer>>();
+		for(Contacts c : cc ){
+		
+		
+		List<LoggerSender> s = getLoggerSenderContact(c.getId());
+		maps.add(this.contactService.getLoggerEmailByDataYear(s, year));
+		
+		}
+		return maps;
+		
+	}
+	public List<HashMap<LoggerSender,Integer>> getAttrInformationContactTrackerEmailsFull(List<Contacts> cc , String month, String day, String year){
+		Integer cont = 0 ;
+		List<HashMap<LoggerSender,Integer>> maps = new ArrayList<HashMap<LoggerSender,Integer>>();
+		for(Contacts c : cc ){
+		
+		
+		List<LoggerSender> s = getLoggerSenderContact(c.getId());
+		maps.add(this.contactService.getLoggerEmailByDataFull(s, month, day, year));
+		
+		}
+		return maps;
+		
+	}
+	
 	public List<Contacts> getLoggerRelated(List<HashMap<LoggerSender,Integer>> maps){
 		List<Contacts> cc = new ArrayList<Contacts>();
 		for(HashMap<LoggerSender,Integer> m : maps) {

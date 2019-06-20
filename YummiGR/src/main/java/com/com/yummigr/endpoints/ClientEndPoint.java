@@ -388,10 +388,43 @@ public class ClientEndPoint {
 				this.generatorFreeChartService.getAttrInformationContactTrackerEmailsMnth(cc, month),
 				this.generatorFreeChartService.getLoggerRelated(
 						this.generatorFreeChartService.getAttrInformationContactTrackerEmailsMnth(cc, month)
-						)), option),identifier+"_emails_.png",identifier);
+						)), option),identifier+"_emails_month_.png",identifier);
 		
 		return null;
 		
 	}
+	
+	@PostMapping(value="/graphics/view/emails/full/", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GraphicsDTO> viewInformationEmailsFull(@RequestParam String identifier , @RequestParam String month,
+			@RequestParam String year, @RequestParam String day,@RequestParam Integer option) throws IOException{
+		GeneratorFreeChart generator = new GeneratorFreeChart();
+		List<Contacts> cc = this.generatorFreeChartService.getContactsByMessengerConnector(identifier);
+		
+		generator.saveGraphicPNG(generator.CustomizeGraph(generator.TITTLE_EMAIL_GRAPHS_MONTH,generator.getDataSet(
+				this.generatorFreeChartService.getAttrInformationContactTrackerEmailsFull(cc, month,day,year),
+				this.generatorFreeChartService.getLoggerRelated(
+						this.generatorFreeChartService.getAttrInformationContactTrackerEmailsFull(cc, month,day,year)
+						)), option),identifier+"_emails_full_.png",identifier);
+		
+		return null;
+		
+	}
+	
+	@PostMapping(value="/graphics/view/emails/year/", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GraphicsDTO> viewInformationEmailsYear(@RequestParam String identifier , @RequestParam String year,
+			@RequestParam Integer option) throws IOException{
+		GeneratorFreeChart generator = new GeneratorFreeChart();
+		List<Contacts> cc = this.generatorFreeChartService.getContactsByMessengerConnector(identifier);
+		
+		generator.saveGraphicPNG(generator.CustomizeGraph(generator.TITTLE_EMAIL_GRAPHS_MONTH,generator.getDataSet(
+				this.generatorFreeChartService.getAttrInformationContactTrackerEmailsYear(cc, year),
+				this.generatorFreeChartService.getLoggerRelated(
+						this.generatorFreeChartService.getAttrInformationContactTrackerEmailsYear(cc, year)
+						)), option),identifier+"_emails_year_.png",identifier);
+		
+		return null;
+		
+	}
+	
 }
 

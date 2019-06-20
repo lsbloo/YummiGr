@@ -85,6 +85,33 @@ public class ContactService {
 		return this.logger.getLoggerById(id);
 	
 	}
+	public HashMap<LoggerSender,Integer> getLoggerEmailByDataYear(List<LoggerSender> cc , String year) {
+		HashMap<LoggerSender, Integer> m = new HashMap<LoggerSender, Integer>();
+		List<LoggerSender> ss = new ArrayList<LoggerSender>();
+		List<Integer> occorencia = new ArrayList<Integer>();
+		Integer cont=0;
+		for(LoggerSender s : cc ) {
+			if(s.getYear().equals(year)) {
+				cont++;
+			}
+		}
+		m.put(cc.get(0), cont);
+		return m;
+	}
+	
+	public HashMap<LoggerSender,Integer> getLoggerEmailByDataFull(List<LoggerSender> cc , String month,String day , String year) {
+		HashMap<LoggerSender, Integer> m = new HashMap<LoggerSender, Integer>();
+		List<LoggerSender> ss = new ArrayList<LoggerSender>();
+		List<Integer> occorencia = new ArrayList<Integer>();
+		Integer cont=0;
+		for(LoggerSender s : cc ) {
+			if(s.getMonth().equals(month) && s.getYear().equals(year) && s.getDay().equals(day)) {
+				cont++;
+			}
+		}
+		m.put(cc.get(0), cont);
+		return m;
+	}
 	
 	public HashMap<LoggerSender,Integer> getLoggerEmailByDataMonth(List<LoggerSender> cc , String month) {
 		HashMap<LoggerSender, Integer> m = new HashMap<LoggerSender, Integer>();
