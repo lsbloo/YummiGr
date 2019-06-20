@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 
+import com.com.yummigr.archives.ManagerFilesGraphics;
 import com.com.yummigr.models.Contacts;
 import com.com.yummigr.models.LoggerSender;
 
@@ -37,9 +38,32 @@ public class GeneratorFreeChart {
 		
 	}
 	
-	public JFreeChart createGraficEmailsByMonth(String title,DefaultCategoryDataset set) {	
+	
+	/**
+	 * Define o tipo de grafico a ser gerado.
+	 *  Usuario pode escolher o tipo de grafico.
+	 * @param title
+	 * @param set
+	 * @param option
+	 * @return
+	 */
+	public JFreeChart CustomizeGraph(String title , DefaultCategoryDataset set, Integer option) {
+		switch(option) {
+		case 1:
+			return createGraficEmailsBarChart(title,set);
+		case 2:
+			return createGraficEmailsLineChart(title,set);
+		default:
+			return createGraficEmailsBarChart(title,set);
+		}	
+	}
+	
+	public JFreeChart createGraficEmailsLineChart(String title , DefaultCategoryDataset set) {
+		JFreeChart g = ChartFactory.createLineChart(title, "Contacts","Amount", set, PlotOrientation.VERTICAL, true, true, false);
+		return g;
+	}
+	public JFreeChart createGraficEmailsBarChart(String title,DefaultCategoryDataset set) {	
 		JFreeChart g = ChartFactory.createBarChart(title, "Contacts","Amount", set, PlotOrientation.VERTICAL, true, true, false);
-				
 		return g;
 	}
 	
@@ -59,14 +83,11 @@ public class GeneratorFreeChart {
 	}
 	
 	
-
-	public void saveGraphicPNG(JFreeChart g , String name_arq) throws IOException {
-		OutputStream file = new FileOutputStream(name_arq);
-		ChartUtilities.writeChartAsPNG(file, g, 550, 400);
-		file.close();
-		
+	public void saveGraphicPNG(JFreeChart g , String name_arq, String identifier) throws IOException {
+		ManagerFilesGraphics manager = new ManagerFilesGraphics(identifier,g,name_arq);
+		manager.save();
 	}
-
+	
 	public Set<LoggerSender> getS() {
 		return s;
 	}

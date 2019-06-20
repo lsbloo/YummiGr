@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.com.yummigr.repositories.UserRepository;
+import com.com.yummigr.archives.ManipulatorFile;
 import com.com.yummigr.models.Privilege;
 import com.com.yummigr.models.User;
 import com.com.yummigr.validator.core.Result;
@@ -92,10 +93,17 @@ public class UserService {
 		if(result.ok()) {
 			u.setRoles(Arrays.asList(this.roleRepository.findRoleByNameParam(USER)));
 			this.userRepository.save(u);
+			createDirectoryUser(u.getIdentifier());
 		}else {
 			return false;
 		}
 		return true;
+	}
+	
+	
+	public void createDirectoryUser(String identifier) {
+		ManipulatorFile f = new ManipulatorFile(identifier,ManipulatorFile.PATH_USERS);
+		f.generateDirectoryUser();
 	}
 
 	public boolean desativeUser(String identifier){

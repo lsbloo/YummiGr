@@ -379,18 +379,19 @@ public class ClientEndPoint {
 
 	
 	@PostMapping(value="/graphics/view/emails/month/", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GraphicsDTO> viewInformationEmailsMonth(@RequestParam String identifier , @RequestParam String month) throws IOException{
+	public ResponseEntity<GraphicsDTO> viewInformationEmailsMonth(@RequestParam String identifier , @RequestParam String month,
+			@RequestParam Integer option) throws IOException{
 		GeneratorFreeChart generator = new GeneratorFreeChart();
 		List<Contacts> cc = this.generatorFreeChartService.getContactsByMessengerConnector(identifier);
 		
-		generator.saveGraphicPNG(generator.createGraficEmailsByMonth(generator.TITTLE_EMAIL_GRAPHS_MONTH,generator.getDataSet(
+		generator.saveGraphicPNG(generator.CustomizeGraph(generator.TITTLE_EMAIL_GRAPHS_MONTH,generator.getDataSet(
 				this.generatorFreeChartService.getAttrInformationContactTrackerEmailsMnth(cc, month),
 				this.generatorFreeChartService.getLoggerRelated(
 						this.generatorFreeChartService.getAttrInformationContactTrackerEmailsMnth(cc, month)
-						))),"teste.png");
+						)), option),"teste.png",identifier);
 		
 		return null;
 		
 	}
-	
 }
+

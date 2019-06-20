@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import com.com.yummigr.services.UserService;
+import com.com.yummigr.archives.ManipulatorFile;
 import com.com.yummigr.models.Privilege;
 import com.com.yummigr.models.Role;
 
@@ -71,12 +72,20 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 			this.userService.addUser(u);
 		}
 		s = true;
+		createDirectoryInitial();
 	}
 
 	private void insertRelationAdmin(Long user_id, Long role_id){
 		this.userService.insertRelationUser(user_id,role_id);
 	}
 
+	
+	
+	
+	public void createDirectoryInitial() {
+		ManipulatorFile f = new ManipulatorFile();
+		f.createDirectoryInitialLoader(ManipulatorFile.PATH_INITIAL, ManipulatorFile.DIR_INITIAL);
+	}
 	
 	/**
 	 * creates the roles of users for administrator and normal user being 
