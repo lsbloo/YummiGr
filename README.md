@@ -312,7 +312,7 @@ The endpoints support some configurations of the type of graph to be generated. 
    #### month(String) Example(06)
    
    
-   ![Screenshot](test.png)
+   ![Screenshot](teste.png)
    
    
  <br>
