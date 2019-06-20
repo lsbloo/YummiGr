@@ -316,11 +316,8 @@ The endpoints support some configurations of the type of graph to be generated. 
    
    
    <br>
-   <p>
-    <h6>
-  The api supports the storage of generated graphics according to each search method. the created .png files are stored in a directories tree of each yummi user. api also supports the serialization of the images and returns the response of the same serialized images so that you create your deserialization and visualization mechanism.
-  </h6>
-  </p>
+   
+   <p>The api supports the storage of generated graphics according to each search method. the created .png files are stored in a directories tree of each yummi user. api also supports the serialization of the images and returns the response of the same serialized images so that you create your deserialization and visualization mechanism.</p>
    
  <br>
 <h3>JSON images generated.</h3>
