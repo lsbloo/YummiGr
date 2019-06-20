@@ -71,11 +71,206 @@ $ ./mvnw clean package
 $ java \
 -YUMMIGR_DB_POSTGRESQL=localhost \
 -YUMMIGR_DB_PORT=5432 \
--YUMMIGR_DB_DATABASE=tracytd \
+-YUMMIGR_DB_DATABASE=yummidb \
 -YUMMIGR_DB_USERNAME=postgresql \
 -YUMMIGR_DB_PASSWORD=admin \
 -jar YummiGr/YummiGR/target/yummigr.jar
 
  
+ # How to use the urls in this api.
+ 
+ <h4>Creation of users.</h4>
+ <p>
+ Create username yummi: /yummicr/api/v1/mgmnt/users/c/
+ 
+This url is responsible for creating yummi users and admits some values. Your HTTP verb is POST
+
+##### username(String)
+##### password(String)
+##### first_name(String)
+##### last_name(String)
+##### email(String)
+##### actived(boolean)
+##### identifier(String)
+ </p>
+ <br>
+ <h4>Authentication of users.</h4>
+ <p>
+  Authentication of user : localhost:8080/login.
+  
+This url provides authentication of users in yummi, given a user created and authenticated successfully is generated a    token with validity of 10 days. 
+the HTTP verb is POST
+  
+  ##### username(String)
+  ##### password(String)
+  </p>
+<br>
+<h4>Disable user</h4>
+<p>
+  Disable : /yummicr/api/v1/mgmnt/users/desative/account/user
+  
+  This url provides the deactivation of a user whose data still persists in api.
+  the verb http is delete.
+
+ #### identifier(String)
+ 
+ </p>
+ <br>
+ <h4>View Information Users</h4>
+ <p>
+  View Information Users:  /yummicr/api/v1/mgmnt/users/list/all/users/
+  
+  Viewing all active users on the system, only the user who has access permission (ADMIN) can view. 
+  the verb http is get.
+  </p>
+  <br>
+  
+<h3>Yummigr Tools.</h3>
+<p>
+  
+The yummi has some interesting features for sending emails and sms. The user can create a connector to manage the automatic sending of messages either by sms or email. The sending of messages can contain customized messages or already loaded in the creation of a specific contact.
+
+<br>
+<h5>Create MessengerConnector </h5>
+
+Messenger Connector is an entity responsible for creating contacts. This entity supports some values, such as account_sid, auth_token, and user identifier. Understand how account_sid and auth_token generated high hash fields for api. these fields are not the user's responsibility to fill in, and yes the system creates those values. The user identifier is part of the same premise as field 1) where the identifier is unique for each user in the system.
+
+<h5>Creating a messenger connector bound to a user.</h5>
+      
+   Creating: /yummicr/api/v1/toolkit/messenger/c/
+   
+   #### identifier(String)
+   #### account_sid(String)GeneratedValue
+   #### auth_token(String)GeneratedValue.
+       
+   This url provides the creation of a connector for a user. It supports the user identifier and two self-generated      fields for api (account_sid, auth_token). verb is POST.
+</p>
+<br>
+<h5>Create schedule connector.</h5>
+
+  <p>
+  Schedule Connector is an entity responsible for the time management of sending emails and sms, this entity is directly related to the messenger connector, in this way the user can customize the time of sending messages. verb is POST.
+   
+  The user can change the time when sending automatic messages.To update the shipping time, you can use this same url.
+  
+  Creating: /yummicr/api/v1/toolkit/messenger/schedule/c/
+  
+   #### identifier(String)
+   
+   #### time(String) Default is milliseconds.
+
+</p>
+<br>
+<h5>Creating contacts for the messenger connector.</h5>
+
+  <p>
+  
+As previously stated, the messenger connector is responsible for activating the sms and email sending capabilities. In this way a connector entity may have one or more contacts to send messages. this verb http is POST.
+  
+  Creating: /yummicr/api/v1/toolkit/messenger/contact/c/ (POST)
+  
+  #### identifier(String)
+  #### message(String)
+  #### phone_number(String)
+  #### subject_message(String)
+  #### email(String)
+  
+  Updating: /yummicr/api/v1/toolkit/messenger/contact/u/ (PUT)
+  
+   #### id_contact(String)
+   
+   Get ID Contact: /yummicr/api/v1/toolkit/messenger/contact/u/ (GET)
+    
+   #### email(String)
+   #### identifier(String)
+   #### phone_number(String)
+   
+   Delete Contact: /yummicr/api/v1/toolkit/messenger/contact/d/ (DELETE)
+   
+   #### email(String)
+   #### identifier(String)
+   #### phone_number(String)
+      
+  </p>
+ <br>
+ 
+ <h4>Sending Messages.</h4>
+ 
+<p>
+  
+This url provides the sending of automatic messages so that the message and the title of the contact created specified, is sent without the need of a customization of sending of the user.
+
+Broadcast pre-configured messages: /yummicr/api/v1/toolkit/messenger/s/email/all/p/ (POST).
+  
+   #### identifier(String)
+   #### email(String) (sender)
+   #### password(String) (sender)
+   #### activate(String)(Default true)
+
+  
+ Broadcast messages: /yummicr/api/v1/toolkit/messenger/s/email/all/p/ (POST).
+ 
+ BroadCast for sending emails, with customized message (message and subject).
  
  
+   #### identifier(String)
+   #### email(String) (sender)
+   #### password(String) (sender)
+   #### activate(String)(Default true)
+   #### message(String)
+   #### subject_message(STRING)
+   
+ Send pre-configured messages to selected contacts
+ 
+ Sender Selected Contacts: /yummicr/api/v1/toolkit/messenger/s/email/select/p/ (POST)
+ 
+   #### identifier(String)
+   #### email(String) (sender)
+   #### password(String) (sender)
+   #### activate(String)(Default true)
+   #### emails_contacts_select(String)
+   
+ Sender Selected Contacts for sending emails, with customized message (message and subject).
+ 
+ Sender Selected Contacts for sending emails : /yummicr/api/v1/toolkit/messenger/s/email/select/
+ 
+  #### identifier(String)
+  #### email(String) (sender)
+  #### password(String) (sender)
+  #### activate(String)(Default true)
+  #### message(String)
+  #### subject_message(STRING)
+ 
+  
+  Stop sending custom or pre-configured messages.
+  
+  /yummicr/api/v1/toolkit/messenger/s/email/all/cancel/ (GET)
+ 
+  /yummicr/api/v1/toolkit/messenger/s/sms/all/cancel/ (GET)
+ 
+  #### identifier(String)
+</p>
+<br>
+
+<h4>Sending SMS</h4>
+<p>
+  /yummicr/api/v1/toolkit/messenger/messenger/s/sms/all/ (POST)
+  
+  #### identifier(String)
+  #### email(String) (sender) (Login facilitaapi).
+  #### password(String) (sender) (password facilitaapi).
+  #### activate(String)(Default true)
+  #### message(String)
+  #### subject_message(STRING)
+ 
+ /yummicr/api/v1/toolkit/messenger/messenger/s/sms/all/p/ (POST)
+ 
+ #### identifier(String)
+ #### email(String) (sender) (Login facilitaapi).
+ #### password(String) (sender) (password facilitaapi).
+ #### activate(String)(Default true)
+</p>
+<br>
+<h3>Specialized graphics.</h3>
+ <br>
+<h3>JSON images generated.</h3>
