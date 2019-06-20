@@ -77,6 +77,17 @@ $ java \
 -jar YummiGr/YummiGR/target/yummigr.jar
 
  
+ # HOW TO EXECUTE WITH DOCKER.
+ 
+ 
+ 
+ 
+ # HOW TO BUILD AND EXECUTE WITH HEROKU.
+ 
+ 
+ 
+ 
+ 
  # How to use the urls in this api.
  
  <h4>Creation of users.</h4>
