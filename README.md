@@ -321,3 +321,7 @@ The endpoints support some configurations of the type of graph to be generated. 
    
  <br>
 <h3>JSON images generated.</h3>
+
+<br>
+
+<h3>Endpoints for communing with umbrella api</h3>
