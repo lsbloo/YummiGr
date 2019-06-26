@@ -3,10 +3,10 @@ package com.com.yummigr.umbrella;
 import java.io.IOException;
 
 import com.com.yummigr.models.User;
+import com.com.yummigr.umbrella.core.ConnectorProfiles;
 import com.com.yummigr.umbrella.core.Profile;
 import com.com.yummigr.umbrella.core.UmbrellaUser;
 
-import okhttp3.Credentials;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -53,13 +53,40 @@ public class UmbrellaEntryImpl {
 	
 	public Profile create(User u ,Profile e , String content_type) throws IOException {	
 		String basic = u.getUsername()+":"+u.getPassword();
-		System.err.println(basic);
 		Call<Profile> call = service.createProfile(content_type,e,basic);
 		Response<Profile> res = call.execute();
 		return res.body();
 		
 	}
 	
+	public ConnectorProfiles connect(User u , ConnectorProfiles e , String content_type) throws IOException {
+		String basic = u.getUsername()+":"+u.getPassword();
+		Call<ConnectorProfiles> call = service.connectProfile(content_type, e, basic);
+		Response<ConnectorProfiles> res = call.execute();
+		return res.body();
+		
+	}
+	
+	public ConnectorProfiles getNewFollowers(User u , ConnectorProfiles e , String content_type) throws IOException {
+		String basic = u.getUsername()+":"+u.getPassword();
+		Call<ConnectorProfiles> call = service.getNewMyFollowers(content_type, e, basic);
+		Response<ConnectorProfiles> res = call.execute();
+		return res.body();
+	}
+	
+	
+	public ConnectorProfiles followUsersByListOfTags(User u , ConnectorProfiles e , String content_type) throws IOException {
+		String basic = u.getUsername()+":"+u.getPassword();
+		Call<ConnectorProfiles> call = service.followUsersByListOfTags(content_type, e, basic);
+		Response<ConnectorProfiles> res = call.execute();
+		return res.body();
+	}
 	
 
+	public ConnectorProfiles followFollowersOfMyFriend(User u , ConnectorProfiles e , String content_type) throws IOException {
+		String basic = u.getUsername()+":"+u.getPassword();
+		Call<ConnectorProfiles> call = service.followFollowersOfMyFriend(content_type, e, basic);
+		Response<ConnectorProfiles> res = call.execute();
+		return res.body();
+	}
 }
