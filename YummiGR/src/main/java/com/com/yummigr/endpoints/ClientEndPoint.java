@@ -400,7 +400,7 @@ public class ClientEndPoint {
 		GeneratorFreeChart generator = new GeneratorFreeChart();
 		List<Contacts> cc = this.generatorFreeChartService.getContactsByMessengerConnector(identifier);
 		
-		generator.saveGraphicPNG(generator.CustomizeGraph(generator.TITTLE_EMAIL_GRAPHS_MONTH,generator.getDataSet(
+		generator.saveGraphicPNG(generator.CustomizeGraph(generator.TITTLE_EMAIL_GRAPHS_FULL,generator.getDataSet(
 				this.generatorFreeChartService.getAttrInformationContactTrackerEmailsFull(cc, month,day,year),
 				this.generatorFreeChartService.getLoggerRelated(
 						this.generatorFreeChartService.getAttrInformationContactTrackerEmailsFull(cc, month,day,year)
@@ -416,7 +416,7 @@ public class ClientEndPoint {
 		GeneratorFreeChart generator = new GeneratorFreeChart();
 		List<Contacts> cc = this.generatorFreeChartService.getContactsByMessengerConnector(identifier);
 		
-		generator.saveGraphicPNG(generator.CustomizeGraph(generator.TITTLE_EMAIL_GRAPHS_MONTH,generator.getDataSet(
+		generator.saveGraphicPNG(generator.CustomizeGraph(generator.TITTLE_EMAIL_GRAPHS_YEAR,generator.getDataSet(
 				this.generatorFreeChartService.getAttrInformationContactTrackerEmailsYear(cc, year),
 				this.generatorFreeChartService.getLoggerRelated(
 						this.generatorFreeChartService.getAttrInformationContactTrackerEmailsYear(cc, year)

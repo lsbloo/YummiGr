@@ -32,7 +32,9 @@ public class GeneratorFreeChart {
 	private Set<LoggerSender> keySet;
 
 	public static final String TITTLE_EMAIL_GRAPHS_MONTH= "Emails Sent According to the Month of Submission.";
-
+	public static final String TITTLE_EMAIL_GRAPHS_YEAR = "Emails Sent According to the Year of Submission";
+	public static final String TITTLE_EMAIL_GRAPHS_FULL = "Emails Sent According to the Month/Year/Day of Submission";
+	
 
 	public GeneratorFreeChart() {
 		

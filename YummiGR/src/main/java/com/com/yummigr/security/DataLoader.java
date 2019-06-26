@@ -1,5 +1,6 @@
 package com.com.yummigr.security;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -72,7 +73,12 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 			this.userService.addUser(u);
 		}
 		s = true;
-		createDirectoryInitial();
+		try {
+			createDirectoryInitial();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void insertRelationAdmin(Long user_id, Long role_id){
@@ -82,7 +88,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 	
 	
 	
-	public void createDirectoryInitial() {
+	public void createDirectoryInitial() throws IOException {
 		ManipulatorFile f = new ManipulatorFile();
 		f.createDirectoryInitialLoader(ManipulatorFile.PATH_INITIAL, ManipulatorFile.DIR_INITIAL);
 	}

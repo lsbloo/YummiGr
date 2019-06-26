@@ -23,7 +23,7 @@ public class ManagerFilesGraphics{
 	private String name_arq;
 	private String identifier;
 	
-	public ManagerFilesGraphics(String identifier, JFreeChart chart, String name_arq) {
+	public ManagerFilesGraphics(String identifier, JFreeChart chart, String name_arq) throws IOException {
 		this.manipulator = new ManipulatorFile();
 		this.jFreeChart=chart;
 		this.name_arq=name_arq;

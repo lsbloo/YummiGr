@@ -1,16 +1,21 @@
 package com.com.yummigr.archives;
 
 import java.io.File;
+import java.io.IOException;
 
 public class ManipulatorFile {
 	
 	private String name_dir;
 	private File file;
-	public static final String PATH_INITIAL = "/home/osvaldoairon/";
-	public static final String DIR_INITIAL = "yummi_data";
-	public static final String PATH_USERS = "/home/osvaldoairon/yummi_data/";
+	public static  String PATH_INITIAL = "";
+	public static final String DIR_INITIAL = "/yummi_data";
+	public static String PATH_USERS = "";
 	
-	public ManipulatorFile() {}
+	
+	public ManipulatorFile() throws IOException {
+		ManipulatorFile.PATH_INITIAL = new File("..").getCanonicalPath();
+		ManipulatorFile.PATH_USERS = new File("..").getCanonicalPath() + "/yummi_data/";
+	}
 	
 	public ManipulatorFile(String name_dir) {
 		setName_dir(name_dir);
@@ -32,6 +37,7 @@ public class ManipulatorFile {
 		boolean exit = f.exists();
 		return exit;
 	}
+	
 	public void generateDirectoryUser() {
 		if(!this.file.exists()) {
 			boolean exit = this.file.mkdir();
