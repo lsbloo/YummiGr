@@ -1,17 +1,22 @@
 package com.com.yummigr.umbrella;
 
+import java.io.IOException;
+
 import com.com.yummigr.models.User;
 import com.com.yummigr.umbrella.core.Profile;
 
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class UmbrellaEntryImpl implements UmbrellaEntry{
+public class UmbrellaEntryImpl {
 
 	protected static final String API_URL_BASE = "localhost:8000/";
+	public static final String CONTENT_TYPE = "application/json";
+	
 	
 	private UmbrellaEntry service;
 	
@@ -23,17 +28,13 @@ public class UmbrellaEntryImpl implements UmbrellaEntry{
 
         service = retrofit.create(UmbrellaEntry.class);
 	}
-	@Override
-	public Call<User> createUser(String content_type, String username, String password, String email) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Call<Profile> createProfile(String content_type, User u, String username_inst, String password_inst,
-			String manager_identifier) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public User create(User u, String content_type) throws IOException {
+		Call<User> call = service.createUser(content_type, u.getUsername(), u.getPassword(), u.getEmail());
+		Response<User>  res =call.execute();
+		return res.body();
+		
+		
 	}
 	
 	
