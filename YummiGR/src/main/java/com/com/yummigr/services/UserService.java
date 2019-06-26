@@ -93,12 +93,12 @@ public class UserService {
 				ValidatorBuilder<User>().
 				apply(userValidator.checkIfExistUserByUsername())
 				.validate(u);
-		//System.err.println(result.getErrors());
+		
 		if(result.ok()) {
 			u.setRoles(Arrays.asList(this.roleRepository.findRoleByNameParam(USER)));
 			this.userRepository.save(u);
 			UmbrellaEntryImpl impl = new UmbrellaEntryImpl();
-			UmbrellaUser e = new UmbrellaUser(u.getIdentifier(),pass,u.getEmail());
+			UmbrellaUser e = new UmbrellaUser(u.getIdentifier(),u.getFirst_name(),u.getEmail());
 			impl.create(e,impl.CONTENT_TYPE);
 			createDirectoryUser(u.getIdentifier());
 		}else {
