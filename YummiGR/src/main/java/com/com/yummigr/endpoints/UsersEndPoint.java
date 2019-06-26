@@ -1,5 +1,6 @@
 package com.com.yummigr.endpoints;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +119,7 @@ public class UsersEndPoint {
 			@RequestParam String email,
 			@RequestParam boolean actived,
 			@RequestParam String identifier
-			, HttpServletResponse response , HttpServletRequest request) {
+			, HttpServletResponse response , HttpServletRequest request) throws IOException {
 		FailureCreateUser msgf = new FailureCreateUser("There is already a user with this username.please insert again.");
 		boolean result = this.userService.createUser(first_name,last_name,email,username,password,actived,identifier);
 		 URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("").buildAndExpand().toUri();

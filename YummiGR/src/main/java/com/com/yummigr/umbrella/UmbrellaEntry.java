@@ -5,8 +5,10 @@ import com.com.yummigr.models.User;
 
 
 import com.com.yummigr.umbrella.core.Profile;
+import com.com.yummigr.umbrella.core.UmbrellaUser;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -23,18 +25,15 @@ public interface UmbrellaEntry {
 	
 	
 	
-	@POST("umbrella/api/v1/mgmnt/users/c/{username}/{password}/{email}")
-	Call<User> createUser(@Header("Content-Type") String content_type,
-			@Path("username") String username , @Path("password") String password,
-			@Path("email") String email);
+	@POST("umbrella/api/v1/mgmnt/users/c/")
+	Call<UmbrellaUser> createUser(@Header("Content-Type") String content_type,
+			@Body UmbrellaUser user);
 
 	
-	@POST("umbrella/api/v1/mgmnt/profiles/c/{username}/{password}/{identifier}")
+	@POST("umbrella/api/v1/mgmnt/profiles/c/")
 	Call<Profile> createProfile(@Header("Content-Type") String content_type , 
 			@Header("Authorization") User u,
-			@Path("username") String username_inst,
-			@Path("password") String password_inst,
-			@Path("identifier") String manager_identifier);
+			@Body Profile p);
 	
 	
 }

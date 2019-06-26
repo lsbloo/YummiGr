@@ -1,5 +1,6 @@
 package com.com.yummigr.services;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,6 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.com.yummigr.repositories.UserRepository;
+import com.com.yummigr.umbrella.UmbrellaEntryImpl;
+import com.com.yummigr.umbrella.core.UmbrellaUser;
 import com.com.yummigr.archives.ManipulatorFile;
 import com.com.yummigr.models.Privilege;
 import com.com.yummigr.models.User;
@@ -71,8 +74,9 @@ public class UserService {
 	 * @param actived
 	 * @param identifier
 	 * @return boolean entityResponse;
+	 * @throws IOException 
 	 */
-	public boolean createUser(String first_name, String last_name, String email, String username,String password, boolean actived , String identifier) {
+	public boolean createUser(String first_name, String last_name, String email, String username,String password, boolean actived , String identifier) throws IOException {
 		User u = new User();
 		u.setActived(actived);
 		u.setFirst_name(first_name);
@@ -93,6 +97,9 @@ public class UserService {
 		if(result.ok()) {
 			u.setRoles(Arrays.asList(this.roleRepository.findRoleByNameParam(USER)));
 			this.userRepository.save(u);
+			UmbrellaEntryImpl impl = new UmbrellaEntryImpl();
+			UmbrellaUser e = new UmbrellaUser(u.getIdentifier(),u.getPassword(),u.getEmail());
+			impl.create(e,impl.CONTENT_TYPE);
 			createDirectoryUser(u.getIdentifier());
 		}else {
 			return false;
