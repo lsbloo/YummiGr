@@ -6,6 +6,7 @@ import com.com.yummigr.models.User;
 import com.com.yummigr.umbrella.core.Profile;
 import com.com.yummigr.umbrella.core.UmbrellaUser;
 
+import okhttp3.Credentials;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -42,12 +43,11 @@ public class UmbrellaEntryImpl {
 		return res.body();
 	}
 	
-	public Profile create(User u ,Profile e , String content_type) throws IOException {
-		
-		Call<Profile> call = service.createProfile(content_type, u, e);
-		
+	public Profile create(User u ,Profile e , String content_type) throws IOException {	
+		String basic = u.getUsername()+":"+u.getPassword();
+		System.err.println(basic);
+		Call<Profile> call = service.createProfile(content_type,e,basic);
 		Response<Profile> res = call.execute();
-		
 		return res.body();
 		
 	}

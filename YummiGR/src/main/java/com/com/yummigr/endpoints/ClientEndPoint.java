@@ -23,8 +23,11 @@ import com.com.yummigr.models.Messenger;
 import com.com.yummigr.services.ContactService;
 import com.com.yummigr.services.MessengerService;
 import com.com.yummigr.services.ScheduleService;
+import com.com.yummigr.services.UmbrellaService;
 import com.com.yummigr.services.UserService;
+import com.com.yummigr.umbrella.core.Profile;
 import com.com.yummigr.validator.core.Result;
+import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 
 @RestController
 @RequestMapping("/yummicr/api/v1/toolkit")
@@ -42,18 +45,20 @@ public class ClientEndPoint {
 	
 	private final GeneratorFreeChartService generatorFreeChartService;
 	
+	private final UmbrellaService umbrellaService;
 	
 	private JavaMailSender javaMailSender;
 	@Autowired
 	public ClientEndPoint(UserService userService , MessengerService service
 			, ScheduleService scheduleService , ContactService contactService 
-			, JavaMailSender javaMailSender , GeneratorFreeChartService cc) {
+			, JavaMailSender javaMailSender , GeneratorFreeChartService cc, UmbrellaService umb) {
 		this.userService=userService;
 		this.messengerService=service;
 		this.scheduleService=scheduleService;
 		this.contactService=contactService;
 		this.javaMailSender=javaMailSender;
 		this.generatorFreeChartService=cc;
+		this.umbrellaService=umb;
 	}
 	/**
 	 * creates a messenger connector for an associated user, 
@@ -426,5 +431,20 @@ public class ClientEndPoint {
 		
 	}
 	
+	@PostMapping(value="/umbrella/profile/c/", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UmbrellaDTO> createProfileInstagramByGestor(@RequestParam("username") String username , @RequestParam("password") String password, @RequestParam("identifier") String identifier) throws IOException{
+		
+		Profile e = new Profile(username,password,identifier);
+		boolean result = this.umbrellaService.createProfileInst(e);
+		if(result) {
+			UmbrellaDTO dt = new UmbrellaDTO("Profile created!" , true);
+			
+			return ResponseEntity.status(HTTPResponse.SC_CREATED).body(dt);
+		}else {
+			UmbrellaDTO dt = new UmbrellaDTO("Profile don't created!" , false);
+			
+			return ResponseEntity.status(HTTPResponse.SC_FORBIDDEN).body(dt);
+		}
+	}
 }
 
