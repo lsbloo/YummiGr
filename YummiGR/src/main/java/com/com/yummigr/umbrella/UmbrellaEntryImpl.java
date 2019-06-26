@@ -11,7 +11,13 @@ import retrofit2.Retrofit;
 
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
+/**
+ * 
+responsible for all iterations with an umbrella api,
+methods of creation and use of umbrella api toolkit are implemented here.
+ * @author osvaldoairon
+ *
+ */
 public class UmbrellaEntryImpl {
 
 	protected static final String API_URL_BASE = "localhost:8000/";
@@ -34,6 +40,16 @@ public class UmbrellaEntryImpl {
 		Response<User>  res =call.execute();
 		return res.body();
 		
+		
+	}
+	
+	public Profile create(User u ,Profile e , String content_type) throws IOException {
+		
+		Call<Profile> call = service.createProfile(content_type, u, e.getUsername_inst(), e.getPassword_inst(), u.getIdentifier());
+		
+		Response<Profile> res = call.execute();
+		
+		return res.body();
 		
 	}
 	
