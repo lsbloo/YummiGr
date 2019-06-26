@@ -22,7 +22,15 @@ methods of creation and use of umbrella api toolkit are implemented here.
  */
 public class UmbrellaEntryImpl {
 
+	/**
+	 * criar uma variavel de ambiente para setar a url base da umbrella.
+	 * 
+	 */
 	protected static final String API_URL_BASE = "http://localhost:8000/";
+	
+	/**
+	 * default;
+	 */
 	public static final String CONTENT_TYPE = "application/json";
 	
 	
