@@ -6,7 +6,7 @@ insert into privilege (id,name) values
 (10,'READ_PRIVILEGE'),
 (11,'WRITE_PRIVILEGE');
 
-insert into tracy_user (id, actived, email, first_name, identifier, last_name, password, username) values
+insert into yummi_user (id, actived, email, first_name, identifier, last_name, password, username) values
 (30, true, 'administration@yummigr.org', 'Administrador', 'admin','Administrador', '$2a$10$WwnEzg0ppWn1q1qBwgnMEe5PN5m.a00VKrwtg2HRvBrcirJPK90b2','admin');
 
 
