@@ -30,4 +30,16 @@ public class ConnectorProfiles {
 	
 	
 
+	public ConnectorProfiles(){}
+
+	/**
+	 * ? ! yeap
+	 * @param id_perfil_select
+	 * @param manager_identifier
+	 */
+	public ConnectorProfiles(String id_perfil_select , String manager_identifier){
+		setId_perfil_select(id_perfil_select);
+		setManager_identifier(manager_identifier);
+
+	}
 }
