@@ -6,7 +6,7 @@ public class ConnectorProfiles {
 	private String id_perfil_select;
 	
 	
-	private String manager_identifier;
+	private String identifier;
 
 
 	public String getId_perfil_select() {
@@ -20,12 +20,12 @@ public class ConnectorProfiles {
 
 
 	public String getManager_identifier() {
-		return manager_identifier;
+		return identifier;
 	}
 
 
 	public void setManager_identifier(String manager_identifier) {
-		this.manager_identifier = manager_identifier;
+		this.identifier = manager_identifier;
 	}
 	
 	

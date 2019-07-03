@@ -53,4 +53,15 @@ public class UmbrellaService {
 
 		return false;
 	}
+
+
+	public boolean getNewFollowers(ConnectorProfiles e ) throws IOException {
+		User u = checkUser((e.getManager_identifier()));
+
+		if(u!=null){
+			this.impl.getNewFollowers(u,e,this.impl.CONTENT_TYPE);
+			return true;
+		}
+		return false;
+	}
 }

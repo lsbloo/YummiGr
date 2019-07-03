@@ -59,4 +59,10 @@ public class UmbrellaDTO {
 		setProfile_generate(profile);
 	}
 
+	public UmbrellaDTO(String description , List<String> param,boolean new_followers){
+		setDescription(description);
+		setNew_followers(new_followers);
+
+	}
+
 }

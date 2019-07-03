@@ -33,7 +33,7 @@ public class UmbrellaEntryImpl {
 	 * criar uma variavel de ambiente para setar a url base da umbrella.
 	 * 
 	 */
-	protected static final String API_URL_BASE = "http://localhost:8000/";
+	protected static final String API_URL_BASE = "http://192.168.0.117:8000/";
 	
 	/**
 	 * default;
@@ -67,8 +67,9 @@ public class UmbrellaEntryImpl {
 	}
 	
 	public Profile create(User u ,Profile e , String content_type) throws IOException {	
-		String basic = getAuthorization(u.getUsername(),u.getFirst_name());
-		Call<Profile> call = this.service.createProfile(content_type,e,basic);
+		System.err.println(u.getUsername()  +" : "+ u.getFirst_name());
+
+		Call<Profile> call = this.service.createProfile(content_type,e);
 		Response<Profile> res = call.execute();
 		return res.body();
 		

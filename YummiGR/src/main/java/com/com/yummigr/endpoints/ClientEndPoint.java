@@ -464,6 +464,23 @@ public class ClientEndPoint {
 			return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(dt);
 		}
 	}
+
+
+	@PostMapping(value="/umbrella/profile/new/followers/" , consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UmbrellaDTO> getNewFollowers(@RequestParam("manager_identifier") String manager_identifier , @RequestParam("id_perfil_select") String id_perfil_select) throws IOException {
+		ConnectorProfiles connectorProfiles = new ConnectorProfiles(id_perfil_select,manager_identifier);
+
+		boolean result = this.umbrellaService.getNewFollowers(connectorProfiles);
+
+		if(result){
+			UmbrellaDTO dt = new UmbrellaDTO("GET new Followers!" , null,true);
+			return ResponseEntity.status(HttpServletResponse.SC_OK).body(dt);
+		}else{
+
+			UmbrellaDTO dt = new UmbrellaDTO("GET new Followers! Fail Check parameter's " , null,false);
+			return ResponseEntity.status(HttpServletResponse.SC_OK).body(dt);
+		}
+	}
 }
 
 

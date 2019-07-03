@@ -45,8 +45,7 @@ public interface UmbrellaEntry {
 	 */
 	@POST("umbrella/api/v1/mgmnt/profiles/c/")
 	Call<Profile> createProfile(@Header("Content-Type") String content_type , 
-			@Body Profile p,
-			@Header("Authorization") String basic);
+			@Body Profile p);
 	
 	
 	/**

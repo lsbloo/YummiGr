@@ -3,12 +3,12 @@ package com.com.yummigr.umbrella.core;
 public class Profile {
 	
 	
-	private String username_inst;
+	private String username;
 	
-	private String password_inst;
+	private String password;
 	
 	
-	private String manager_identifier;
+	private String identifier;
 
 	
 	
@@ -20,32 +20,32 @@ public class Profile {
 	}
 
 	public String getManager_identifier() {
-		return manager_identifier;
+		return identifier;
 	}
 
 
 	public void setManager_identifier(String manager_identifier) {
-		this.manager_identifier = manager_identifier;
+		this.identifier = manager_identifier;
 	}
 
 
 	public String getPassword_inst() {
-		return password_inst;
+		return password;
 	}
 
 
 	public void setPassword_inst(String password_inst) {
-		this.password_inst = password_inst;
+		this.password = password_inst;
 	}
 
 
 	public String getUsername_inst() {
-		return username_inst;
+		return username;
 	}
 
 
 	public void setUsername_inst(String username_inst) {
-		this.username_inst = username_inst;
+		this.username = username_inst;
 	}
 	
 	
