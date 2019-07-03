@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.HashMap;
 
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -34,14 +35,21 @@ public class ManagerFilesGraphics{
 	
 
 	
-	public void save() throws IOException {
+	public HashMap<String,Boolean> save() throws IOException {
 		if(this.manipulator.checkExistenceDir(this.identifier)) {
 			OutputStream file = new FileOutputStream(this.manipulator.PATH_USERS+identifier+"/"+name_arq);
 			ChartUtilities.writeChartAsPNG(file, this.jFreeChart, 860, 480);
-			
+			String path = this.manipulator.PATH_USERS+identifier+"/"+name_arq;
+			HashMap k = new HashMap<String,Boolean>();
 			file.close();
+			k.put(path,true);
+			return k;
 		}else {
+			String path = this.manipulator.PATH_USERS+identifier+"/"+name_arq;
 			System.err.println("Directory User dont create");
+			HashMap k = new HashMap<String,Boolean>();
+			k.put(path,false);
+			return k;
 		}
 	}
 	

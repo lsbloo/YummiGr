@@ -85,9 +85,9 @@ public class GeneratorFreeChart {
 	}
 	
 	
-	public void saveGraphicPNG(JFreeChart g , String name_arq, String identifier) throws IOException {
+	public HashMap<String, Boolean> saveGraphicPNG(JFreeChart g , String name_arq, String identifier) throws IOException {
 		ManagerFilesGraphics manager = new ManagerFilesGraphics(identifier,g,name_arq);
-		manager.save();
+		return manager.save();
 	}
 	
 	public Set<LoggerSender> getS() {

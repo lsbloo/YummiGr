@@ -1,6 +1,7 @@
 package com.com.yummigr.endpoints;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.print.attribute.standard.Media;
@@ -392,12 +393,25 @@ public class ClientEndPoint {
 		GeneratorFreeChart generator = new GeneratorFreeChart();
 		List<Contacts> cc = this.generatorFreeChartService.getContactsByMessengerConnector(identifier);
 
-		generator.saveGraphicPNG(generator.CustomizeGraph(generator.TITTLE_EMAIL_GRAPHS_MONTH, generator.getDataSet(
+		HashMap<String,Boolean> result = generator.saveGraphicPNG(generator.CustomizeGraph(generator.TITTLE_EMAIL_GRAPHS_MONTH, generator.getDataSet(
 				this.generatorFreeChartService.getAttrInformationContactTrackerEmailsMnth(cc, month),
 				this.generatorFreeChartService.getLoggerRelated(
 						this.generatorFreeChartService.getAttrInformationContactTrackerEmailsMnth(cc, month)
 				)), option), identifier + "_emails_month_.png", identifier);
 
+		if(result != null){
+			for(String key : result.keySet()){
+				if(result.containsValue(true)){
+					GraphicsDTO dt = new GraphicsDTO("Create File PNG",key,true,"month",option);
+					return  ResponseEntity.status(HttpServletResponse.SC_ACCEPTED).body(dt);
+				}else{
+					GraphicsDTO dt = new GraphicsDTO("Dont Create File PNG",key,false,"month",option);
+					return  ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(dt);
+				}
+
+			}
+
+		}
 		return null;
 
 	}
@@ -408,12 +422,24 @@ public class ClientEndPoint {
 		GeneratorFreeChart generator = new GeneratorFreeChart();
 		List<Contacts> cc = this.generatorFreeChartService.getContactsByMessengerConnector(identifier);
 
-		generator.saveGraphicPNG(generator.CustomizeGraph(generator.TITTLE_EMAIL_GRAPHS_FULL, generator.getDataSet(
+		HashMap<String,Boolean> result = generator.saveGraphicPNG(generator.CustomizeGraph(generator.TITTLE_EMAIL_GRAPHS_FULL, generator.getDataSet(
 				this.generatorFreeChartService.getAttrInformationContactTrackerEmailsFull(cc, month, day, year),
 				this.generatorFreeChartService.getLoggerRelated(
 						this.generatorFreeChartService.getAttrInformationContactTrackerEmailsFull(cc, month, day, year)
 				)), option), identifier + "_emails_full_.png", identifier);
+		if(result != null){
+			for(String key : result.keySet()){
+				if(result.containsValue(true)){
+					GraphicsDTO dt = new GraphicsDTO("Create File PNG",key,true,"data_full",option);
+					return  ResponseEntity.status(HttpServletResponse.SC_ACCEPTED).body(dt);
+				}else{
+					GraphicsDTO dt = new GraphicsDTO("Dont Create File PNG",key,false,"data_full",option);
+					return  ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(dt);
+				}
 
+			}
+
+		}
 		return null;
 
 	}
@@ -424,14 +450,25 @@ public class ClientEndPoint {
 		GeneratorFreeChart generator = new GeneratorFreeChart();
 		List<Contacts> cc = this.generatorFreeChartService.getContactsByMessengerConnector(identifier);
 
-		generator.saveGraphicPNG(generator.CustomizeGraph(generator.TITTLE_EMAIL_GRAPHS_YEAR, generator.getDataSet(
+		HashMap<String,Boolean> result = generator.saveGraphicPNG(generator.CustomizeGraph(generator.TITTLE_EMAIL_GRAPHS_YEAR, generator.getDataSet(
 				this.generatorFreeChartService.getAttrInformationContactTrackerEmailsYear(cc, year),
 				this.generatorFreeChartService.getLoggerRelated(
 						this.generatorFreeChartService.getAttrInformationContactTrackerEmailsYear(cc, year)
 				)), option), identifier + "_emails_year_.png", identifier);
+		if(result != null){
+			for(String key : result.keySet()){
+				if(result.containsValue(true)){
+					GraphicsDTO dt = new GraphicsDTO("Create File PNG",key,true,"year",option);
+					return  ResponseEntity.status(HttpServletResponse.SC_ACCEPTED).body(dt);
+				}else{
+					GraphicsDTO dt = new GraphicsDTO("Dont Create File PNG",key,false,"year",option);
+					return  ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN).body(dt);
+				}
 
+			}
+
+		}
 		return null;
-
 	}
 
 	@PostMapping(value = "/umbrella/profile/c/", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -471,6 +508,22 @@ public class ClientEndPoint {
 		ConnectorProfiles connectorProfiles = new ConnectorProfiles(id_perfil_select,manager_identifier);
 
 		boolean result = this.umbrellaService.getNewFollowers(connectorProfiles);
+
+		if(result){
+			UmbrellaDTO dt = new UmbrellaDTO("GET new Followers!" , null,true);
+			return ResponseEntity.status(HttpServletResponse.SC_OK).body(dt);
+		}else{
+
+			UmbrellaDTO dt = new UmbrellaDTO("GET new Followers! Fail Check parameter's " , null,false);
+			return ResponseEntity.status(HttpServletResponse.SC_OK).body(dt);
+		}
+	}
+
+	@PostMapping(value="/umbrella/profile/followers/friends/" , consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UmbrellaDTO> followFollowersOfMyFriend(@RequestParam("manager_identifier") String manager_identifier , @RequestParam("id_perfil_select") String id_perfil_select) throws IOException {
+		ConnectorProfiles connectorProfiles = new ConnectorProfiles(id_perfil_select,manager_identifier);
+
+		boolean result = this.umbrellaService.followFollowersOfMyFriend(connectorProfiles);
 
 		if(result){
 			UmbrellaDTO dt = new UmbrellaDTO("GET new Followers!" , null,true);
