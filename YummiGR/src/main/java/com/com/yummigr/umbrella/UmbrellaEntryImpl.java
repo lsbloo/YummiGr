@@ -15,6 +15,7 @@ import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -59,11 +60,22 @@ public class UmbrellaEntryImpl {
 		 return b;
 	}
 	
-	public UmbrellaUser create(UmbrellaUser u, String content_type) throws IOException {
+	public void create(UmbrellaUser u, String content_type) throws IOException {
 		
 		Call<UmbrellaUser> call = service.createUser(content_type, u);
-		Response<UmbrellaUser>  res =call.execute();
-		return res.body();
+		 call.enqueue(new Callback<UmbrellaUser>() {
+			@Override
+			public void onResponse(Call<UmbrellaUser> call, Response<UmbrellaUser> response) {
+				System.err.println("createing user !");
+
+			}
+
+			@Override
+			public void onFailure(Call<UmbrellaUser> call, Throwable throwable) {
+
+			}
+		});
+
 	}
 	
 	public Profile create(User u ,Profile e , String content_type) throws IOException {	
