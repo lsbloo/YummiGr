@@ -75,6 +75,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 		s = true;
 		try {
 			createDirectoryInitial();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -85,12 +86,22 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 		this.userService.insertRelationUser(user_id,role_id);
 	}
 
-	
-	
-	
+
+	/**
+	 * create directorys initial of yummiApplication;
+	 * @throws IOException
+	 */
 	public void createDirectoryInitial() throws IOException {
 		ManipulatorFile f = new ManipulatorFile();
 		f.createDirectoryInitialLoader(ManipulatorFile.PATH_INITIAL, ManipulatorFile.DIR_INITIAL);
+		f.createDirectoryOfLoggersInitialLoader(ManipulatorFile.PATH_INITIAL,ManipulatorFile.DIR_INITIAl_LOGGER);
+		f.generateCSVFile(ManipulatorFile.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[0]);
+		f.generateCSVFile(ManipulatorFile.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[1]);
+		f.generateCSVFile(ManipulatorFile.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[2]);
+		f.generateCSVFile(ManipulatorFile.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[3]);
+		f.generateCSVFile(ManipulatorFile.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[4]);
+		f.generateCSVFile(ManipulatorFile.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[5]);
+		f.generateCSVFile(ManipulatorFile.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[6]);
 	}
 	
 	/**
