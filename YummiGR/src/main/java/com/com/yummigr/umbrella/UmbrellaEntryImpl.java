@@ -32,6 +32,7 @@ public class UmbrellaEntryImpl {
 
 	/**
 	 * criar uma variavel de ambiente para setar a url base da umbrella.
+	 *
 	 * 
 	 */
 	protected static final String API_URL_BASE = "http://192.168.0.117:8000/";
@@ -66,7 +67,8 @@ public class UmbrellaEntryImpl {
 		 call.enqueue(new Callback<UmbrellaUser>() {
 			@Override
 			public void onResponse(Call<UmbrellaUser> call, Response<UmbrellaUser> response) {
-				System.err.println("createing user !");
+				// adicionar ao logger
+				// :D
 
 			}
 
@@ -78,43 +80,92 @@ public class UmbrellaEntryImpl {
 
 	}
 	
-	public Profile create(User u ,Profile e , String content_type) throws IOException {	
+	public void create(User u ,Profile e , String content_type) throws IOException {
 		System.err.println(u.getUsername()  +" : "+ u.getFirst_name());
 
 		Call<Profile> call = this.service.createProfile(content_type,e);
-		Response<Profile> res = call.execute();
-		return res.body();
+		call.enqueue(new Callback<Profile>() {
+			@Override
+			public void onResponse(Call<Profile> call, Response<Profile> response) {
+
+
+			}
+
+			@Override
+			public void onFailure(Call<Profile> call, Throwable throwable) {
+
+			}
+		});
 		
 	}
 	
-	public ConnectorProfiles connect(User u , ConnectorProfiles e , String content_type) throws IOException {
+	public void connect(User u , ConnectorProfiles e , String content_type) throws IOException {
 		String basic = getAuthorization(u.getUsername(),u.getFirst_name());
 		Call<ConnectorProfiles> call = service.connectProfile(content_type, e, basic);
-		Response<ConnectorProfiles> res = call.execute();
-		return res.body();
+		call.enqueue(new Callback<ConnectorProfiles>() {
+			@Override
+			public void onResponse(Call<ConnectorProfiles> call, Response<ConnectorProfiles> response) {
+
+			}
+
+			@Override
+			public void onFailure(Call<ConnectorProfiles> call, Throwable throwable) {
+
+			}
+		});
+
 		
 	}
 	
-	public ConnectorProfiles getNewFollowers(User u , ConnectorProfiles e , String content_type) throws IOException {
+	public void getNewFollowers(User u , ConnectorProfiles e , String content_type) throws IOException {
 		String basic = getAuthorization(u.getUsername(),u.getFirst_name());
 		Call<ConnectorProfiles> call = this.service.getNewMyFollowers(content_type, e, basic);
-		Response<ConnectorProfiles> res = call.execute();
-		return res.body();
+		call.enqueue(new Callback<ConnectorProfiles>() {
+			@Override
+			public void onResponse(Call<ConnectorProfiles> call, Response<ConnectorProfiles> response) {
+
+			}
+
+			@Override
+			public void onFailure(Call<ConnectorProfiles> call, Throwable throwable) {
+
+			}
+		});
+
 	}
 	
 	
-	public ConnectorProfiles followUsersByListOfTags(User u , ConnectorProfiles e , String content_type) throws IOException {
+	public void followUsersByListOfTags(User u , ConnectorProfiles e , String content_type) throws IOException {
 		String basic = getAuthorization(u.getUsername(),u.getFirst_name());
 		Call<ConnectorProfiles> call = service.followUsersByListOfTags(content_type, e, basic);
-		Response<ConnectorProfiles> res = call.execute();
-		return res.body();
+		call.enqueue(new Callback<ConnectorProfiles>() {
+			@Override
+			public void onResponse(Call<ConnectorProfiles> call, Response<ConnectorProfiles> response) {
+
+			}
+
+			@Override
+			public void onFailure(Call<ConnectorProfiles> call, Throwable throwable) {
+
+			}
+		});
+
 	}
 	
 
-	public ConnectorProfiles followFollowersOfMyFriend(User u , ConnectorProfiles e , String content_type) throws IOException {
+	public void followFollowersOfMyFriend(User u , ConnectorProfiles e , String content_type) throws IOException {
 		String basic = getAuthorization(u.getUsername(),u.getFirst_name());
 		Call<ConnectorProfiles> call = service.followFollowersOfMyFriend(content_type, e, basic);
-		Response<ConnectorProfiles> res = call.execute();
-		return res.body();
+		call.enqueue(new Callback<ConnectorProfiles>() {
+			@Override
+			public void onResponse(Call<ConnectorProfiles> call, Response<ConnectorProfiles> response) {
+				
+			}
+
+			@Override
+			public void onFailure(Call<ConnectorProfiles> call, Throwable throwable) {
+
+			}
+		});
 	}
 }
