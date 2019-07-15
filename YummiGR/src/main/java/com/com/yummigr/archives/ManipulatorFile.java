@@ -62,7 +62,7 @@ public class ManipulatorFile {
 			FileWriter writer = new FileWriter(path_csv,false);
 			CSVWriter csvWriter = new CSVWriter(writer);
 			csvWriter.writeNext(Constants.HEADER);
-			
+
 			csvWriter.writeAll(line_logger.get(0));
 			csvWriter.flush();
 			csvWriter.close();
