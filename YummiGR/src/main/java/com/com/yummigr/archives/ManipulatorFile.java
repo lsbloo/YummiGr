@@ -53,25 +53,23 @@ public class ManipulatorFile {
 	public List<Collection> assineLogger(MyLogger logger) {
 		line.add(new String[]{logger.getDate(), logger.getAction(), logger.getUser_identifier()});
 		list_line.add(line);
-		System.err.println(list_line.size());
 		return list_line;
 
 	}
 
-	public void generateDataLogger(List<Collection> line_logger,String path_csv) throws IOException{
 
-		Writer writer = Files.newBufferedWriter(Paths.get(path_csv));
-		CSVWriter csvWriter = new CSVWriter(writer);
-		csvWriter.writeNext(Constants.HEADER);
-		System.err.println(line_logger.size());
-
-		for(Collection e : line_logger){
-			csvWriter.writeAll(e);
-		}
-		csvWriter.flush();
-		csvWriter.close();
-		writer.close();
+	public void generateDataLogger(List<Collection> line_logger,String path_csv,String name_arq) throws IOException{
+			FileWriter writer = new FileWriter(path_csv,false);
+			CSVWriter csvWriter = new CSVWriter(writer);
+			csvWriter.writeNext(Constants.HEADER);
+			
+			csvWriter.writeAll(line_logger.get(0));
+			csvWriter.flush();
+			csvWriter.close();
+			writer.close();
 	}
+
+
 
 	public List<String[]> getLastLogger (String path_csv) throws  IOException{
 		CSVReader reader = new CSVReader(new FileReader(path_csv),',');

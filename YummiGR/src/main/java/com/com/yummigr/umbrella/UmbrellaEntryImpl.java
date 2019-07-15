@@ -40,9 +40,9 @@ public class UmbrellaEntryImpl {
 	
 	private UmbrellaEntry service;
 
-	protected static  ManipulatorFile manipulatorFile = new ManipulatorFile();
-	protected  static  MyCalendar myCalendar = new MyCalendar();
+
 	protected static LoggerYummi loggerYummi = new LoggerYummi();
+
 	public UmbrellaEntryImpl() throws IOException {
 		
 		Retrofit retrofit = new Retrofit.Builder()
@@ -71,8 +71,10 @@ public class UmbrellaEntryImpl {
 			public void onResponse(Call<UmbrellaUser> call, Response<UmbrellaUser> response) {
 				// adicionar ao logger
 				// :D
+				MyCalendar myCalendar = new MyCalendar();
 				MyLogger logger = new MyLogger("Creating User Umbrella", myCalendar.getDateToday() , u.getUsername() );
-				loggerYummi.generateLoggerByAction(logger,manipulatorFile.getPathCSV(Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[0]),true);
+				loggerYummi.generateLoggerByAction(logger,loggerYummi.getManipulator().getPathCSV(Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[0]),true
+				,Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[0]);
 
 			}
 
@@ -81,8 +83,9 @@ public class UmbrellaEntryImpl {
 
 				// adicionar ao logger
 				// :D
+				MyCalendar myCalendar = new MyCalendar();
 				MyLogger logger = new MyLogger("Creating User Umbrella - Dont created API Failure ", myCalendar.getDateToday() , u.getUsername() );
-				loggerYummi.generateLoggerByAction(logger,manipulatorFile.getPathCSV(Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[0]),true);
+				loggerYummi.generateLoggerByAction(logger,loggerYummi.getManipulator().getPathCSV(Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[0]),true,Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[0]);
 
 
 			}

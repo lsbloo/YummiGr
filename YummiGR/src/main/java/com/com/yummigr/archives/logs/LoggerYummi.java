@@ -28,12 +28,16 @@ public class LoggerYummi implements Serializable {
         this.slf4jLogger= LoggerFactory.getLogger(LoggerYummi.class);
     }
 
-    public void generateLoggerByAction(MyLogger logger , String path_csv,boolean generate){
+    public ManipulatorFile getManipulator (){
+        return this.manipulator;
+    }
+
+    public void generateLoggerByAction(MyLogger logger , String path_csv,boolean generate,String name_arq){
         try {
             List<Collection> dList = this.manipulator.assineLogger(logger);
 
             if(generate){
-                this.manipulator.generateDataLogger(dList,path_csv);
+                this.manipulator.generateDataLogger(dList,path_csv,name_arq);
                 this.slf4jLogger.info("Logger Insert !");
             }else{
                 this.slf4jLogger.info("Logger signed");
