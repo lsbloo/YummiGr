@@ -58,7 +58,7 @@ public interface UmbrellaEntry {
 	 */
 	@POST("umbrella/api/v1/toolkit/connect/profile/")
 	Call<ConnectorProfiles> connectProfile(@Header("Content-Type") String content_type,
-			@Body ConnectorProfiles c ,@Header("Authorization") String basic);
+			@Body ConnectorProfiles c);
 	
 	/**
 	 * retorna novos seguidores do perfil, caso existam.

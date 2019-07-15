@@ -1,4 +1,6 @@
 package com.com.yummigr.security;
+import com.com.yummigr.util.Constants;
+
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -95,13 +97,13 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent>{
 		ManipulatorFile f = new ManipulatorFile();
 		f.createDirectoryInitialLoader(ManipulatorFile.PATH_INITIAL, ManipulatorFile.DIR_INITIAL);
 		f.createDirectoryOfLoggersInitialLoader(ManipulatorFile.PATH_INITIAL,ManipulatorFile.DIR_INITIAl_LOGGER);
-		f.generateCSVFile(ManipulatorFile.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[0]);
-		f.generateCSVFile(ManipulatorFile.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[1]);
-		f.generateCSVFile(ManipulatorFile.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[2]);
-		f.generateCSVFile(ManipulatorFile.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[3]);
-		f.generateCSVFile(ManipulatorFile.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[4]);
-		f.generateCSVFile(ManipulatorFile.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[5]);
-		f.generateCSVFile(ManipulatorFile.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[6]);
+		f.generateCSVFile(Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[0]);
+		f.generateCSVFile(Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[1]);
+		f.generateCSVFile(Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[2]);
+		f.generateCSVFile(Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[3]);
+		f.generateCSVFile(Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[4]);
+		f.generateCSVFile(Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[5]);
+		f.generateCSVFile(Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[6]);
 	}
 	
 	/**

@@ -1,56 +1,88 @@
 package com.com.yummigr.archives;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import com.com.yummigr.models.MyLogger;
+import com.com.yummigr.util.Constants;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 
 public class ManipulatorFile {
 	
 	private String name_dir;
 	private File file;
+
 	public static  String PATH_INITIAL = "";
+
 	public static final String DIR_INITIAL = "/yummi_data";
+
 	public static final String DIR_INITIAl_LOGGER = "/yummi_loggers";
+
 	public static String PATH_USERS = "";
 
-	public static final String[] CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES =
-			{
+	List<Collection> list_line = new ArrayList<Collection>();
+	List<String[]> line = new ArrayList<String[]>();
 
-					"action_create_user_log",
-					"action_desative_user_log",
-					"action_create_contact_log",
-					"action_update_contact_log",
-					"action_delete_contact_log",
-					"action_connect_profile_umbrella_log",
-					"action_create_messenger_connector_log"
-			};
-
-	public static final String[] CONFIGURATION_ARCHIVE_FORMATS =
-			{
-					".png",
-					".jpeg",
-					".csv",
-					".txt",
-					".pdf"
-			};
-
-	public static final String[] CONFIGURATIONCSV =
-			{
-
-					"Date",",","Action",",","User"
-
-			};
 	
-	
-	public ManipulatorFile() throws IOException {
-		ManipulatorFile.PATH_INITIAL = new File("..").getCanonicalPath();
-		ManipulatorFile.PATH_USERS = new File("..").getCanonicalPath() + "/yummi_data/";
-	}
+	public ManipulatorFile() {
+		try {
+			ManipulatorFile.PATH_INITIAL = new File("..").getCanonicalPath();
+			ManipulatorFile.PATH_USERS = new File("..").getCanonicalPath() + "/yummi_data/";
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		}
 	
 	public ManipulatorFile(String name_dir) {
 		setName_dir(name_dir);
 		this.file=new File(getName_dir());
 	}
+
+
+	/**
+	 * Assina o logger no arquivo de logger .....
+	 * @param
+	 * @param logger
+	 * @throws IOException
+	 */
+	public List<Collection> assineLogger(MyLogger logger) {
+		line.add(new String[]{logger.getDate(), logger.getAction(), logger.getUser_identifier()});
+		list_line.add(line);
+		System.err.println(list_line.size());
+		return list_line;
+
+	}
+
+	public void generateDataLogger(List<Collection> line_logger,String path_csv) throws IOException{
+
+		Writer writer = Files.newBufferedWriter(Paths.get(path_csv));
+		CSVWriter csvWriter = new CSVWriter(writer);
+		csvWriter.writeNext(Constants.HEADER);
+		System.err.println(line_logger.size());
+
+		for(Collection e : line_logger){
+			csvWriter.writeAll(e);
+		}
+		csvWriter.flush();
+		csvWriter.close();
+		writer.close();
+	}
+
+	public List<String[]> getLastLogger (String path_csv) throws  IOException{
+		CSVReader reader = new CSVReader(new FileReader(path_csv),',');
+		List<String[]> loggerList = reader.readAll();
+		return loggerList;
+	}
+
+	public String getPathCSV(String name_csv){
+		return  PATH_INITIAL+DIR_INITIAl_LOGGER+"/"+name_csv+Constants.CONFIGURATION_ARCHIVE_FORMATS[2];
+	}
+
 
 	/**
 	 *
@@ -58,16 +90,16 @@ public class ManipulatorFile {
 	 */
 	public void generateCSVFile(String file_name){
 		try {
-			String result = PATH_INITIAL+DIR_INITIAl_LOGGER+"/"+file_name+CONFIGURATION_ARCHIVE_FORMATS[2];
+			String result = PATH_INITIAL+DIR_INITIAl_LOGGER+"/"+file_name+Constants.CONFIGURATION_ARCHIVE_FORMATS[2];
 
 			File f = new File(result);
 			if(!f.exists()) {
 				FileWriter escritor = new FileWriter(result);
-				escritor.append(CONFIGURATIONCSV[0]);
-				escritor.append(CONFIGURATIONCSV[1]);
-				escritor.append(CONFIGURATIONCSV[2]);
-				escritor.append(CONFIGURATIONCSV[3]);
-				escritor.append(CONFIGURATIONCSV[4]);
+				escritor.append(Constants.CONFIGURATIONCSV[0]);
+				escritor.append(Constants.CONFIGURATIONCSV[1]);
+				escritor.append(Constants.CONFIGURATIONCSV[2]);
+				escritor.append(Constants.CONFIGURATIONCSV[3]);
+				escritor.append(Constants.CONFIGURATIONCSV[4]);
 				escritor.flush();
 				escritor.close();
 				System.err.println("create csv " + file_name  + " Status OK");

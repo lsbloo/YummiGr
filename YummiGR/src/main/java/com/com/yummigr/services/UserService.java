@@ -21,6 +21,8 @@ import com.com.yummigr.repositories.PrivilegeRepository;
 import com.com.yummigr.models.Role;
 import com.com.yummigr.repositories.RoleRepository;
 
+import com.com.yummigr.util.Constants;
+
 @Service
 public class UserService {
 	
@@ -99,7 +101,7 @@ public class UserService {
 			this.userRepository.save(u);
 			UmbrellaEntryImpl impl = new UmbrellaEntryImpl();
 			UmbrellaUser e = new UmbrellaUser(u.getIdentifier(),u.getFirst_name(),u.getEmail());
-			impl.create(e,impl.CONTENT_TYPE);
+			impl.create(e,Constants.CONTENT_TYPE);
 			createDirectoryUser(u.getIdentifier());
 		}else {
 			return false;

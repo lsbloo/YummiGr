@@ -90,6 +90,14 @@
 		</dependency>
 
 
+		<!-- OpenCSV -->
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>4.0</version>
+		</dependency>
+
+
 		<!-- JWT AUTHENTICATION -->
 		<dependency>
 	    	<groupId>io.jsonwebtoken</groupId>

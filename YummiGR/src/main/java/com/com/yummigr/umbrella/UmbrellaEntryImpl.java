@@ -3,6 +3,11 @@ package com.com.yummigr.umbrella;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import com.com.yummigr.archives.ManipulatorFile;
+import com.com.yummigr.archives.logs.LoggerYummi;
+import com.com.yummigr.models.Contacts;
+import com.com.yummigr.models.MyLogger;
+import com.com.yummigr.util.MyCalendar;
 import org.apache.commons.codec.binary.Base64;
 
 import com.com.yummigr.models.User;
@@ -18,7 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
+import com.com.yummigr.util.Constants;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -30,29 +35,25 @@ methods of creation and use of umbrella api toolkit are implemented here.
  */
 public class UmbrellaEntryImpl {
 
-	/**
-	 * criar uma variavel de ambiente para setar a url base da umbrella.
-	 *
-	 * 
-	 */
-	protected static final String API_URL_BASE = "http://192.168.0.117:8000/";
-	
-	/**
-	 * default;
-	 */
-	public static final String CONTENT_TYPE = "application/json";
+
 	
 	
 	private UmbrellaEntry service;
-	
-	public UmbrellaEntryImpl() {
+
+	protected static  ManipulatorFile manipulatorFile = new ManipulatorFile();
+	protected  static  MyCalendar myCalendar = new MyCalendar();
+	protected static LoggerYummi loggerYummi = new LoggerYummi();
+	public UmbrellaEntryImpl() throws IOException {
 		
 		Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_URL_BASE)
+                .baseUrl(Constants.API_URL_BASE)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         this.service = retrofit.create(UmbrellaEntry.class);
+
+
+
 	}
 	
 	
@@ -65,15 +66,24 @@ public class UmbrellaEntryImpl {
 		
 		Call<UmbrellaUser> call = service.createUser(content_type, u);
 		 call.enqueue(new Callback<UmbrellaUser>() {
+
 			@Override
 			public void onResponse(Call<UmbrellaUser> call, Response<UmbrellaUser> response) {
 				// adicionar ao logger
 				// :D
+				MyLogger logger = new MyLogger("Creating User Umbrella", myCalendar.getDateToday() , u.getUsername() );
+				loggerYummi.generateLoggerByAction(logger,manipulatorFile.getPathCSV(Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[0]),true);
 
 			}
 
 			@Override
 			public void onFailure(Call<UmbrellaUser> call, Throwable throwable) {
+
+				// adicionar ao logger
+				// :D
+				MyLogger logger = new MyLogger("Creating User Umbrella - Dont created API Failure ", myCalendar.getDateToday() , u.getUsername() );
+				loggerYummi.generateLoggerByAction(logger,manipulatorFile.getPathCSV(Constants.CONFIGURATION_ARCHIVE_CSV_ACTION_NAMES[0]),true);
+
 
 			}
 		});
@@ -101,7 +111,7 @@ public class UmbrellaEntryImpl {
 	
 	public void connect(User u , ConnectorProfiles e , String content_type) throws IOException {
 		String basic = getAuthorization(u.getUsername(),u.getFirst_name());
-		Call<ConnectorProfiles> call = service.connectProfile(content_type, e, basic);
+		Call<ConnectorProfiles> call = service.connectProfile(content_type, e);
 		call.enqueue(new Callback<ConnectorProfiles>() {
 			@Override
 			public void onResponse(Call<ConnectorProfiles> call, Response<ConnectorProfiles> response) {
@@ -159,7 +169,7 @@ public class UmbrellaEntryImpl {
 		call.enqueue(new Callback<ConnectorProfiles>() {
 			@Override
 			public void onResponse(Call<ConnectorProfiles> call, Response<ConnectorProfiles> response) {
-				
+
 			}
 
 			@Override

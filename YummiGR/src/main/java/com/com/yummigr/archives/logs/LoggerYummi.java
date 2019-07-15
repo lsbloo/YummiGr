@@ -3,9 +3,12 @@ package com.com.yummigr.archives.logs;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import com.com.yummigr.archives.ManipulatorFile;
+import com.com.yummigr.models.MyLogger;
 import com.com.yummigr.models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +23,25 @@ public class LoggerYummi implements Serializable {
     private ManipulatorFile manipulator;
     private  Logger slf4jLogger;
 
-    public LoggerYummi() throws IOException {
+    public LoggerYummi(){
         this.manipulator = new ManipulatorFile();
         this.slf4jLogger= LoggerFactory.getLogger(LoggerYummi.class);
     }
 
-    public void generateLoggerByAction(String action , Object object , Date action_date){
+    public void generateLoggerByAction(MyLogger logger , String path_csv,boolean generate){
+        try {
+            List<Collection> dList = this.manipulator.assineLogger(logger);
 
+            if(generate){
+                this.manipulator.generateDataLogger(dList,path_csv);
+                this.slf4jLogger.info("Logger Insert !");
+            }else{
+                this.slf4jLogger.info("Logger signed");
+            }
+        }catch(IOException e){
+            this.slf4jLogger.error("Logger don't insert");
+            e.printStackTrace();
+        }
 
     }
 

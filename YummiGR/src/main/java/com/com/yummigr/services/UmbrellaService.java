@@ -3,6 +3,7 @@ package com.com.yummigr.services;
 import java.io.IOException;
 
 import com.com.yummigr.umbrella.core.ConnectorProfiles;
+import com.com.yummigr.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class UmbrellaService {
 	
 	
 	@Autowired
-	public UmbrellaService(UserRepository userRepository ) {
+	public UmbrellaService(UserRepository userRepository ) throws IOException {
 		this.userRepository=userRepository;
 		this.impl=new UmbrellaEntryImpl();
 	}
@@ -38,7 +39,7 @@ public class UmbrellaService {
 	public boolean createProfileInst(Profile e ) throws IOException {
 		User u = checkUser(e.getManager_identifier());
 		if(u!=null) {
-			this.impl.create(u, e, this.impl.CONTENT_TYPE);
+			this.impl.create(u, e, Constants.CONTENT_TYPE);
 			return true;
 		}
 		return false;
@@ -47,7 +48,7 @@ public class UmbrellaService {
 	public boolean connectProfileInst(ConnectorProfiles e ) throws IOException {
 		User u = checkUser((e.getManager_identifier()));
 		if(u != null){
-			this.impl.connect(u,e,this.impl.CONTENT_TYPE);
+			this.impl.connect(u,e,Constants.CONTENT_TYPE);
 			return true;
 		}
 
@@ -59,7 +60,7 @@ public class UmbrellaService {
 		User u = checkUser((e.getManager_identifier()));
 
 		if(u!=null){
-			this.impl.getNewFollowers(u,e,this.impl.CONTENT_TYPE);
+			this.impl.getNewFollowers(u,e,Constants.CONTENT_TYPE);
 			return true;
 		}
 		return false;
@@ -68,7 +69,7 @@ public class UmbrellaService {
 	public boolean followFollowersOfMyFriend(ConnectorProfiles e) throws IOException {
 		User u = checkUser((e.getManager_identifier()));
 		if(u!=null){
-			this.impl.followFollowersOfMyFriend(u,e,this.impl.CONTENT_TYPE);
+			this.impl.followFollowersOfMyFriend(u,e,Constants.CONTENT_TYPE);
 			return true;
 		}else{
 			return false;

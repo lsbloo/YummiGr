@@ -12,6 +12,7 @@ public class MyCalendar {
 
     }
 
+
     public String getDateToday(){
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         String date_ = dateFormat.format(date);
