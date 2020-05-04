@@ -16,7 +16,10 @@ O YummiGr é uma API que tem como principal objetivo fornecer o envio de mensage
  Uma vez que conectada a api umbrella, o yummigr disponibiliza os recursos da umbrella, sendo possivel gerenciar perfis de instagram. Algumas iterações da umbrella: gerenciamento de perfis(criação de perfil,upload de fotos(feed),seguir outros perfis por uma determinada lista de hashtags,seguir amigos dos meus seguidores,curtir fotos e comentários dos meus seguidores, seguir outros perfis dada uma localização).
   
   O objetivo do uso da api umbrella e da api yummi é criar uma api unificada que tem como principal objetivo potencializar o marketing digital para o pequeno e médio negócio. O yummi trabalha com a parte de envio de emails/sms e integração com a umbrella. Já a umbrella é responsavel por interações automatizadas na rede social instagram. Sendo assim a yummiGr utiliza a umbrella para agregar valor a mesma. Se você pensa em criar um aplicativo que tenha como objetivo potencializar o micro-empreendor através de uma solução tecnologica voltada especificamente para o instagram/emails/sms. O yummiGr oferece um kit de funcionalidades.
-  
+
+<br>
+Umbrella API: https://github.com/lsbloo/UmbrellaServer
+<br>
 </p>
 ## Table of content
 - [Getting Started]
